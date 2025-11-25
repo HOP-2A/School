@@ -27,7 +27,7 @@ model Class {
 }
  
 model Student {
-  id        String @id @default(nanoid())
+id        String @id @default(nanoid())
   name      String
   studentId String @unique
   password  String
@@ -47,6 +47,8 @@ model Teacher {
   createdAt DateTime @default(now())
   subject Subject?
   classes Class[]
+  password  String
+  email String
 }
  
 model Subject {
