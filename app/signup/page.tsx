@@ -23,7 +23,7 @@ const Home = () => {
 
   const SignUp = async () => {
     if (choice === "student") {
-      const res = await fetch("/api/student", {
+      const res = await fetch("/api/student/signup", {
         method: "POST",
         body: JSON.stringify({
           firstname: inputs.firstname,
@@ -38,7 +38,7 @@ const Home = () => {
         localStorage.setItem("token", JsonRes);
       }
     } else {
-      const res = await fetch("/api/teacher", {
+      const res = await fetch("/api/teacher/signup", {
         method: "POST",
         body: JSON.stringify({
           firstname: inputs.firstname,

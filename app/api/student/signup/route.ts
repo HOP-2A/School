@@ -19,8 +19,6 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  console.log(existing);
-
   if (existing) {
     return NextResponse.json({ message: "User exists" });
   } else {
