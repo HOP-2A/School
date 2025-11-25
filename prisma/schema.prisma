@@ -47,8 +47,7 @@ model Teacher {
   createdAt DateTime @default(now())
   subject Subject?
   classes Class[]
-  password  String
-  email String
+ 
 }
  
 model Subject {

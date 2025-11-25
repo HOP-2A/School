@@ -21,7 +21,7 @@ if(id === "password"){
 
 }
 const login = async()=>{
-const response = await fetch("/api/login",{
+const response = await fetch("/api/student/login",{
     method:"POST",
     body:JSON.stringify({
         email:input.email,
@@ -34,9 +34,9 @@ const response = await fetch("/api/login",{
   if (window.location !== undefined) {
       if (response.ok) {
  router.push("/")
-//  const token = await response.json();
-//  localStorage.setItem("token", token);
-//  setToken(token);
+ const token = await response.json();
+ localStorage.setItem("token", token.accessToken);
+
 
       } else {
        

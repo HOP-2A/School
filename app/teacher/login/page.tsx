@@ -21,7 +21,7 @@ if(id === "password"){
 
 }
 const login = async()=>{
-const response = await fetch("/api/login",{
+const response = await fetch("/api/teacher/login",{
     method:"POST",
     body:JSON.stringify({
         email:input.email,
