@@ -10,11 +10,6 @@ export async function POST(req: NextRequest) {
     where: {
       email: email,
     },
-    select: {
-      id: true,
-      email: true,
-      password: true,
-    },
   });
 
   if (!process.env.JWT_SECRET) {

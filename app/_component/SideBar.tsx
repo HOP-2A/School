@@ -6,7 +6,13 @@ import { Separator } from "@/components/ui/separator";
 
 import { Home, ClipboardList, MessageSquare, User } from "lucide-react";
 
-const Sidebar = () => {
+type PropsType = {
+  home: () => void;
+  assignments: () => void;
+  account: () => void;
+};
+
+const Sidebar = ({ home, assignments, account }: PropsType) => {
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-gradient-to-b from-white to-gray-50 border-r border-gray-200 px-4 pt-6 flex flex-col shadow-lg">
       <div className="flex items-center  px-2 mb-8">
@@ -18,12 +24,12 @@ const Sidebar = () => {
           className="drop-shadow-sm"
           loading="eager"
         />
-        {/* <div className="text-2xl font-semibold tracking-tight text-gray-800">
-          EduPanel
-        </div> */}
       </div>
       <div className="flex flex-col gap-2">
         <Button
+          onClick={() => {
+            home();
+          }}
           variant="ghost"
           className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-pink-600 rounded-lg transition-all duration-300"
         >
@@ -32,6 +38,9 @@ const Sidebar = () => {
         </Button>
 
         <Button
+          onClick={() => {
+            assignments;
+          }}
           variant="ghost"
           className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-pink-600 rounded-lg transition-all duration-300"
         >
@@ -50,6 +59,9 @@ const Sidebar = () => {
         <Separator className="my-4 border-pink-200" />
 
         <Button
+          onClick={() => {
+            account();
+          }}
           variant="ghost"
           className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-pink-600 rounded-lg transition-all duration-300"
         >
