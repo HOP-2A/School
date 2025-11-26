@@ -20,7 +20,7 @@ const Page =()=>{
         })
         const response = await res.json()
         setSubjects(response)
-        console.log(response)
+       
     }
     useEffect(() => {
         displaySubject()
@@ -32,9 +32,9 @@ const Page =()=>{
 
 return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Left Sidebar */}
+
       <div className="w-52 bg-gray-800 text-white flex flex-col">
-        {/* User Profile */}
+       
         <div className="p-5 flex flex-col items-center border-b border-gray-700">
           <div className="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center text-white text-2xl font-bold">
             {user?.data?.name?.[0]}
@@ -43,7 +43,7 @@ return (
           <div className="text-sm text-gray-300">{user?.data?.email}</div>
         </div>
 
-        {/* Sidebar Menu */}
+     
         <nav className="flex-1 mt-6 px-3">
           <ul className="space-y-2">
             <li>
@@ -70,7 +70,7 @@ return (
         </nav>
       </div>
 
-      {/* Main Content */}
+ 
       <div className="flex-1 p-6">
         <h1 className="text-2xl font-semibold mb-6">My Classes</h1>
 
