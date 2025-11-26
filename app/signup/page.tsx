@@ -3,8 +3,10 @@ import { Input } from "@/components/ui/input";
 import HeaderPart from "../_component/Header";
 import { Button } from "@/components/ui/button";
 import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+  const router = useRouter()
   const [choice, setChoice] = useState("blank");
   const [inputs, setInputs] = useState({
     firstname: "",
@@ -159,6 +161,14 @@ const Home = () => {
                 className=" text-white shadow-2xl w-full focus:ring-2 focus:ring-blue-300 mt-4"
               >
                 Sign Up
+              </Button>
+              <Button
+                onClick={() => {
+                router.push("student/login")
+                }}
+                className=" text-white shadow-2xl w-full focus:ring-2 focus:ring-blue-300 mt-4"
+              >
+                Login
               </Button>
             </div>
           ) : (
