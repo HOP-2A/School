@@ -10,6 +10,14 @@ export async function POST(req: NextRequest) {
     where: {
       email: email,
     },
+    include: {
+      classes: {
+        include: {
+          students: true,
+        },
+      },
+      subject: true,
+    },
   });
 
   if (!process.env.JWT_SECRET) {

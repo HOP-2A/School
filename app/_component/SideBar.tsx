@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-
 import { Home, ClipboardList, MessageSquare, User } from "lucide-react";
 
 type PropsType = {
