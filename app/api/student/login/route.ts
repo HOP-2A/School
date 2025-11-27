@@ -31,5 +31,5 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ accessToken }, { status: 200 });
     } else
       return NextResponse.json({ message: "wrong password" }, { status: 400 });
-  } else return NextResponse.json("please register");
+  } else return NextResponse.json({ message: "please register" }, { status: 400 });
 }
