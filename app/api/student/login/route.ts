@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
       id: true,
       email: true,
       password: true,
+     name:true
     },
   });
 

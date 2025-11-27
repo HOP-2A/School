@@ -1,8 +1,10 @@
 "use client"
+import { useUser } from "@/provider/AuthProvider";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 const Page =()=>{
+  const { token,setToken} = useUser()
   const router = useRouter()
     const [input, setInput] =useState({
         email:"",
@@ -18,7 +20,6 @@ setInput({...input, email:value})
 if(id === "password"){
     setInput({...input, password:value})
     }
-
 }
 const login = async()=>{
 const response = await fetch("/api/student/login",{
@@ -37,12 +38,15 @@ const response = await fetch("/api/student/login",{
  const token = await response.json();
  localStorage.setItem("token", token.accessToken);
 
-
-      } else {
-       
-      }
+setToken(token)
+      } 
     }
 }
+useEffect(()=>{
+  if (token) {
+    router.push("/student/dashboard");
+  }
+},[token])
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
           <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 space-y-6">

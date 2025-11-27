@@ -3,8 +3,10 @@ import { Input } from "@/components/ui/input";
 import HeaderPart from "../_component/Header";
 import { Button } from "@/components/ui/button";
 import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+  const router = useRouter()
   const [choice, setChoice] = useState("blank");
   const [inputs, setInputs] = useState({
     firstname: "",
@@ -68,6 +70,7 @@ const Home = () => {
               src="https://cdn.dribbble.com/userupload/18195011/file/original-62a17542a4015c1ec36406cd609fe83f.png?resize=2400x1920&vertical=center"
             />
           </div>
+          
           <div className="flex flex-col gap-1 w-180 mx-5">
             <div className="text-[30px] font-bold text-center">
               Connect, Manage, Send faster with Nexa
@@ -103,7 +106,16 @@ const Home = () => {
             >
               Sign Up as a student
             </Button>
+            
           </div>
+          <Button
+                onClick={() => {
+                router.push("student/login")
+                }}
+                className=" text-white shadow-2xl w-full focus:ring-2 focus:ring-blue-300 mt-4"
+              >
+                Login
+              </Button>
           {choice === "blank" || choice === "student" ? (
             <div className="border border-white rounded m-5 p-5">
               <div className="rounded p-1 my-4 bg-blue-400 text-start w-30">
@@ -160,6 +172,7 @@ const Home = () => {
               >
                 Sign Up
               </Button>
+            
             </div>
           ) : (
             <div className="border border-white rounded m-5 p-5">
