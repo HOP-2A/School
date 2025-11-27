@@ -29,7 +29,7 @@ const Page =()=>{
         }
       }, [token]);
 
-
+console.log(user?.data)
 return (
     <div className="flex min-h-screen bg-gray-100">
 

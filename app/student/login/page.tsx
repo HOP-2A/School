@@ -38,7 +38,7 @@ const response = await fetch("/api/student/login",{
  const token = await response.json();
  localStorage.setItem("token", token.accessToken);
 
-setToken(token)
+setToken(token) 
       } 
     }
 }
