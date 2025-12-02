@@ -17,9 +17,15 @@ type DecodedTokenType = {
 };
 
 const Page = () => {
+let decodedToken: DecodedTokenType | null = null;
+
+if (typeof window !== "undefined") {
   const localToken = localStorage.getItem("token");
-  const decodedToken: DecodedTokenType = jwtDecode(localToken!);
-  console.log(decodedToken);
+  if (localToken) {
+    decodedToken = jwtDecode<DecodedTokenType>(localToken);
+    console.log(decodedToken);
+  }
+}
 
   const { push } = useRouter();
   return (
