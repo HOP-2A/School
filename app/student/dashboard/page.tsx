@@ -33,7 +33,9 @@ console.log(user?.data)
 return (
     <div className="flex min-h-screen bg-gray-100">
 
-      <div className="w-52 bg-gray-800 text-white flex flex-col">
+      <div className="w-52 bg-gray-800 text-white flex flex-col" onClick={()=>{
+        router.push("profile")
+      }}>
        
         <div className="p-5 flex flex-col items-center border-b border-gray-700">
           <div className="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center text-white text-2xl font-bold">
