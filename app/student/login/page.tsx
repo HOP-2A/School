@@ -1,10 +1,11 @@
 "use client"
-import { useUser } from "@/provider/AuthProvider";
+
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 
 const Page =()=>{
-  const { token,setToken} = useUser()
+  const { user} = useUser()
   const router = useRouter()
     const [input, setInput] =useState({
         email:"",
@@ -32,21 +33,9 @@ const response = await fetch("/api/student/login",{
 }
 
 )
-  if (window.location !== undefined) {
-      if (response.ok) {
- router.push("/")
- const token = await response.json();
- localStorage.setItem("token", token.accessToken);
-
-setToken(token) 
-      } 
-    }
+ 
 }
-useEffect(()=>{
-  if (token) {
-    router.push("/student/dashboard");
-  }
-},[token])
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
           <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 space-y-6">

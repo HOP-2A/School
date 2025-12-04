@@ -13,73 +13,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Class {
-  id        String   @id @default(nanoid())
+  id        String     @id @default(nanoid())
   name      String
-  createdAt DateTime @default(now())
+  createdAt DateTime   @default(now())
   teacherId String?
-  teacher   Teacher? @relation(fields: [teacherId], references: [id])
-  students Student[]
-  homework Homework[]
+  teacher   Teacher?   @relation(fields: [teacherId], references: [id])
+  students  Student[]
+  homework  Homework[]
 }
- 
+
 model Student {
-id        String @id @default(nanoid())
-  name      String
-  studentId String @unique
-  password  String
-  email String
-  classId              String?
-  class   Class?  @relation(fields: [classId], references: [id])
+  id                  String               @id @default(nanoid())
+  name                String
+  clerkId             String               @unique
+  email               String
+  classId             String?
+  class               Class?               @relation(fields: [classId], references: [id])
   createdAt           DateTime             @default(now())
   homeworkSubmissions HomeworkSubmission[]
 }
- 
+
 model Teacher {
   id        String   @id @default(nanoid())
   name      String
-  password  String
-  email String
-  teacherId String   @unique
+  email     String
+  clerkId String   @unique
   createdAt DateTime @default(now())
-  subject Subject?
-  classes Class[]
- 
+  subject   Subject?
+  classes   Class[]
 }
- 
+
 model Subject {
-  id          String @id @default(nanoid())
-  subjectName String
-  teacherId String  @unique
-  teacher   Teacher @relation(fields: [teacherId], references: [id])
-  createdAt DateTime @default(now())
-}
- 
-model Homework {
   id          String   @id @default(nanoid())
+  subjectName String
+  teacherId   String   @unique
+  teacher     Teacher  @relation(fields: [teacherId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+
+model Homework {
+  id          String               @id @default(nanoid())
   title       String
   description String?
   dueDate     DateTime
-  createdAt   DateTime @default(now())
-  classId String
-  class   Class  @relation(fields: [classId], references: [id])
+  createdAt   DateTime             @default(now())
+  classId     String
+  class       Class                @relation(fields: [classId], references: [id])
   submissions HomeworkSubmission[]
 }
- 
+
 model HomeworkSubmission {
-  id          String   @id @default(nanoid())
+  id          String    @id @default(nanoid())
   content     String? // zurag link bj blno
-  submittedAt DateTime @default(now())
-  score      Int?
-  feedback   String? 
-  reviewedAt DateTime?
-  studentId String
-  student   Student @relation(fields: [studentId], references: [id])
-  homeworkId String
-  homework   Homework @relation(fields: [homeworkId], references: [id])
+  submittedAt DateTime  @default(now())
+  score       Int?
+  feedback    String?
+  reviewedAt  DateTime?
+  studentId   String
+  student     Student   @relation(fields: [studentId], references: [id])
+  homeworkId  String
+  homework    Homework  @relation(fields: [homeworkId], references: [id])
+
   @@unique([studentId, homeworkId])
 }
-
- 
