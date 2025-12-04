@@ -12,8 +12,9 @@ CREATE TABLE "Class" (
 CREATE TABLE "Student" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "studentId" TEXT NOT NULL,
-    "classId" TEXT NOT NULL,
+    "clerkId" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "classId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Student_pkey" PRIMARY KEY ("id")
@@ -23,7 +24,8 @@ CREATE TABLE "Student" (
 CREATE TABLE "Teacher" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "teacherId" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "clerkId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Teacher_pkey" PRIMARY KEY ("id")
@@ -66,10 +68,10 @@ CREATE TABLE "HomeworkSubmission" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Student_studentId_key" ON "Student"("studentId");
+CREATE UNIQUE INDEX "Student_clerkId_key" ON "Student"("clerkId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Teacher_teacherId_key" ON "Teacher"("teacherId");
+CREATE UNIQUE INDEX "Teacher_clerkId_key" ON "Teacher"("clerkId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Subject_teacherId_key" ON "Subject"("teacherId");
@@ -81,7 +83,7 @@ CREATE UNIQUE INDEX "HomeworkSubmission_studentId_homeworkId_key" ON "HomeworkSu
 ALTER TABLE "Class" ADD CONSTRAINT "Class_teacherId_fkey" FOREIGN KEY ("teacherId") REFERENCES "Teacher"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Student" ADD CONSTRAINT "Student_classId_fkey" FOREIGN KEY ("classId") REFERENCES "Class"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Student" ADD CONSTRAINT "Student_classId_fkey" FOREIGN KEY ("classId") REFERENCES "Class"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Subject" ADD CONSTRAINT "Subject_teacherId_fkey" FOREIGN KEY ("teacherId") REFERENCES "Teacher"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
