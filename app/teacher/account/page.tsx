@@ -1,33 +1,69 @@
 "use client";
 import Sidebar from "@/app/_component/SideBar";
-import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
+import { FaEnvelope, FaChalkboardTeacher } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-type DecodedTokenType = {
+type TeacherType = {
   id: string;
   name: string;
-  teacherId: string;
   password: string;
   email: string;
-  classes: string[];
-  subject: {
+  classes: {
+    createdAt: string;
     id: string;
-    subjectNmae: string;
-  };
+    name: string;
+    students: {
+      id: string;
+      classId: string;
+      clerkId: string;
+      createdAt: string;
+      email: string;
+      name: string;
+    }[];
+    teacherId: string;
+  }[];
+};
+
+type SubjectType = {
+  id: string;
+  subjectName: string;
+  teacherId: string;
+  createdAt: string;
 };
 
 const Page = () => {
-let decodedToken: DecodedTokenType | null = null;
-
-if (typeof window !== "undefined") {
-  const localToken = localStorage.getItem("token");
-  if (localToken) {
-    decodedToken = jwtDecode<DecodedTokenType>(localToken);
-    console.log(decodedToken);
-  }
-}
-
   const { push } = useRouter();
+  const [teacher, setTeacher] = useState<TeacherType>();
+  const [subject, setSubject] = useState<SubjectType>();
+  const { user, isLoaded } = useUser();
+  useEffect(() => {
+    const getClasses = async () => {
+      if (!isLoaded || !user) return;
+
+      const res = await fetch("/api/teacher/class", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          teacherId: user.id,
+        }),
+      });
+
+      if (res.ok) {
+        const jsonTeacher = await res.json();
+        setTeacher(jsonTeacher.teacher);
+        setSubject(jsonTeacher.subject);
+      } else {
+        console.error("Failed to fetch classes");
+      }
+    };
+
+    getClasses();
+  }, [isLoaded, user]);
   return (
     <div>
       <div>
@@ -40,10 +76,47 @@ if (typeof window !== "undefined") {
             push("/teacher/account/");
           }}
         />
-        <section className="p-6 bg-gray-50 m-5 flex flex-col gap-2 ml-70">
-          <div>My Account Information</div>
-          <div className="bg-gray-400"></div>
-        </section>
+        <main className="max-w-4xl mx-auto p-6">
+          <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
+            <div className="relative w-fit h-fit rounded-full overflow-hidden border-4 border-pink-500">
+              <Avatar className="w-33 h-33">
+                <AvatarImage
+                  className="w-32 h-32"
+                  src="https://github.com/shadcn.png"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h1 className="text-3xl font-bold">{teacher?.name}</h1>
+              <p className="mt-2 text-gray-700">{subject?.subjectName}</p>
+            </div>
+          </div>
+          <div className="flex justify-center md:justify-start gap-6 mb-8">
+            <div className="flex items-center gap-2 text-gray-800">
+              <FaEnvelope /> {teacher?.email}
+            </div>
+            <div className="flex items-center gap-2 text-gray-800">
+              <FaChalkboardTeacher /> {teacher?.classes.length} Classses
+            </div>
+          </div>
+
+          <section>
+            <h2 className="text-2xl font-semibold mb-4">Classes</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {teacher?.classes.map((subj) => (
+                <div
+                  key={subj.id}
+                  className="p-4 rounded-xl border border-gray-200 hover:shadow-lg transition cursor-pointer text-center"
+                >
+                  <h3 className="text-lg font-medium text-pink-500">
+                    {subj.name}
+                  </h3>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   );
