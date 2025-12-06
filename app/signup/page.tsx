@@ -9,7 +9,7 @@ const Home = () => {
     firstname: "",
     password: "",
     email: "",
-    personalId: "",
+    role: "",
   });
 
   const handleInputs = (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,23 +20,31 @@ const Home = () => {
     }));
   };
 
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    setInputs((prev) => ({
+      ...prev,
+      role: value,
+    }));
+  };
+
   const SignUp = async () => {
-    const res = await fetch("/api/student/signup", {
+    const res = await fetch("/api/signup", {
       method: "POST",
       body: JSON.stringify({
         firstname: inputs.firstname,
         password: inputs.password,
         email: inputs.email,
-        personalId: inputs.personalId,
+        role: inputs.role,
       }),
     });
 
     if (res.ok) {
-      const JsonRes = await res.json();
-      localStorage.setItem("token", JsonRes);
+      console.log("ok");
     }
   };
 
+  console.log(inputs);
   return (
     <div className="flex flex-col">
       <div>
@@ -90,15 +98,6 @@ const Home = () => {
                   onChange={(e) => {
                     handleInputs(e);
                   }}
-                  value={inputs.personalId}
-                  name="personalId"
-                  className="w-70 text-white"
-                  placeholder="Enter student id..."
-                />
-                <Input
-                  onChange={(e) => {
-                    handleInputs(e);
-                  }}
                   className="w-70 text-white"
                   placeholder="Enter email..."
                   value={inputs.email}
@@ -113,6 +112,16 @@ const Home = () => {
                   value={inputs.password}
                   name="password"
                 />
+                <select
+                  value={inputs.role}
+                  name="role"
+                  onChange={(e) => {
+                    handleSelect(e);
+                  }}
+                >
+                  <option value="STUDENT">student</option>
+                  <option value="TEACHER">teacher</option>
+                </select>
               </div>
               <div className="bg-white text-black font-medium rounded w-70 p-5 flex items-center">
                 You are now signing in as a student

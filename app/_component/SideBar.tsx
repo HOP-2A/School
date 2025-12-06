@@ -38,7 +38,7 @@ const Sidebar = ({ home, assignments, account }: PropsType) => {
 
         <Button
           onClick={() => {
-            assignments;
+            assignments();
           }}
           variant="ghost"
           className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-pink-600 rounded-lg transition-all duration-300"

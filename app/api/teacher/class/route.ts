@@ -25,9 +25,9 @@ export async function POST(req: NextRequest) {
     throw new Error("TeacgerId baihgu");
   }
 
-  const classess = await prisma.teacher.findUnique({
+  const teacher = await prisma.teacher.findUnique({
     where: {
-      id: teacherId,
+      clerkId: teacherId,
     },
 
     include: {
@@ -40,5 +40,11 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json(classess);
+  const subject = await prisma.subject.findUnique({
+    where: {
+      teacherId: teacher?.id,
+    },
+  });
+
+  return NextResponse.json({ teacher: teacher, subject: subject });
 }
