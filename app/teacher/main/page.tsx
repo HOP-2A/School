@@ -106,7 +106,7 @@ const Page = () => {
             <ClassesCard
               key={cls.id}
               AddHomework={() => {
-                push("/teacher/assignments/");
+                push(`/teacher/assignments/${cls.id}`);
               }}
               RouteAssignments={() => {
                 push("/teacher/assignments/");

@@ -1,7 +1,5 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import { jwtDecode } from "jwt-decode";
-
 type DecodedTokenType = {
   data: {
     id: string;

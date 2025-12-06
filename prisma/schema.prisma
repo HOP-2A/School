@@ -35,13 +35,14 @@ model Student {
 }
 
 model Teacher {
-  id        String   @id @default(nanoid())
+  id        String     @id @default(nanoid())
   name      String
   email     String
-  clerkId   String   @unique
-  createdAt DateTime @default(now())
+  clerkId   String     @unique
+  createdAt DateTime   @default(now())
   subject   Subject?
   classes   Class[]
+  homeworks Homework[]
 }
 
 model Subject {
@@ -60,6 +61,8 @@ model Homework {
   createdAt   DateTime             @default(now())
   classId     String
   class       Class                @relation(fields: [classId], references: [id])
+  teacherId   String?
+  teacher     Teacher?             @relation(fields: [teacherId], references: [id])
   submissions HomeworkSubmission[]
 }
 
