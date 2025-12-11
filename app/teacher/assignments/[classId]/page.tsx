@@ -137,14 +137,14 @@ const Page = () => {
             push("/teacher/main");
           }}
           assignments={() => {
-            push("/teacher/assignments");
+            push("/teacher/assignments-public");
           }}
           account={() => {
             push("/teacher/account/");
           }}
         />
         <div className="flex flex-col gap-5">
-          <div className="text-[17px] font-bold bg-pink-300 p-3 rounded-2xl w-72">
+          <div className="text-[17px] font-bold bg-sky-300 p-3 rounded-2xl w-72">
             Class: {classId}
           </div>
           <div className="flex flex-col gap-5 bg-gray-100 p-5 rounded-2xl">
@@ -162,6 +162,7 @@ const Page = () => {
             />
             <h2>Pick a due date:</h2>
             <Calendar
+              className="bg-white rounded-xl border border-gray-400"
               mode="single"
               selected={selectedDate}
               onSelect={setSelectedDate}
@@ -185,7 +186,7 @@ const Page = () => {
           </div>
         </div>
         <div className="ml-10 flex flex-col gap-5">
-          <div className="text-[17px] font-bold bg-pink-300 p-3 rounded-2xl w-140">
+          <div className="text-[17px] font-bold bg-sky-300 p-3 rounded-2xl w-140">
             Assignments
           </div>
           <div className="bg-gray-100 p-5 w-140 h-fit rounded-2xl flex flex-col gap-3">

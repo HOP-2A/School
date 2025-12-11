@@ -30,7 +30,7 @@ const Sidebar = ({ home, assignments, account }: PropsType) => {
             home();
           }}
           variant="ghost"
-          className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-pink-600 rounded-lg transition-all duration-300"
+          className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-sky-100 hover:text-sky-600 rounded-lg transition-all duration-300"
         >
           <Home size={20} />
           Home
@@ -41,7 +41,7 @@ const Sidebar = ({ home, assignments, account }: PropsType) => {
             assignments();
           }}
           variant="ghost"
-          className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-pink-600 rounded-lg transition-all duration-300"
+          className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-sky-100 hover:text-sky-600 rounded-lg transition-all duration-300"
         >
           <ClipboardList size={20} />
           Assignments
@@ -49,20 +49,20 @@ const Sidebar = ({ home, assignments, account }: PropsType) => {
 
         <Button
           variant="ghost"
-          className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-pink-600 rounded-lg transition-all duration-300"
+          className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-sky-100 hover:text-sky-600 rounded-lg transition-all duration-300"
         >
           <MessageSquare size={20} />
           Messages
         </Button>
 
-        <Separator className="my-4 border-pink-200" />
+        <Separator className="my-4 border-sky-200" />
 
         <Button
           onClick={() => {
             account();
           }}
           variant="ghost"
-          className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-pink-600 rounded-lg transition-all duration-300"
+          className="w-full justify-start gap-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-100 hover:to-sky-100 hover:text-sky-600 rounded-lg transition-all duration-300"
         >
           <User size={20} />
           My Account

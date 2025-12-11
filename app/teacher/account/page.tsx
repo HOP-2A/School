@@ -71,7 +71,9 @@ const Page = () => {
           home={() => {
             push("/teacher/main");
           }}
-          assignments={() => {}}
+          assignments={() => {
+            push("/teacher/assignments-public");
+          }}
           account={() => {
             push("/teacher/account/");
           }}
@@ -97,7 +99,7 @@ const Page = () => {
               <FaEnvelope /> {teacher?.email}
             </div>
             <div className="flex items-center gap-2 text-gray-800">
-              <FaChalkboardTeacher /> {teacher?.classes.length} Classses
+              <FaChalkboardTeacher /> {teacher?.classes.length} Classes
             </div>
           </div>
 

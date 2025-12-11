@@ -1,10 +1,25 @@
 "use client";
 
+import ClassesPage from "@/app/_component/AssignmentPageCard";
 import Sidebar from "@/app/_component/SideBar";
-import ClassesCard from "@/app/_component/TeacherClassesCards";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useUser } from "@clerk/nextjs";
+
+type classesType = {
+  createdAt: string;
+  id: string;
+  name: string;
+  students: {
+    id: string;
+    classId: string;
+    clerkId: string;
+    createdAt: string;
+    email: string;
+    name: string;
+  }[];
+  teacherId: string;
+}[];
 
 type TeacherType = {
   id: string;
@@ -28,34 +43,12 @@ type TeacherType = {
   }[];
 };
 
-type SubjectType = {
-  id: string;
-  subjectName: string;
-  teacherId: string;
-  createdAt: string;
-};
-type classesType = {
-  createdAt: string;
-  id: string;
-  name: string;
-  students: {
-    id: string;
-    classId: string;
-    clerkId: string;
-    createdAt: string;
-    email: string;
-    name: string;
-  }[];
-  teacherId: string;
-}[];
-
 const Page = () => {
   const { push } = useRouter();
   const [classes, setClasses] = useState<classesType>();
   const [teacher, setTeacher] = useState<TeacherType>();
-  const [subject, setSubject] = useState<SubjectType>();
-  const { user, isLoaded } = useUser();
 
+  const { user, isLoaded } = useUser();
   useEffect(() => {
     const getClasses = async () => {
       if (!isLoaded || !user) return;
@@ -74,9 +67,8 @@ const Page = () => {
         const jsonTeacher = await res.json();
         setTeacher(jsonTeacher.teacher);
         setClasses(jsonTeacher.teacher.classes);
-        setSubject(jsonTeacher.subject);
       } else {
-        console.error("Failed to fetch classes");
+        console.log("Failed to fetch classes");
       }
     };
 
@@ -98,24 +90,23 @@ const Page = () => {
         />
       </div>
       <div>
-        <section className="p-6 bg-gray-50 ml-70 mt-5 w-102 flex gap-3 flex-wrap ">
+        <section className="p-6 bg-gray-100 ml-70 mt-5 flex gap-3 flex-col">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
             Your Classes
           </h2>
-          {classes?.map((cls) => (
-            <ClassesCard
-              key={cls.id}
-              AddHomework={() => {
-                push(`/teacher/assignments/${cls.id}`);
-              }}
-              RouteAssignments={() => {
-                push(`/teacher/assignments/${cls.id}`);
-              }}
-              ClassName={cls.name}
-              Subject={subject?.subjectName!}
-              ClassStudentsNum={cls.students.length}
-            />
-          ))}
+          <div className="flex gap-6">
+            {classes?.map((cls) => (
+              <ClassesPage
+                route={() => {
+                  push(`/teacher/assignments/${cls.id}`);
+                }}
+                key={cls.id}
+                classname={cls.name}
+                studentNum={cls.students.length}
+                submission={70}
+              />
+            ))}
+          </div>
         </section>
       </div>
       <div>
