@@ -1,49 +1,66 @@
-"use client"
+"use client";
 
+import { useAuth } from "@/app/provider/AuthProvider";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 type Subject = {
-    id: string;
-    email: string;
-    password: string;
-    subjectName: string;
+  id: string;
+  email: string;
+  password: string;
+  subjectName: string;
+};
+type User = {
+  classId :string
+}
 
+const Page = () => {
+  const { user: clerkUser } = useUser();
+    const { user } = useAuth(clerkUser?.id);
+  const router = useRouter();
+ 
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const displaySubject = async () => {
+    const res = await fetch("/api/subject", {
+      method: "GET",
+    });
+    const response = await res.json();
+    setSubjects(response);
   };
-  
-const Page =()=>{
-    const router = useRouter()
-    const {user} = useUser()
-    const [subjects, setSubjects] = useState<Subject[]>([])
-    const displaySubject = async()=>{
-        const res = await fetch("/api/subject",{
-            method:"GET",
-        })
-        const response = await res.json()
-        setSubjects(response)
-       
-    }
-    useEffect(() => {
-        displaySubject()
-     
-      }, []);
-console.log(subjects)
-console.log(user)
-return (
+  useEffect(() => {
+    if(user){
+    displaySubject();}
+  }, [user]);
+
+
+
+
+
+  return (
     <div className="flex h-screen bg-gray-100">
-      
-      {/* LEFT SIDEBAR */}
+
       <div className="w-64 bg-white shadow-lg p-5 flex flex-col gap-6">
         <h1 className="text-2xl font-bold text-blue-600">LMS</h1>
 
         <nav className="flex flex-col gap-3">
-          <button className="text-left p-3 rounded-xl hover:bg-gray-100">🏠 Home</button>
-          <button className="text-left p-3 rounded-xl hover:bg-gray-100">📚 Classrooms</button>
-          <button className="text-left p-3 rounded-xl hover:bg-gray-100">👤 Profile</button>
+          <button className="text-left p-3 rounded-xl hover:bg-gray-100" onClick={() => router.push(`/student/dashboard`)}>
+            🏠 Home
+          </button>
+          <button
+            className="text-left p-3 rounded-xl hover:bg-gray-100"
+            onClick={() => router.push(`/student/classroom/${user?.classId}`)}
+          >
+            📚 Classrooms
+          </button>
+          <button className="text-left p-3 rounded-xl hover:bg-gray-100"  onClick={() => {
+              router.push(`/student/profile`)
+            }}>
+            👤 Profile
+          </button>
         </nav>
       </div>
 
-      {/* MAIN CONTENT */}
+
       <div className="flex-1 p-10">
         <h2 className="text-3xl font-bold mb-6">Your Subjects</h2>
 
@@ -60,10 +77,8 @@ return (
           ))}
         </div>
       </div>
-
     </div>
   );
-}
+};
 
-
-export default Page
+export default Page;
