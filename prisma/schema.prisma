@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
@@ -23,8 +18,8 @@ model Class {
   createdAt DateTime   @default(now())
   teacherId String?
   teacher   Teacher?   @relation(fields: [teacherId], references: [id])
-  students  Student[]
   homework  Homework[]
+  students  Student[]
 }
 
 model Student {
@@ -33,9 +28,9 @@ model Student {
   clerkId             String               @unique
   email               String
   classId             String?
-  class               Class?               @relation(fields: [classId], references: [id])
   createdAt           DateTime             @default(now())
   homeworkSubmissions HomeworkSubmission[]
+  class               Class?               @relation(fields: [classId], references: [id])
 }
 
 model Teacher {
@@ -44,17 +39,17 @@ model Teacher {
   email     String
   clerkId   String     @unique
   createdAt DateTime   @default(now())
-  subject   Subject?
   classes   Class[]
   homeworks Homework[]
+  subject   Subject?
 }
 
 model Subject {
   id          String   @id @default(nanoid())
   subjectName String
   teacherId   String   @unique
-  teacher     Teacher  @relation(fields: [teacherId], references: [id])
   createdAt   DateTime @default(now())
+  teacher     Teacher  @relation(fields: [teacherId], references: [id])
 }
 
 model Homework {
@@ -64,8 +59,9 @@ model Homework {
   dueDate     DateTime
   createdAt   DateTime             @default(now())
   classId     String
-  class       Class                @relation(fields: [classId], references: [id])
   teacherId   String?
+  points      Int?
+  class       Class                @relation(fields: [classId], references: [id])
   teacher     Teacher?             @relation(fields: [teacherId], references: [id])
   submissions HomeworkSubmission[]
 }
@@ -79,10 +75,14 @@ model HomeworkSubmission {
   feedback    String?
   reviewedAt  DateTime?
   studentId   String
-  student     Student   @relation(fields: [studentId], references: [id])
   homeworkId  String
   homework    Homework  @relation(fields: [homeworkId], references: [id])
   status      SubmissionStatus @default(NONSUBMITTED)
 
   @@unique([studentId, homeworkId])
+}
+
+enum SubmissionStatus {
+  NONSUBMITTED
+  SUBMITTED
 }

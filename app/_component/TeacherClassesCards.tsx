@@ -35,7 +35,7 @@ const ClassesCard = ({
                 RouteAssignments();
               }}
               variant="outline"
-              className="flex-1 justify-center gap-2 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-pink-600"
+              className="flex-1 justify-center gap-2 hover:bg-gradient-to-r hover:from-purple-100 hover:to-sky-100 hover:text-sky-600"
             >
               <ClipboardList size={18} />
               View Assignments
@@ -45,7 +45,7 @@ const ClassesCard = ({
                 AddHomework();
               }}
               variant="default"
-              className="flex-1 justify-center gap-2 bg-pink-500 text-white hover:bg-pink-600"
+              className="flex-1 justify-center gap-2 bg-sky-500 text-white hover:bg-sky-600"
             >
               Add Assignment
             </Button>
