@@ -5,20 +5,20 @@ export async function POST(
   req: NextRequest,
   context: { params: { classId: string } }
 ) {
-  const params = await context.params;
-  const classId = params.classId;
-  const body = await req.json();
 
-  const { title, description, dueDate, teacherId, points } = body;
+  const { classId } = await context.params;
+  console.log(classId, 'gg')
+  const body = await req.json();
+  const { title, description, dueDate, teacherId } = body;
+  const dueDateObj = new Date(dueDate);
 
   const createdHomework = await prisma.homework.create({
     data: {
-      title: title,
-      description: description,
-      dueDate: new Date(dueDate),
-      classId: classId,
-      teacherId: teacherId,
-      points: points,
+      title,
+      description,
+      dueDate: dueDateObj,
+      classId,
+      teacherId,
     },
   });
 

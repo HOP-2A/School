@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (existingTeacher || existingStudent) {
-    return NextResponse.json({ message: "User exists" });
+    throw new Error("User exists");
   }
 
   const clerk = await clerkClient();

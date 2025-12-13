@@ -84,7 +84,7 @@ const Page = () => {
         const jsonTeacher = await res.json();
         setTeacher(jsonTeacher.teacher);
       } else {
-        console.error("Failed to fetch classes");
+        console.log("Failed to fetch classes");
       }
     };
 
@@ -95,12 +95,15 @@ const Page = () => {
   const AddAssignment = async () => {
     const res = await fetch(`/api/teacher/assignments/${classId}`, {
       method: "POST",
+         headers: {
+          "Content-Type": "application/json",
+        },
       body: JSON.stringify({
         title: inputs.title,
         description: inputs.des,
         dueDate: RealSelectedDate,
         teacherId: teacher?.id,
-        points: inputs?.points,
+ 
       }),
     });
 
@@ -108,7 +111,8 @@ const Page = () => {
       const Json = await res.json();
       console.log(Json);
 
-      setInputs({ title: "", des: "", date: "", points: "" });
+      setInputs({ title: "", des: "", date: "" });
+      await  GetAssignments()
     }
   };
 
