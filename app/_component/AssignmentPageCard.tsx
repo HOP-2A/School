@@ -40,7 +40,7 @@ export default function ClassesPage({
             <div className="relative w-36 h-36">
               <div className="absolute inset-0 rounded-full border-8 border-gray-200 shadow-inner"></div>
               <div
-                className="absolute inset-0 rounded-full border-8 border-sky-500"
+                className="absolute inset-0 rounded-full border-8 border-purple-500 "
                 style={{ clipPath: `inset(0 0 ${100 - submission}% 0)` }}
               ></div>
               <div className="absolute inset-0 flex items-center justify-center">

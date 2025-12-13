@@ -52,6 +52,7 @@ const Page = () => {
     title: "",
     des: "",
     date: "",
+    points: "",
   });
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
@@ -99,6 +100,7 @@ const Page = () => {
         description: inputs.des,
         dueDate: RealSelectedDate,
         teacherId: teacher?.id,
+        points: inputs?.points,
       }),
     });
 
@@ -106,7 +108,7 @@ const Page = () => {
       const Json = await res.json();
       console.log(Json);
 
-      setInputs({ title: "", des: "", date: "" });
+      setInputs({ title: "", des: "", date: "", points: "" });
     }
   };
 
@@ -160,6 +162,12 @@ const Page = () => {
               value={inputs.des}
               onChange={(e) => handleInputs(e)}
             />
+            <Input
+              placeholder="Points..."
+              name="points"
+              value={inputs.points}
+              onChange={(e) => handleInputs(e)}
+            />
             <h2>Pick a due date:</h2>
             <Calendar
               className="bg-white rounded-xl border border-gray-400"
@@ -193,10 +201,20 @@ const Page = () => {
             {assignments?.map((hw) => (
               <div
                 key={hw.id}
-                className="bg-white border border-gray-400 rounded p-2"
+                className="bg-white border border-gray-400 rounded p-2 flex justify-between items-center"
               >
-                <div className="font-bold">{hw.title}</div>
-                <div className="text-sm">{hw.description}</div>
+                <div>
+                  <div className="font-bold">{hw.title}</div>
+                  <div className="text-sm">{hw.description}</div>
+                </div>
+                <Button
+                  onClick={() => {
+                    push(`/teacher/homework/${hw.id}`);
+                  }}
+                  className="bg-black text-white h-7  rounded-2xl"
+                >
+                  View
+                </Button>
               </div>
             ))}
           </div>
