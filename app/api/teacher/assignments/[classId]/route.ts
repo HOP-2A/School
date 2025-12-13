@@ -9,7 +9,7 @@ export async function POST(
   const classId = params.classId;
   const body = await req.json();
 
-  const { title, description, dueDate, teacherId } = body;
+  const { title, description, dueDate, teacherId, points } = body;
 
   const createdHomework = await prisma.homework.create({
     data: {
@@ -18,6 +18,7 @@ export async function POST(
       dueDate: new Date(dueDate),
       classId: classId,
       teacherId: teacherId,
+      points: points,
     },
   });
 
