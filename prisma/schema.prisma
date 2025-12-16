@@ -7,11 +7,12 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 enum SubmissionStatus {
   NONSUBMITTED
   SUBMITTED
-
 }
+
 model Class {
   id        String     @id @default(nanoid())
   name      String
@@ -68,7 +69,7 @@ model Homework {
 
 model HomeworkSubmission {
   id          String    @id @default(nanoid())
-  content     String? 
+  content     String?
   description String?
   submittedAt DateTime  @default(now())
   score       Int?
@@ -76,13 +77,10 @@ model HomeworkSubmission {
   reviewedAt  DateTime?
   studentId   String
   homeworkId  String
-  homework    Homework  @relation(fields: [homeworkId], references: [id])
-  status      SubmissionStatus @default(NONSUBMITTED)
+
+  homework Homework @relation(fields: [homeworkId], references: [id])
+
+  status SubmissionStatus @default(NONSUBMITTED)
 
   @@unique([studentId, homeworkId])
-}
-
-enum SubmissionStatus {
-  NONSUBMITTED
-  SUBMITTED
 }
