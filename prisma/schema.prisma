@@ -82,7 +82,4 @@ model HomeworkSubmission {
   @@unique([studentId, homeworkId])
 }
 
-enum SubmissionStatus {
-  NONSUBMITTED
-  SUBMITTED
-}
+
