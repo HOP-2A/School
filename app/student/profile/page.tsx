@@ -3,13 +3,16 @@
 import { useUser } from "@clerk/nextjs";
 import { useAuth } from "@/app/provider/AuthProvider";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Page = () => {
   const router = useRouter()
 const { user: clerkUser } = useUser();
   const { user } = useAuth(clerkUser?.id);
 
-console.log(user)
+useEffect(()=>{
+
+},[user])
 
 
 
@@ -76,13 +79,16 @@ console.log(user)
                   <p className="text-sm font-mono text-gray-700 truncate">{user?.clerkId}</p>
                 </div>
 
-                <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-sm text-gray-500">Joined</p>
-                  <p className="text-lg font-semibold text-gray-800">
-                    {new Date(user?.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
+               <div className="bg-gray-50 rounded-xl p-4">
+  <p className="text-sm text-gray-500">Joined</p>
+  <p className="text-lg font-semibold text-gray-800">
+    {user?.createdAt
+      ? new Date(user.createdAt).toLocaleDateString()
+      : "—"}
+  </p>
+</div>
+
+              </div>  
             </div>
           </div>
         </div>

@@ -58,6 +58,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(createdUser);
+    return NextResponse.json(createdUser); 
   }
 }

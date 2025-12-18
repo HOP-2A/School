@@ -14,6 +14,41 @@ type AssignmentsType = {
   teacherId: string;
   title: string;
 };
+type HomeworkType = {
+content
+: 
+string,
+description
+: 
+string,
+
+feedback
+: 
+string,
+homeworkId
+: 
+string, 
+id
+: 
+string, 
+reviewedAt
+: 
+Date,
+
+score
+: 
+Number
+status
+: boolean,
+
+
+studentId
+: string
+
+submittedAt
+: 
+Date
+};
 type TeacherType = {
   id: string;
   name: string;
@@ -42,6 +77,7 @@ const Page= ()=>{
  
   const [teacher, setTeacher] = useState<TeacherType>();
   const [assignments, setAssignments] = useState<AssignmentsType[]>();
+    const [homeworkSub, setHomeworkSub] = useState<HomeworkType[]>([]);
 const { user: clerkUser } = useUser();
   const { user } = useAuth(clerkUser?.id);
      const GetAssignments = async () => {
@@ -58,8 +94,27 @@ const { user: clerkUser } = useUser();
       setAssignments(JsonData);
     }
   };
-    useEffect(() => {
-      const getClasses = async () => {
+ 
+   const GetSubmissions = async () => {
+    const res = await fetch("/api/homeworkSubmission/getIndividualSubmissions", {
+      method: "POST",
+   headers: {
+            "Content-Type": "application/json",
+          },
+      body: JSON.stringify({
+            studentId :user?.id,
+          }),      
+        
+    });
+
+    if (res.ok) {
+      const JsonData = await res.json();
+    setHomeworkSub(JsonData)
+    }
+  };
+  console.log(homeworkSub,"hw sub")
+
+   const getClasses = async () => {
         if (!user) return;
   
         const res = await fetch("/api/teacher/class", {
@@ -79,14 +134,21 @@ const { user: clerkUser } = useUser();
           console.log("Failed to fetch classes");
         }
       };
-  
+
+    useEffect(() => {
+
       getClasses();
       GetAssignments();
+      GetSubmissions()
     }, [user]);
     console.log(assignments)
+const homework = homeworkSub?.map((hw)=>(
+  hw.homeworkId
+))
+
 return (
   <div className="min-h-screen bg-gray-100 flex">
-    {/* Sidebar */}
+
     <div className="w-64 bg-white shadow-lg p-5 flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-blue-600">LMS</h1>
 
@@ -112,7 +174,7 @@ return (
       </nav>
     </div>
 
-    {/* Main content */}
+
     <div className="flex-1 p-6 max-w-5xl mx-auto space-y-6">
       <h1 className="text-3xl font-semibold mb-4">Assignments</h1>
 
@@ -136,14 +198,40 @@ return (
                 <p className="text-sm text-gray-500">
                   Due: {new Date(assignment.dueDate).toLocaleDateString()}
                 </p>
-                <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                  onClick={() => {
-                    router.push(`${classId}/${assignment.id}`);
-                  }}
-                >
-                  Review
-                </button>
+{homework.includes(assignment.id) ? (
+  <div className="flex items-center gap-3">
+   
+    <button
+      onClick={() => {
+        router.push(
+          `/student/classroom/${user?.classId}/${assignment.id}/edit`
+        );
+      }}
+      className="px-3 py-1.5 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+    >
+      ✏️ Edit
+    </button>
+
+   
+    <span className="text-green-600 font-semibold">
+      ✅ Submitted
+    </span>
+  </div>
+) : (
+  <button
+    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+    onClick={() => {
+      router.push(
+        `/student/classroom/${user?.classId}/${assignment.id}`
+      );
+    }}
+  >
+    Review
+  </button>
+)}
+
+
+              
               </div>
             </div>
           ))}
