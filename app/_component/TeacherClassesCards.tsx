@@ -7,7 +7,7 @@ type PropsType = {
   AddHomework: () => void;
   RouteAssignments: () => void;
   ClassName: string;
-  Subject: string;
+  Subject: string | undefined;
   ClassStudentsNum: number;
 };
 

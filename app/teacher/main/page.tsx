@@ -112,7 +112,7 @@ const Page = () => {
                 push(`/teacher/assignments/${cls.id}`);
               }}
               ClassName={cls.name}
-              Subject={subject?.subjectName!}
+              Subject={subject?.subjectName}
               ClassStudentsNum={cls.students.length}
             />
           ))}

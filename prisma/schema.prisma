@@ -79,10 +79,14 @@ model HomeworkSubmission {
   homework    Homework  @relation(fields: [homeworkId], references: [id])
   status      SubmissionStatus @default(NONSUBMITTED)
 
-  @@unique([studentId, homeworkId])
+  student Student @relation(fields: [studentId], references: [id])
 }
 
-enum SubmissionStatus {
-  NONSUBMITTED
-  SUBMITTED
+
+model Admin {
+  id        String   @id @default(nanoid())
+  name      String
+  password  String
+  createdAt DateTime @default(now())  
+ 
 }
