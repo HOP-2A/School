@@ -8,11 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum SubmissionStatus {
-  NONSUBMITTED
-  SUBMITTED
-}
-
 model Class {
   id        String     @id @default(nanoid())
   name      String
@@ -68,19 +63,30 @@ model Homework {
 }
 
 model HomeworkSubmission {
-  id          String    @id @default(nanoid())
+  id          String           @id @default(nanoid())
   content     String?
-  description String?
-  submittedAt DateTime  @default(now())
+  submittedAt DateTime         @default(now())
   score       Int?
   feedback    String?
   reviewedAt  DateTime?
   studentId   String
   homeworkId  String
-
-  homework Homework @relation(fields: [homeworkId], references: [id])
-
-  status SubmissionStatus @default(NONSUBMITTED)
+  status      SubmissionStatus @default(NONSUBMITTED)
+  description String?
+  homework    Homework         @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
+  student     Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, homeworkId])
+}
+
+model Admin {
+  id        String   @id
+  name      String
+  createdAt DateTime @default(now())
+  password  String
+}
+
+enum SubmissionStatus {
+  NONSUBMITTED
+  SUBMITTED
 }

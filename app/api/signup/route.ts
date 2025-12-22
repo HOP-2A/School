@@ -25,39 +25,44 @@ export async function POST(req: NextRequest) {
     throw new Error("User exists");
   }
 
-  const clerk = await clerkClient();
-  console.log(email, password, firstname, role);
-  const createdClerkUser = await clerk.users.createUser({
-    skipPasswordChecks: true,
-    skipPasswordRequirement: true,
-    emailAddress: [email],
-    password,
-    firstName: firstname,
-    publicMetadata: {
-      role: role,
-    },
-  });
-
-  if (role === "TEACHER") {
-    const createdUser = await prisma.teacher.create({
-      data: {
-        name: firstname,
-        email: email,
-        clerkId: createdClerkUser.id,
-      },
-    });
-    return NextResponse.json(createdUser);
-  }
-
-  if (role === "STUDENT") {
-    const createdUser = await prisma.student.create({
-      data: {
-        name: firstname,
-        email: email,
-        clerkId: createdClerkUser.id,
+  try {
+    const clerk = await clerkClient();
+    console.log(email, password, firstname, role);
+    const createdClerkUser = await clerk.users.createUser({
+      skipPasswordChecks: true,
+      skipPasswordRequirement: true,
+      emailAddress: [email],
+      password,
+      firstName: firstname,
+      publicMetadata: {
+        role: role,
       },
     });
 
-    return NextResponse.json(createdUser); 
+    if (role === "TEACHER") {
+      const createdUser = await prisma.teacher.create({
+        data: {
+          name: firstname,
+          email: email,
+          clerkId: createdClerkUser.id,
+        },
+      });
+      return NextResponse.json(createdUser);
+    }
+
+    if (role === "STUDENT") {
+      const createdUser = await prisma.student.create({
+        data: {
+          name: firstname,
+          email: email,
+          clerkId: createdClerkUser.id,
+        },
+      });
+
+      return NextResponse.json(createdUser);
+    }
+  } catch (err: any) {
+    console.error(err.errors);
+    throw err;
   }
 }
