@@ -50,7 +50,7 @@ const Page = () => {
             className="text-left p-3 rounded-xl hover:bg-gray-100"
             onClick={() => router.push(`/student/classroom/${user?.classId}`)}
           >
-            📚 Classrooms
+            📚All Homeworks
           </button>
           <button className="text-left p-3 rounded-xl hover:bg-gray-100"  onClick={() => {
               router.push(`/student/profile`)

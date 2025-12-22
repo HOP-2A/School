@@ -5,7 +5,8 @@ type Student = {
   clerkId: string;
   classId:string;
   email:string;
-
+createdAt:Date | undefined
+studentId:string
 };
 export const useAuth = (clerkId: string | null | undefined) => {
   const [user, setUser] = useState<Student |null>(null);
