@@ -12,6 +12,7 @@ enum SubmissionStatus {
   NONSUBMITTED
   SUBMITTED
 }
+
 enum Weekday {
   MON
   TUE
@@ -21,16 +22,17 @@ enum Weekday {
   SAT
   SUN
 }
+
 model Class {
-  id        String     @id @default(nanoid())
-  name      String
-  createdAt DateTime   @default(now())
-  teacherId String?
-  teacher   Teacher?   @relation(fields: [teacherId], references: [id])
-  homework  Homework[]
-  students  Student[]
+  id               String            @id @default(nanoid())
+  name             String
+  createdAt        DateTime          @default(now())
+  teacherId        String?
+  teacher          Teacher?          @relation(fields: [teacherId], references: [id])
+  homework         Homework[]
+  students         Student[]
   teacherSchedules TeacherSchedule[]
-  
+  teacherClasses   TeacherClass[]
 }
 
 model Student {
@@ -45,15 +47,16 @@ model Student {
 }
 
 model Teacher {
-  id        String     @id @default(nanoid())
-  name      String
-  email     String
-  clerkId   String     @unique
-  createdAt DateTime   @default(now())
-  classes   Class[]
-  homeworks Homework[]
-  subject   Subject?
+  id               String            @id @default(nanoid())
+  name             String
+  email            String
+  clerkId          String            @unique
+  createdAt        DateTime          @default(now())
+  classes          Class[]
+  homeworks        Homework[]
+  subject          Subject?
   teacherSchedules TeacherSchedule[]
+  teacherClasses   TeacherClass[]
 }
 
 model Subject {
@@ -87,35 +90,43 @@ model HomeworkSubmission {
   feedback    String?
   reviewedAt  DateTime?
 
-  studentId   String
-  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
-  homeworkId  String
-  homework    Homework @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
+  homeworkId String
+  homework   Homework @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
 
-  status      SubmissionStatus @default(NONSUBMITTED)
+  status SubmissionStatus @default(NONSUBMITTED)
 
   @@unique([studentId, homeworkId])
 }
 
-
 model Admin {
-  id        String     @id @default(nanoid())
+  id        String   @id @default(nanoid())
   name      String
-  createdAt DateTime   @default(now())
+  createdAt DateTime @default(now())
   password  String
 }
+
 model TeacherSchedule {
   id        String   @id @default(nanoid())
   day       Weekday
-  startTime String  
-  endTime   String   
+  startTime String
+  endTime   String
   createdAt DateTime @default(now())
 
   teacherId String
-  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  teacher   Teacher @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 
-  classId   String?
-  class     Class?  @relation(fields: [classId], references: [id])
+  classId String?
+  class   Class?  @relation(fields: [classId], references: [id])
 }
 
+model TeacherClass {
+  id        String @id @default(nanoid())
+  classId   String
+  teacherId String
+
+  teacher Teacher @relation(fields: [teacherId], references: [id])
+  class   Class   @relation(fields: [classId], references: [id])
+}
