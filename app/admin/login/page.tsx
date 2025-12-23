@@ -28,7 +28,7 @@ export default function Page() {
       }),
     });
     if (response.ok) {
-      router.push("/home");
+      router.push("/admin/home");
     }
   };
 

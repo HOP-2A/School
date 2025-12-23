@@ -12,7 +12,15 @@ enum SubmissionStatus {
   NONSUBMITTED
   SUBMITTED
 }
-
+enum Weekday {
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+  SUN
+}
 model Class {
   id        String     @id @default(nanoid())
   name      String
@@ -21,6 +29,8 @@ model Class {
   teacher   Teacher?   @relation(fields: [teacherId], references: [id])
   homework  Homework[]
   students  Student[]
+  teacherSchedules TeacherSchedule[]
+  
 }
 
 model Student {
@@ -43,6 +53,7 @@ model Teacher {
   classes   Class[]
   homeworks Homework[]
   subject   Subject?
+  teacherSchedules TeacherSchedule[]
 }
 
 model Subject {
@@ -75,12 +86,36 @@ model HomeworkSubmission {
   score       Int?
   feedback    String?
   reviewedAt  DateTime?
+
   studentId   String
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
   homeworkId  String
+  homework    Homework @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
 
-  homework Homework @relation(fields: [homeworkId], references: [id])
-
-  status SubmissionStatus @default(NONSUBMITTED)
+  status      SubmissionStatus @default(NONSUBMITTED)
 
   @@unique([studentId, homeworkId])
 }
+
+
+model Admin {
+  id        String     @id @default(nanoid())
+  name      String
+  createdAt DateTime   @default(now())
+  password  String
+}
+model TeacherSchedule {
+  id        String   @id @default(nanoid())
+  day       Weekday
+  startTime String  
+  endTime   String   
+  createdAt DateTime @default(now())
+
+  teacherId String
+  teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+
+  classId   String?
+  class     Class?  @relation(fields: [classId], references: [id])
+}
+
