@@ -9,21 +9,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 type TeacherType = {
   id: string;
   name: string;
-  password: string;
   email: string;
-  classes: {
-    createdAt: string;
-    id: string;
-    name: string;
-    students: {
-      id: string;
-      classId: string;
-      clerkId: string;
-      createdAt: string;
-      email: string;
-      name: string;
-    }[];
+  teacherClasses: {
+    classId: string;
     teacherId: string;
+    class: {
+      teacherId: string;
+      id: string;
+      name: string;
+      students: {
+        classId: string;
+        name: string;
+        id: string;
+        email: string;
+      }[];
+    };
   }[];
 };
 
@@ -99,20 +99,20 @@ const Page = () => {
               <FaEnvelope /> {teacher?.email}
             </div>
             <div className="flex items-center gap-2 text-gray-800">
-              <FaChalkboardTeacher /> {teacher?.classes.length} Classes
+              <FaChalkboardTeacher /> {teacher?.teacherClasses?.length} Classes
             </div>
           </div>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">Classes</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {teacher?.classes.map((subj) => (
+              {teacher?.teacherClasses?.map((subj) => (
                 <div
-                  key={subj.id}
+                  key={subj?.classId}
                   className="p-4 rounded-xl border border-gray-200 hover:shadow-lg transition cursor-pointer text-center"
                 >
                   <h3 className="text-lg font-medium text-pink-500">
-                    {subj.name}
+                    {subj.class?.name}
                   </h3>
                 </div>
               ))}

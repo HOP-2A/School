@@ -21,11 +21,27 @@ type ClassType = {
   };
 };
 
+type TeachersType = {
+  classId: string;
+  teacherId: string;
+  teacher: {
+    email: string;
+    id: string;
+    name: string;
+    subject: {
+      id: string;
+      subjectName: string;
+      teacherId: string;
+    };
+  };
+};
+
 const Page = () => {
   const params = useParams();
   const classId = params.classId as string;
 
   const [classData, setClassData] = useState<ClassType>();
+  const [teachersData, setTeachersData] = useState<TeachersType[]>();
 
   const BringClassData = async () => {
     const res = await fetch("/api/admin/admin-classes-bring", {
@@ -37,13 +53,28 @@ const Page = () => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
       setClassData(data);
+    }
+  };
+
+  const BringTeachers = async () => {
+    const res = await fetch("/api/admin/teachers-bring", {
+      method: "POST",
+      body: JSON.stringify({
+        classId: classId,
+      }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      console.log(data);
+      setTeachersData(data);
     }
   };
 
   useEffect(() => {
     BringClassData();
+    BringTeachers();
   }, []);
   return (
     <div>
@@ -65,6 +96,9 @@ const Page = () => {
           </div>
         </div>
         <div className="mb-8 overflow-x-auto rounded-xl border border-gray-200">
+          <div className="flex justify-between items-center bg-gray-50 px-6 py-3 border-b border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900">Students</h3>
+          </div>
           <table className="w-full border-collapse bg-white">
             <thead className="sticky top-0 bg-gray-50 z-10">
               <tr>
@@ -146,24 +180,24 @@ const Page = () => {
               </tr>
             </thead>
             <tbody>
-              {/* {teachers.map((teacher) => (
+              {teachersData?.map((teacher) => (
                 <tr
-                  key={teacher.id}
+                  key={teacher.teacherId}
                   className="border-b border-gray-200 hover:bg-gray-50 transition"
                 >
                   <td className="px-6 py-2 text-sm text-gray-900">
-                    {teacher.name}
+                    {teacher?.teacher?.name}
                   </td>
                   <td className="px-6 py-2 text-sm text-gray-600">
-                    {teacher.employeeId}
+                    {teacher?.teacherId}
                   </td>
                   <td className="px-6 py-2 text-sm text-gray-600">
-                    {teacher.email}
+                    {teacher?.teacher.email}
                   </td>
                   <td className="px-6 py-2 text-sm text-gray-600">
-                    {teacher.subjects.join(", ")}
+                    {teacher?.teacher?.subject?.subjectName}
                   </td>
-                  <td className="px-6 py-2 text-sm text-gray-600">
+                  <td className="px-6 py-2 text-sm text-gray-600 flex gap-5">
                     <button className="mr-2 text-blue-600 hover:underline">
                       Edit
                     </button>
@@ -172,7 +206,7 @@ const Page = () => {
                     </button>
                   </td>
                 </tr>
-              ))} */}
+              ))}
             </tbody>
           </table>
         </div>

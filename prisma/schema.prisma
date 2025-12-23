@@ -14,13 +14,11 @@ enum SubmissionStatus {
 }
 
 enum Weekday {
-  MON
-  TUE
-  WED
-  THU
-  FRI
-  SAT
-  SUN
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
 }
 
 model Class {
@@ -83,7 +81,7 @@ model Homework {
 
 model HomeworkSubmission {
   id          String    @id @default(nanoid())
-  content     String?
+  content     String
   description String?
   submittedAt DateTime  @default(now())
   score       Int?
