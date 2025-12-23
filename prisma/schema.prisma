@@ -13,13 +13,12 @@ enum SubmissionStatus {
   SUBMITTED
 }
 enum Weekday {
-  MON
-  TUE
-  WED
-  THU
-  FRI
-  SAT
-  SUN
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  
 }
 model Class {
   id        String     @id @default(nanoid())

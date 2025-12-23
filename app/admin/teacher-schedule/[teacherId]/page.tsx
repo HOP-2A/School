@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 const Page = ()=>{
-  const params = useParams(),
+  const params = useParams()
   const teacherId = params.teacherId
 const [time, setTime]= useState({
     endTime:"",
