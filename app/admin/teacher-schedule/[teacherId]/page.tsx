@@ -24,8 +24,7 @@ if(name==="endTime"){
         const{value} =e.target
         setDate(value)
     }
-    console.log(time, "my time")
-    console.log(date, "my date")
+
     const createTeacherSchedule = async ()=>{
 await fetch("/api/teacher-schedule",{
     method:"POST",
@@ -37,7 +36,7 @@ await fetch("/api/teacher-schedule",{
         endTime: time.endTime,
         day:date,
         teacherId:teacherId,
-        
+
     }),
 
 })
