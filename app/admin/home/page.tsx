@@ -92,7 +92,7 @@ const Page = () => {
                   {cls.name}
                 </td>
                 <td className="px-6 py-2 text-sm text-gray-600">
-                  {cls.teacher.name}
+                  {cls.teacher ? cls.teacher.name : "no homeroom teacher"}
                 </td>
                 <td className="px-6 py-2 text-sm text-gray-600">
                   {cls.students.length}

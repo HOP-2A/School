@@ -84,16 +84,23 @@ const Page = () => {
             Class: 1A
           </h2>
 
-          <div className="flex items-center bg-gray-50 rounded-lg p-4 px-10 text-sm text-gray-700 gap-10">
-            <div className="mr-6">
-              <span className="font-medium">Homeroom Teacher :</span>{" "}
-              {classData?.teacher.name}
+          {classData?.teacher ? (
+            <div className="flex items-center bg-gray-50 rounded-lg p-4 px-10 text-sm text-gray-700 gap-10">
+              <div className="mr-6">
+                <span className="font-medium">Homeroom Teacher :</span>{" "}
+                {classData?.teacher.name}
+              </div>
+              <div className="mr-6">
+                <span className="font-medium">Email :</span>{" "}
+                {classData?.teacher.email}
+              </div>
             </div>
-            <div className="mr-6">
-              <span className="font-medium">Email :</span>{" "}
-              {classData?.teacher.email}
+          ) : (
+            <div className="flex items-center bg-gray-50 rounded-lg p-4 px-10 text-sm text-gray-700 gap-10">
+              {" "}
+              No homeroom teacher
             </div>
-          </div>
+          )}
         </div>
         <div className="mb-8 overflow-x-auto rounded-xl border border-gray-200">
           <div className="flex justify-between items-center bg-gray-50 px-6 py-3 border-b border-gray-200">
