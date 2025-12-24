@@ -115,7 +115,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
-      {/* SIDEBAR */}
+
       <div className="w-64 bg-white shadow-lg p-5 flex flex-col gap-6">
         <h1 className="text-2xl font-bold text-blue-600">LMS</h1>
 
@@ -141,7 +141,7 @@ const Page = () => {
         </nav>
       </div>
 
-      {/* MAIN */}
+   
       <div className="flex-1 p-6 max-w-5xl mx-auto space-y-6">
         <h1 className="text-3xl font-semibold mb-4">Assignments</h1>
 
@@ -177,25 +177,29 @@ const Page = () => {
 
                     {submission ? (
                       <div className="flex items-center gap-3">
-                        <button
-                          onClick={() =>
-                            router.push(
-                              `/student/classroom/${user?.classId}/${assignment.id}/edit`
-                            )
-                          }
-                          className="px-3 py-1.5 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 transition"
-                        >
-                          ✏️ Edit
-                        </button>
+                      
 
                         {submission.status === "CHECKED" ? (
                           <span className="text-green-600 text-sm font-medium">
                             Reviewed
                           </span>
                         ) : (
+                          <div className="flex gap-[10px]">
+                          
+                            <button
+                            onClick={() =>
+                              router.push(
+                                `/student/classroom/${user?.classId}/${assignment.id}/edit`
+                              )
+                            }
+                            className="px-3 py-1.5 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+                          >
+                            ✏️ Edit
+                          </button>
                           <span className="text-yellow-600 text-sm font-medium">
                             Reviewing
                           </span>
+                          </div>
                         )}
                       </div>
                     ) : (
