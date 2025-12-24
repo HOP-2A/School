@@ -11,6 +11,7 @@ datasource db {
 enum SubmissionStatus {
   NONSUBMITTED
   SUBMITTED
+  CHECKED
 }
 
 enum Weekday {

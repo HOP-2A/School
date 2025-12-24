@@ -17,6 +17,7 @@ export async function PUT(req: NextRequest) {
     data: {
       score: Number(grade),
       feedback: feedback,
+      status: "CHECKED",
     },
   });
 
