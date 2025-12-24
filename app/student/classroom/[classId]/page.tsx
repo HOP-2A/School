@@ -22,7 +22,7 @@ type HomeworkType = {
   id: string;
   reviewedAt: Date;
   score: Number;
-  status: boolean;
+  status: String;
   studentId: string;
   submittedAt: Date;
 };
@@ -119,9 +119,9 @@ const Page = () => {
     GetAssignments();
     GetSubmissions();
   }, [user]);
-  console.log(assignments);
-  const homework = homeworkSub?.map((hw) => hw.homeworkId);
 
+  console.log(homeworkSub);
+  
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <div className="w-64 bg-white shadow-lg p-5 flex flex-col gap-6">
@@ -174,35 +174,46 @@ const Page = () => {
                   <p className="text-sm text-gray-500">
                     Due: {new Date(assignment.dueDate).toLocaleDateString()}
                   </p>
-                  {homework.includes(assignment.id) ? (
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => {
-                          router.push(
-                            `/student/classroom/${user?.classId}/${assignment.id}/edit`
-                          );
-                        }}
-                        className="px-3 py-1.5 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 transition"
-                      >
-                        ✏️ Edit
-                      </button>
 
-                      <span className="text-green-600 font-semibold">
-                        ✅ Submitted
-                      </span>
-                    </div>
-                  ) : (
-                    <button
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                      onClick={() => {
-                        router.push(
-                          `/student/classroom/${user?.classId}/${assignment.id}`
-                        );
-                      }}
-                    >
-                      Review
-                    </button>
-                  )}
+                  {homeworkSub.map((hw) => {
+                    return (
+                      <div key={hw.id}>
+                        <div>
+                          {hw.homeworkId === assignment.id ? (
+                            <div className="flex items-center gap-3">
+                              <button
+                                onClick={() =>
+                                  router.push(
+                                    `/student/classroom/${user?.classId}/${assignment.id}/edit`
+                                  )
+                                }
+                                className="px-3 py-1.5 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+                              >
+                                ✏️ Edit
+                              </button>
+                              {hw.status === "CHECKED" ? (
+                            <div>reviewed</div>
+                          ) : (
+                            <div>reviewing</div>
+                          )}
+                            </div>
+                          ) : (
+                            <button
+                              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                              onClick={() =>
+                                router.push(
+                                  `/student/classroom/${user?.classId}/${assignment.id}`
+                                )
+                              }
+                            >
+                              Review
+                            </button>
+                          )}
+                        </div>
+                    
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ))}

@@ -4,15 +4,28 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {  
     const body = await req.json()
-  const createNewSchedule = await prisma.teacherSchedule.create({
-  data:{
-endTime:body.endTime,
-startTime:body.startTime,
-teacherId:body.teacherId,
-day:body.day
+    const existed = await prisma.teacherSchedule.findFirst({
+      where:{
+        endTime:body.endTime,
+        startTime:body.startTime,
+        day:body.day,
+        teacherId:body.teacherId
+      }
 
-  }
-  });
-return NextResponse.json(createNewSchedule);
+    })
+    if(!existed){
+      const createNewSchedule = await prisma.teacherSchedule.create({
+        data:{
+      endTime:body.endTime,
+      startTime:body.startTime,
+      teacherId:body.teacherId,
+      day:body.day
+      
+        }
+        });
+        return NextResponse.json(createNewSchedule, {status:200});
+    }
+else return NextResponse.json("time's are coin",{status:404});
+    
 
 }

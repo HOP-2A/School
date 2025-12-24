@@ -41,49 +41,94 @@ await fetch("/api/teacher-schedule",{
 
 })
     }
-  return (
-  <div className="max-w-xl bg-white p-6 rounded-2xl shadow">
-    <h2 className="text-2xl font-bold mb-6">Add Teacher Schedule</h2>
-
-  
-    <div className="mb-4">
-      <label className="block text-sm font-medium mb-1">Day</label>
-      <select className="w-full border rounded-lg p-2" onChange={(e) => handleDate(e)}>
-     {schedules.map((date, index)=>{
-        return <option key={index} value={date}>{date}</option>
-     })}    
-      </select>
-    </div>
-
+    return (
+      <div className="max-w-xl bg-white p-8 rounded-2xl shadow-sm border border-gray-200 space-y-8">
+   
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Add Teacher Schedule
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Define a teaching time slot for this teacher
+            </p>
+          </div>
     
-    <div className="mb-4">
-      <label className="block text-sm font-medium mb-1">Start Time</label>
-      <input
-      onChange={(e)=>{handleTimeValue(e)
+          <button
+            onClick={() => window.history.back()}
+            className="px-3 py-1.5 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition"
+          >
+            ← Back
+          </button>
+        </div>
+    
 
-      }}
-        type="time"
-        className="w-full border rounded-lg p-2"
-         name="startTime"
-      />
-    </div>
+        <div className="space-y-6">
+       
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Weekday
+            </label>
+            <select
+              onChange={handleDate}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            >
+              {schedules.map((date, index) => (
+                <option key={index} value={date}>
+                  {date}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-gray-500 mt-1">
+              Select the day this class will be held
+            </p>
+          </div>
+    
 
-
-    <div className="mb-6">
-      <label className="block text-sm font-medium mb-1">End Time</label>
-      <input
-        type="time"
-        className="w-full border rounded-lg p-2"
-        onChange={(e)=>{handleTimeValue(e)}}
-        name="endTime"
-      />
-    </div>
-
-    <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700" onClick={createTeacherSchedule}>
-      Save Schedule
-    </button>
-  </div>
-);
+          <div className="grid grid-cols-2 gap-4">
+         
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Start Time
+              </label>
+              <input
+                type="time"
+                name="startTime"
+                onChange={handleTimeValue}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                End Time
+              </label>
+              <input
+                type="time"
+                name="endTime"
+                onChange={handleTimeValue}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              />
+            </div>
+          </div>
+    
+          <p className="text-xs text-gray-500">
+            Make sure the time range does not overlap with existing schedules
+          </p>
+        </div>
+    
+ 
+        <div className="pt-4 border-t">
+          <button
+            onClick={createTeacherSchedule}
+            className="w-full rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition"
+          >
+            Save Schedule
+          </button>
+        </div>
+      </div>
+    );
+    
+    
 
 }
 export default Page
