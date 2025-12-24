@@ -7,39 +7,39 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type classesType = {
-  createdAt: string;
-  id: string;
-  name: string;
-  students: {
-    id: string;
-    classId: string;
-    clerkId: string;
-    createdAt: string;
-    email: string;
-    name: string;
-  }[];
+  classId: string;
   teacherId: string;
+  class: {
+    teacherId: string;
+    id: string;
+    name: string;
+    students: {
+      classId: string;
+      name: string;
+      id: string;
+      email: string;
+    }[];
+  };
 }[];
 
 type TeacherType = {
   id: string;
   name: string;
-  teacherId: string;
-  password: string;
   email: string;
-  classes: {
-    createdAt: string;
-    id: string;
-    name: string;
-    students: {
-      id: string;
-      classId: string;
-      clerkId: string;
-      createdAt: string;
-      email: string;
-      name: string;
-    }[];
+  teacherClasses: {
+    classId: string;
     teacherId: string;
+    class: {
+      teacherId: string;
+      id: string;
+      name: string;
+      students: {
+        classId: string;
+        name: string;
+        id: string;
+        email: string;
+      }[];
+    };
   }[];
 };
 
@@ -66,7 +66,7 @@ const Page = () => {
       if (res.ok) {
         const jsonTeacher = await res.json();
         setTeacher(jsonTeacher.teacher);
-        setClasses(jsonTeacher.teacher.classes);
+        setClasses(jsonTeacher.teacher.teacherClasses);
       } else {
         console.log("Failed to fetch classes");
       }
@@ -98,11 +98,11 @@ const Page = () => {
             {classes?.map((cls) => (
               <ClassesPage
                 route={() => {
-                  push(`/teacher/assignments/${cls.id}`);
+                  push(`/teacher/assignments/${cls.classId}`);
                 }}
-                key={cls.id}
-                classname={cls.name}
-                studentNum={cls.students.length}
+                key={cls.classId}
+                classname={cls.class.name}
+                studentNum={cls.class?.students?.length}
                 submission={70}
               />
             ))}

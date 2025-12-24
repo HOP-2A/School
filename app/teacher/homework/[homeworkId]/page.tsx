@@ -66,8 +66,8 @@ const Page = () => {
   );
   const [open, setOpen] = useState(false);
   const [inputs, setInputs] = useState({
-    grade: selectedStudent?.score || 0,
-    feedback: selectedStudent?.feedback || "",
+    grade: 0,
+    feedback: "",
   });
 
   const handleInputs = (e: ChangeEvent<HTMLInputElement>) => {
