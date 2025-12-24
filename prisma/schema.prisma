@@ -42,6 +42,7 @@ model Teacher {
   subject          Subject?
   TeacherClass     TeacherClass[]
   teacherSchedules TeacherSchedule[]
+  teacherClasses   TeacherClass[]
 }
 
 model Subject {

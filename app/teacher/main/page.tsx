@@ -9,22 +9,21 @@ import { useUser } from "@clerk/nextjs";
 type TeacherType = {
   id: string;
   name: string;
-  teacherId: string;
-  password: string;
   email: string;
-  classes: {
-    createdAt: string;
-    id: string;
-    name: string;
-    students: {
-      id: string;
-      classId: string;
-      clerkId: string;
-      createdAt: string;
-      email: string;
-      name: string;
-    }[];
+  teacherClasses: {
+    classId: string;
     teacherId: string;
+    class: {
+      teacherId: string;
+      id: string;
+      name: string;
+      students: {
+        classId: string;
+        name: string;
+        id: string;
+        email: string;
+      }[];
+    };
   }[];
 };
 
@@ -35,18 +34,19 @@ type SubjectType = {
   createdAt: string;
 };
 type classesType = {
-  createdAt: string;
-  id: string;
-  name: string;
-  students: {
-    id: string;
-    classId: string;
-    clerkId: string;
-    createdAt: string;
-    email: string;
-    name: string;
-  }[];
+  classId: string;
   teacherId: string;
+  class: {
+    teacherId: string;
+    id: string;
+    name: string;
+    students: {
+      classId: string;
+      name: string;
+      id: string;
+      email: string;
+    }[];
+  };
 }[];
 
 const Page = () => {
@@ -73,7 +73,7 @@ const Page = () => {
       if (res.ok) {
         const jsonTeacher = await res.json();
         setTeacher(jsonTeacher.teacher);
-        setClasses(jsonTeacher.teacher.classes);
+        setClasses(jsonTeacher.teacher.teacherClasses);
         setSubject(jsonTeacher.subject);
       } else {
         console.error("Failed to fetch classes");
@@ -82,6 +82,7 @@ const Page = () => {
 
     getClasses();
   }, [isLoaded, user]);
+
   return (
     <div className="flex gap-1 w-screen">
       <div>
@@ -104,16 +105,16 @@ const Page = () => {
           </h2>
           {classes?.map((cls) => (
             <ClassesCard
-              key={cls.id}
+              key={cls.class.id}
               AddHomework={() => {
-                push(`/teacher/assignments/${cls.id}`);
+                push(`/teacher/assignments/${cls.classId}`);
               }}
               RouteAssignments={() => {
-                push(`/teacher/assignments/${cls.id}`);
+                push(`/teacher/assignments/${cls.classId}`);
               }}
-              ClassName={cls.name}
+              ClassName={cls?.class?.name}
               Subject={subject?.subjectName}
-              ClassStudentsNum={cls.students.length}
+              ClassStudentsNum={cls?.class?.students?.length}
             />
           ))}
         </section>

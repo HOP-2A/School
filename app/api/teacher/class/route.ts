@@ -29,12 +29,15 @@ export async function POST(req: NextRequest) {
     },
 
     include: {
-      classes: {
+      teacherClasses: {
         include: {
-          students: true,
+          class: {
+            include: {
+              students: true,
+            },
+          },
         },
       },
-      subject: true,
     },
   });
 

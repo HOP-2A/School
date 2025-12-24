@@ -12,22 +12,21 @@ import { useUser } from "@clerk/nextjs";
 type TeacherType = {
   id: string;
   name: string;
-  teacherId: string;
-  password: string;
   email: string;
-  classes: {
-    createdAt: string;
-    id: string;
-    name: string;
-    students: {
-      id: string;
-      classId: string;
-      clerkId: string;
-      createdAt: string;
-      email: string;
-      name: string;
-    }[];
+  teacherClasses: {
+    classId: string;
     teacherId: string;
+    class: {
+      teacherId: string;
+      id: string;
+      name: string;
+      students: {
+        classId: string;
+        name: string;
+        id: string;
+        email: string;
+      }[];
+    };
   }[];
 };
 type HomeworkType = {
@@ -118,7 +117,7 @@ const Page = () => {
       const Json = await res.json();
       console.log(Json);
 
-      setInputs({ title: "", des: "", date: "" });
+      setInputs({ title: "", des: "", date: "", points: "" });
       await GetAssignments();
     }
   };
@@ -142,24 +141,6 @@ const Page = () => {
     ? format(selectedDate, "yyyy-MM-dd")
     : "";
 
-  const AddDate = async () => {
-    const res = await fetch(`/api/teacher/schedule`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        dueDate: RealSelectedDate,
-      }),
-    });
-
-    if (res.ok) {
-      const Json = await res.json();
-      setHomework(Json);
-      console.log(Json);
-    }
-  };
-
   return (
     <div>
       <div className="flex gap-5 ml-70">
@@ -182,19 +163,19 @@ const Page = () => {
             <Input
               placeholder="Title..."
               name="title"
-              value={inputs.title}
+              value={inputs.title ?? ""}
               onChange={(e) => handleInputs(e)}
             />
             <Input
               placeholder="Description..."
               name="des"
-              value={inputs.des}
+              value={inputs.des ?? ""}
               onChange={(e) => handleInputs(e)}
             />
             <Input
               placeholder="Points..."
               name="points"
-              value={inputs.points}
+              value={inputs.points ?? ""}
               onChange={(e) => handleInputs(e)}
             />
             <h2>Pick a due date:</h2>
@@ -248,71 +229,7 @@ const Page = () => {
             ))}
           </div>
         </div>
-        <div className="w-140">
-          {/* Header */}
-          <div
-            className="text-lg font-semibold bg-gradient-to-r from-sky-400 to-sky-300 
-                  text-white p-4 rounded-2xl shadow-sm"
-          >
-            Homework&apos;s Schedule
-          </div>
-
-          {/* Card */}
-          <div className="bg-white p-6 rounded-2xl shadow-md flex flex-col gap-5 mt-5">
-            {/* Title */}
-            <h2 className="text-gray-700 font-medium">
-              Pick a Homework&apos;s date
-            </h2>
-
-            {/* Calendar */}
-            <div className="flex justify-center">
-              <Calendar
-                className="bg-white rounded-xl border border-gray-200 shadow-sm"
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
-              />
-            </div>
-
-            {/* Selected date */}
-            {selectedDate && (
-              <p className="text-sm text-gray-600">
-                Picked date:{" "}
-                <span className="font-semibold text-gray-900">
-                  {format(selectedDate, "yyyy-MM-dd")}
-                </span>
-              </p>
-            )}
-
-            {/* Button */}
-            <Button
-              className="bg-black hover:bg-gray-900 transition-colors
-                 rounded-xl text-white font-semibold py-2"
-              onClick={AddDate}
-            >
-              Add date
-            </Button>
-
-            {/* Homework list */}
-            <div className="flex flex-col gap-2 pt-2">
-              {homework?.length > 0 ? (
-                homework.map((home) => (
-                  <div
-                    key={home.id}
-                    className="bg-gray-100 px-4 py-2 rounded-xl
-                       text-gray-800 text-sm shadow-sm"
-                  >
-                    {home.title}
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-gray-400 text-center">
-                  No homework for this date
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
+        <div className="w-140"></div>
       </div>
     </div>
   );
