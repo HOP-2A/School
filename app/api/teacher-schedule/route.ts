@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
       endTime:body.endTime,
       startTime:body.startTime,
       teacherId:body.teacherId,
-      day:body.day
+      day:body.day,
+      classId:body.classId
       
         }
         });
