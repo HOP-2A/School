@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 type TeachersType = {
   email: string;
