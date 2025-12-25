@@ -40,7 +40,6 @@ model Teacher {
   classes          Class[]
   homeworks        Homework[]
   subject          Subject?
-  TeacherClass     TeacherClass[]
   teacherSchedules TeacherSchedule[]
   teacherClasses   TeacherClass[]
 }
@@ -98,8 +97,8 @@ model TeacherSchedule {
   endTime   String
   createdAt DateTime @default(now())
   teacherId String
-  classId   String?
-  class     Class?   @relation(fields: [classId], references: [id])
+  classId   String
+  class     Class  @relation(fields: [classId], references: [id])
   teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
 

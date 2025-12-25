@@ -3,6 +3,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 type student = {
     name: string,
     id:string
+    classId:string
 }
 type angi= {
     name: string,
@@ -52,7 +53,9 @@ const Page = () => {
        id:studentId
  
       }),
+      
     });
+    getAllClass();
 
   }
   const selectClass = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -64,7 +67,10 @@ const Page = () => {
     getAllStudent();
     getAllClass();
   }, []);
- 
+  const filterred = allStudents.filter((student)=>{
+    return student.classId === null
+   })
+  
 
   return (
   <div className="w-full max-w-4xl mx-auto p-6">
@@ -82,7 +88,7 @@ const Page = () => {
           </thead>
 
           <tbody>
-            {allStudents.map((student, index) => (
+            {filterred.map((student, index) => (
               <tr key={index} className="border-b">
                 <td className="p-3">
                   <div className="flex flex-col">
