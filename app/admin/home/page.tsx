@@ -46,7 +46,7 @@ const Page = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div
           onClick={() => router.push("/admin/management")}
-          className="bg-white p-6 rounded-2xl shadow cursor-pointer hover:shadow-xl transition"
+          className="bg-white p-6 rounded-2xl shadow cursor-pointer hover:shadow-xl transition border border-gray-200"
         >
           <h3 className="text-xl font-semibold">Manage Classes</h3>
           <p className="text-gray-500 mt-2">
@@ -55,13 +55,33 @@ const Page = () => {
         </div>
         <div
           onClick={() => router.push("/admin/teacher-schedule")}
-          className="bg-white p-6 rounded-2xl shadow cursor-pointer hover:shadow-xl transition"
+          className="bg-white p-6 rounded-2xl shadow cursor-pointer hover:shadow-xl transition border border-gray-200 "
         >
           <h3 className="text-xl font-semibold">Teacher Schedule</h3>
           <p className="text-gray-500 mt-2">
             Click to manage teacher schedules →
           </p>
         </div>
+        <button
+          onClick={() => {
+            push("/admin/addClass");
+          }}
+          className="
+        w-full max-w-xs
+        aspect-[4/1.5]
+        bg-white
+        border border-gray-200
+        rounded-2xl
+        shadow
+        p-6
+        text-left
+        cursor-pointer
+        hover:shadow-xl transition
+      "
+        >
+          <h3 className="text-lg font-semibold text-gray-900">Create Class</h3>
+          <p className="mt-1 text-sm text-gray-500">Click to add new class →</p>
+        </button>
       </div>
 
       <h2 className="text-3xl font-bold mb-6 mt-8">Classes</h2>
