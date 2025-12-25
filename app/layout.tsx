@@ -53,7 +53,7 @@ export default function RootLayout({
               <UserButton />
             </SignedIn>
           </header>
-          <Toaster richColors />
+          <Toaster richColors position="top-right" />
           {children}
         </body>
       </html>
