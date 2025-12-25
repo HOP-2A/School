@@ -179,11 +179,26 @@ const Page = () => {
                       <div className="flex items-center gap-3">
                       
 
-                        {submission.status === "CHECKED" ? (
-                          <span className="text-green-600 text-sm font-medium">
-                            Reviewed
-                          </span>
-                        ) : (
+                        {submission.status === "CHECKED" ?  (
+  <div className="flex items-center gap-3">
+    <button
+      onClick={() =>
+        router.push(
+          `/student/classroom/${user?.classId}/${assignment.id}/view`
+        )
+      }
+      className="px-3 py-1.5 text-sm rounded-lg
+                 bg-slate-100 text-slate-700
+                 hover:bg-slate-200 transition"
+    >
+      View
+    </button>
+
+    <span className="text-green-600 text-sm font-medium">
+      Reviewed
+    </span>
+  </div>
+)  : (
                           <div className="flex gap-[10px]">
                           
                             <button
