@@ -89,25 +89,26 @@ const Page = () => {
           }}
         />
       </div>
-      <div>
-        <section className="p-6 bg-gray-100 ml-70 mt-5 flex gap-3 flex-col">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">
-            Your Classes
-          </h2>
-          <div className="flex gap-6">
-            {classes?.map((cls) => (
-              <ClassesPage
-                route={() => {
-                  push(`/teacher/assignments/${cls.classId}`);
-                }}
-                key={cls.classId}
-                classname={cls.class.name}
-                studentNum={cls.class?.students?.length}
-                submission={70}
-              />
-            ))}
-          </div>
-        </section>
+      <div className="ml-70">
+        <h2 className="text-2xl font-bold mb-2 text-gray-800">Your Classes</h2>
+        <h1 className=" font-semibold mb-6 text-gray-800 ">
+          Click to see assignments →
+        </h1>
+        <div className="flex gap-6">
+          {classes?.map((cls) => (
+            <div
+              key={cls?.classId}
+              className="p-4 rounded-xl border border-gray-200 hover:shadow-lg transition cursor-pointer text-center aspect-[6/1]"
+              onClick={() => {
+                push(`/teacher/assignments/${cls?.classId}`);
+              }}
+            >
+              <h3 className="text-lg font-medium text-pink-500">
+                {cls?.class.name}
+              </h3>
+            </div>
+          ))}
+        </div>
       </div>
       <div>
         <div></div>
