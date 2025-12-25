@@ -17,7 +17,7 @@ const editSubmission = await prisma.homeworkSubmission.update({
   },
   data: {
     description: body.description,
-    content: body.content[0] || "",
+    content: body.content[0] || null,
   },
 });
 
