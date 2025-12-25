@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  const subject = await prisma.subject.findUnique({
+  const subject = await prisma.subject.findFirst({
     where: {
       teacherId: teacher?.id,
     },
