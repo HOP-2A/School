@@ -31,7 +31,6 @@ const Page = () => {
     }
   };
 
-
   const fetchFile = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
@@ -56,19 +55,26 @@ const Page = () => {
   };
 
   const submitMyHomework = async () => {
-    const res = await fetch(`/api/homework/homeworkSubmission/${assignmentId}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        studentId: user?.id,
-        description: inputValue,
-        content: images,
-        status: "NONSUBMITTED",
-      }),
-    });
-    if(res.ok){
-      router.push("/student/dashboard")
+    const res = await fetch(
+      `/api/homework/homeworkSubmission/${assignmentId}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          studentId: user?.id,
+          description: inputValue,
+          content: images,
+          status: "NONSUBMITTED",
+        }),
+      }
+    );
+    if (res.ok) {
+      router.push("/student/dashboard");
     }
+  };
+
+  const deleteImage = (index: number) => {
+    setImages((previous) => previous.filter((_, i) => i !== index));
   };
 
   useEffect(() => {
@@ -143,12 +149,18 @@ const Page = () => {
 
         <div className="flex flex-wrap gap-4">
           {images.map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt={`upload-${index}`}
-              className="h-[300px] w-[300px] rounded-lg object-cover border"
-            />
+            <div key={index} className="relative">
+              <img
+                src={img}
+                className="h-[300px] w-[300px] rounded-lg object-cover border"
+              />
+              <button
+                onClick={() => deleteImage(index)}
+                className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-full text-sm hover:bg-red-700"
+              >
+                X
+              </button>
+            </div>
           ))}
         </div>
 
@@ -162,8 +174,19 @@ const Page = () => {
             </button>
           )}
           <button
+            onClick={() => router.push("/student/dashboard")}
+            className="px-6 py-2 rounded-xl text-white  bg-blue-600 hover:bg-blue-700"
+          >
+            Cancel
+          </button>
+          <button
             onClick={submitMyHomework}
-            className="px-6 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+            disabled={images.length === 0}
+            className={`${
+              images.length === 0
+                ? " px-6 py-2 rounded-xl text-white bg-gray-400 cursor-not-allowed"
+                : "px-6 py-2 rounded-xl text-white  bg-blue-600 hover:bg-blue-700"
+            }`}
           >
             Submit Homework
           </button>

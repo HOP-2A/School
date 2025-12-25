@@ -27,7 +27,7 @@ type HomeworkData = {
   description?: string;
 };
 
-const HomeworkPage = () => {
+const Page = () => {
   const params = useParams();
   const assignmentId = params.assignmentId;
   const { user: clerkUser } = useUser();
@@ -66,13 +66,6 @@ const HomeworkPage = () => {
       setImages(contentArray);
     }
   };
-
-  useEffect(() => {
-    if (assignmentId) {
-      getHomework();
-      getSingleAssignment();
-    }
-  }, [assignmentId]);
 
   const fetchFile = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -118,7 +111,14 @@ const HomeworkPage = () => {
       router.push("/student/dashboard");
     }
   };
-  console.log(images);
+
+  useEffect(() => {
+    if (assignmentId) {
+      getHomework();
+      getSingleAssignment();
+    }
+  }, [assignmentId]);
+
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center px-4 py-10">
       <div className="w-64 bg-white shadow-lg p-5 flex flex-col gap-6">
@@ -208,10 +208,21 @@ const HomeworkPage = () => {
             </button>
           )}
           <button
-            onClick={submitHomework}
-            className="px-6 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+            onClick={() => router.push("/student/dashboard")}
+            className="px-6 py-2 rounded-xl text-white  bg-blue-600 hover:bg-blue-700"
           >
-            edit Homework
+            Cancel
+          </button>
+          <button
+            onClick={submitHomework}
+            disabled={images.length === 0}
+            className={`${
+              images.length === 0
+                ? " px-6 py-2 rounded-xl text-white bg-gray-400 cursor-not-allowed"
+                : "px-6 py-2 rounded-xl text-white  bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            Edit Homework
           </button>
         </div>
       </div>
@@ -219,4 +230,4 @@ const HomeworkPage = () => {
   );
 };
 
-export default HomeworkPage;
+export default Page;
