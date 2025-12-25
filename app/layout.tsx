@@ -11,6 +11,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Toaster } from "sonner";
 
 export function ClientWrapper() {
   const router = useRouter();
@@ -52,6 +53,7 @@ export default function RootLayout({
               <UserButton />
             </SignedIn>
           </header>
+          <Toaster richColors position="top-right" />
           {children}
         </body>
       </html>

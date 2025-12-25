@@ -8,6 +8,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { format, set } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 type TeacherType = {
   id: string;
@@ -114,9 +115,7 @@ const Page = () => {
     });
 
     if (res.ok) {
-      const Json = await res.json();
-      console.log(Json);
-
+      toast.success("successfully added assignment");
       setInputs({ title: "", des: "", date: "", points: "" });
       await GetAssignments();
     }

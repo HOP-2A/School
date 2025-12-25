@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 type SubmissionType = {
   description: string;
@@ -109,8 +110,7 @@ const Page = () => {
     });
 
     if (res.ok) {
-      const jsons = await res.json();
-      console.log(jsons);
+      toast.success("successfully reviewed");
       setInputs({
         grade: selectedStudent?.score!,
         feedback: selectedStudent?.feedback!,
