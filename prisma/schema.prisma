@@ -98,12 +98,12 @@ model TeacherSchedule {
   createdAt DateTime @default(now())
   teacherId String
   classId   String
-  class     Class  @relation(fields: [classId], references: [id])
+  class     Class    @relation(fields: [classId], references: [id])
   teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
 
 model TeacherClass {
-  id        String  @id
+  id        String  @id @default(nanoid())
   classId   String
   teacherId String
   Class     Class   @relation(fields: [classId], references: [id])
