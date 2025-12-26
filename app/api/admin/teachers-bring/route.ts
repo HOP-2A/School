@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     },
 
     include: {
-      teacher: {
+      Teacher: {
         include: {
           subject: true,
         },
