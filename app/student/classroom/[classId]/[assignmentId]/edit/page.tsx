@@ -120,114 +120,192 @@ const Page = () => {
   }, [assignmentId]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center px-4 py-10">
-      <div className="w-64 bg-white shadow-lg p-5 flex flex-col gap-6">
-        <nav className="flex flex-col gap-3">
-          <button onClick={() => router.push(`/student/dashboard`)}>
-            🏠 Home
-          </button>
+  <div className="flex min-h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200 overflow-hidden">
+    
+ 
+    <aside
+      className="
+        w-64 m-4 rounded-3xl
+        bg-white/10 backdrop-blur-xl
+        border border-white/20
+        shadow-[0_0_40px_rgba(34,211,238,0.15)]
+        flex flex-col gap-8 p-6
+      "
+    >
+      <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
+        LMS<span className="text-violet-400">.core</span>
+      </h1>
+
+      <nav className="flex flex-col gap-2">
+        {[
+          { label: "🏠 Home", path: "/student/dashboard" },
+          { label: "📚 Classrooms", path: `/student/classroom/${user?.classId}` },
+          { label: "👤 Profile", path: "/student/profile" },
+        ].map((item, i) => (
           <button
-            onClick={() => router.push(`/student/classroom/${user?.classId}`)}
+            key={i}
+            onClick={() => router.push(item.path)}
+            className="
+              flex items-center gap-3 px-4 py-3 rounded-xl
+              text-slate-300 hover:text-cyan-300
+              hover:bg-white/10
+              hover:shadow-[0_0_20px_rgba(34,211,238,0.35)]
+              transition
+            "
           >
-            📚 Classrooms
+            {item.label}
           </button>
-          <button onClick={() => router.push(`/student/profile`)}>
-            👤 Profile
-          </button>
-        </nav>
+        ))}
+      </nav>
+
+      <div className="mt-auto flex items-center gap-2 text-xs text-cyan-300">
+        <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+        System Online
       </div>
-      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-md p-6 space-y-6">
+    </aside>
+
+    <main className="flex-1 p-10 overflow-y-auto">
+      <div
+        className="
+          max-w-3xl mx-auto
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          rounded-3xl p-8
+          shadow-[0_0_50px_rgba(167,139,250,0.25)]
+          space-y-8
+        "
+      >
+ 
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">
-            {homeworkData?.title || "Homework"}
-          </h1>
-        </div>
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1 className="text-3xl font-bold text-slate-100">
             {homework?.title || "Homework"}
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-slate-400 mt-1">
             Due:{" "}
             {homework?.dueDate
               ? new Date(homework.dueDate).toLocaleDateString()
               : "—"}
           </p>
         </div>
+
+     
         <div className="space-y-3">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-cyan-300">
             Your Answer
           </label>
           <textarea
             placeholder="Write your answer here..."
-            className="w-full min-h-[120px] rounded-xl border border-gray-300 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            className="
+              w-full min-h-[140px] rounded-xl
+              bg-black/30 border border-white/20
+              p-4 text-sm text-slate-200
+              focus:outline-none focus:ring-2 focus:ring-cyan-400
+            "
           />
         </div>
+
+
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">
-            Upload File (required) only 1 file
+          <label className="text-sm font-medium text-cyan-300">
+            Upload File (1 file only)
           </label>
           <input
             type="file"
-            className="block w-full text-sm text-gray-600
+            onChange={fetchFile}
+            className="
+              block w-full text-sm text-slate-300
               file:mr-4 file:py-2 file:px-4
               file:rounded-lg file:border-0
-              file:text-sm file:font-medium
-              file:bg-blue-50 file:text-blue-600
-              hover:file:bg-blue-100"
-            onChange={fetchFile}
+              file:bg-cyan-400/20 file:text-cyan-300
+              hover:file:bg-cyan-400/30
+            "
           />
         </div>
+
+       
         <div className="flex flex-wrap gap-4">
           {images.length === 0 && (
-            <p className="text-gray-400">No images uploaded yet.</p>
+            <p className="text-slate-500">No images uploaded yet.</p>
           )}
+
           {images.map((img, index) => (
-            <div key={index} className="relative">
+            <div
+              key={index}
+              className="relative group"
+            >
               <img
                 src={img}
-                className="h-[300px] w-[300px] rounded-lg object-cover border"
+                className="
+                  h-[280px] w-[280px]
+                  rounded-2xl object-cover
+                  border border-white/20
+                  group-hover:shadow-[0_0_30px_rgba(34,211,238,0.4)]
+                  transition
+                "
               />
               <button
                 onClick={() => deleteImage(index)}
-                className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-full text-sm hover:bg-red-700"
+                className="
+                  absolute top-2 right-2
+                  bg-red-500/80 text-white
+                  px-2 py-1 rounded-full text-xs
+                  hover:bg-red-600 transition
+                "
               >
-                X
+                ✕
               </button>
             </div>
           ))}
         </div>
-        <div className="flex justify-end gap-2 pt-4">
+
+     
+        <div className="flex justify-end gap-3 pt-6">
           {file && (
             <button
               onClick={uploadPhoto}
-              className="px-4 py-2 rounded-xl bg-green-500 text-white hover:bg-green-600"
+              className="
+                px-4 py-2 rounded-xl
+                bg-green-500/80 text-white
+                hover:bg-green-600 transition
+              "
             >
               Upload Photo
             </button>
           )}
+
           <button
             onClick={() => router.push("/student/dashboard")}
-            className="px-6 py-2 rounded-xl text-white  bg-blue-600 hover:bg-blue-700"
+            className="
+              px-6 py-2 rounded-xl
+              bg-white/10 text-slate-200
+              hover:bg-white/20 transition
+            "
           >
             Cancel
           </button>
+
           <button
             onClick={submitHomework}
             disabled={images.length === 0}
-            className={`${
-              images.length === 0
-                ? " px-6 py-2 rounded-xl text-white bg-gray-400 cursor-not-allowed"
-                : "px-6 py-2 rounded-xl text-white  bg-blue-600 hover:bg-blue-700"
-            }`}
+            className={`
+              px-6 py-2 rounded-xl text-white transition
+              ${
+                images.length === 0
+                  ? "bg-gray-500/40 cursor-not-allowed"
+                  : "bg-cyan-500 hover:bg-cyan-600"
+              }
+            `}
           >
             Edit Homework
           </button>
         </div>
       </div>
-    </div>
-  );
+    </main>
+  </div>
+);
+
 };
 
 export default Page;

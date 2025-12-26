@@ -116,70 +116,133 @@ const Page = () => {
       GetAssignments();
     }
   }, [user]);
-  if (!subjectInfo) return <div className="p-10 text-gray-500">Loading...</div>;
-
+  if (!subjectInfo)
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black">
+        <div
+          className="
+            flex flex-col items-center gap-4
+            rounded-3xl
+            bg-white/10 backdrop-blur-xl
+            border border-white/20
+            px-10 py-8
+            shadow-[0_0_40px_rgba(34,211,238,0.25)]
+          "
+        >
+          <div
+            className="
+              w-10 h-10 rounded-full
+              border-2 border-cyan-400 border-t-transparent
+              animate-spin
+            "
+          />
+          <p className="text-cyan-300 text-sm tracking-wide">
+            Loading subject data…
+          </p>
+        </div>
+      </div>
+    );
+  
   const { subjectName, teacher } = subjectInfo;
 
   const filterred = assignments?.filter((assignment) => {
     return assignment?.teacher?.subject?.id === subjectId;
   });
-  const homework = homeworkSub?.map((hw) => hw.homeworkId);
+
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-slate-100 to-slate-200">
-      
+    <div className="min-h-screen flex bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200 overflow-hidden">
+  
       {/* SIDEBAR */}
-      <aside className="w-64 bg-white border-r shadow-sm p-6 flex flex-col gap-8">
-        <h1 className="text-3xl font-extrabold text-blue-600 tracking-tight">
-          LMS
+      <aside
+        className="
+          w-64 m-4 rounded-3xl
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          shadow-[0_0_40px_rgba(34,211,238,0.15)]
+          p-6 flex flex-col gap-8
+        "
+      >
+        <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
+          LMS<span className="text-violet-400">.core</span>
         </h1>
   
         <nav className="flex flex-col gap-2">
           {[
             { label: "Home", icon: "🏠", path: "/student/dashboard" },
-            { label: "All Homeworks", icon: "📚", path: `/student/classroom/${user?.classId}` },
+            {
+              label: "All Homeworks",
+              icon: "📚",
+              path: `/student/classroom/${user?.classId}`,
+            },
             { label: "Profile", icon: "👤", path: "/student/profile" },
           ].map((item) => (
             <button
               key={item.label}
               onClick={() => router.push(item.path)}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition font-medium"
+              className="
+                flex items-center gap-3 px-4 py-3 rounded-xl
+                text-slate-300 hover:text-cyan-300
+                hover:bg-white/10
+                hover:shadow-[0_0_20px_rgba(34,211,238,0.35)]
+                transition
+              "
             >
               <span>{item.icon}</span>
               {item.label}
             </button>
           ))}
         </nav>
+  
+        <div className="mt-auto flex items-center gap-2 text-xs text-cyan-300">
+          <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+          System Online
+        </div>
       </aside>
   
       {/* MAIN */}
-      <main className="flex-1 p-10 space-y-10">
+      <main className="flex-1 p-12 space-y-12 overflow-y-auto">
   
         {/* HEADER */}
         <header>
-          <h1 className="text-4xl font-bold text-gray-900">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-100">
             {subjectName}
           </h1>
-          <p className="text-gray-500 mt-1 text-lg">
+          <p className="text-slate-400 mt-2 text-lg">
             Welcome to your course dashboard
           </p>
         </header>
   
         {/* TEACHER CARD */}
-        <section className="bg-white rounded-3xl shadow-sm border p-6 max-w-lg">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800">
+        <section
+          className="
+            max-w-lg rounded-3xl p-6
+            bg-white/10 backdrop-blur-xl
+            border border-white/20
+            shadow-[0_0_30px_rgba(167,139,250,0.2)]
+          "
+        >
+          <h2 className="text-xl font-semibold mb-4 text-slate-100">
             Instructor
           </h2>
   
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center text-xl font-bold">
+            <div
+              className="
+                w-14 h-14 rounded-full
+                bg-gradient-to-br from-cyan-400 to-violet-500
+                text-black font-bold text-xl
+                flex items-center justify-center
+                shadow-[0_0_20px_rgba(34,211,238,0.6)]
+              "
+            >
               {teacher.name.charAt(0)}
             </div>
   
             <div>
-              <p className="text-lg font-medium text-gray-900">
+              <p className="text-lg font-medium text-slate-100">
                 {teacher.name}
               </p>
-              <p className="text-gray-500 text-sm">
+              <p className="text-slate-400 text-sm">
                 {teacher.email}
               </p>
             </div>
@@ -187,12 +250,19 @@ const Page = () => {
         </section>
   
         {/* HOMEWORK */}
-        <section className="bg-white rounded-3xl shadow-sm border p-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-semibold text-gray-900">
+        <section
+          className="
+            rounded-3xl p-8
+            bg-white/10 backdrop-blur-xl
+            border border-white/20
+            shadow-[0_0_40px_rgba(34,211,238,0.15)]
+          "
+        >
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-semibold text-slate-100">
               Homework
             </h2>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-slate-400">
               {filterred?.length || 0} assignments
             </span>
           </div>
@@ -207,44 +277,50 @@ const Page = () => {
               return (
                 <div
                   key={assignment.id}
-                  className="relative p-6 rounded-2xl border bg-white hover:shadow-lg transition"
+                  className="
+                    relative p-6 rounded-2xl
+                    bg-black/30
+                    border border-white/20
+                    hover:shadow-[0_0_30px_rgba(167,139,250,0.3)]
+                    transition
+                  "
                 >
                   {/* STATUS BAR */}
                   <div
                     className={`absolute left-0 top-0 h-full w-1 rounded-l-2xl ${
-                      isOverdue ? "bg-red-500" : "bg-green-500"
+                      isOverdue ? "bg-red-500" : "bg-cyan-400"
                     }`}
                   />
   
                   <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-semibold text-gray-900">
+                    <h3 className="text-xl font-semibold text-slate-100">
                       {assignment.title}
                     </h3>
   
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
                         isOverdue
-                          ? "bg-red-100 text-red-600"
-                          : "bg-green-100 text-green-600"
+                          ? "bg-red-500/20 text-red-400"
+                          : "bg-cyan-400/20 text-cyan-300"
                       }`}
                     >
                       {isOverdue ? "Overdue" : "Active"}
                     </span>
                   </div>
   
-                  <p className="text-gray-600 mt-3 leading-relaxed">
+                  <p className="text-slate-400 mt-3 leading-relaxed">
                     {assignment.description}
                   </p>
   
                   <div className="flex items-center justify-between mt-6 text-sm">
-                    <span className="text-gray-500">
+                    <span className="text-slate-400">
                       📅 Due:{" "}
                       {new Date(assignment.dueDate).toLocaleDateString()}
                     </span>
   
                     {submission ? (
                       submission.status === "CHECKED" ? (
-                        <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 font-semibold">
+                        <span className="px-3 py-1 rounded-full bg-emerald-400/20 text-emerald-300 font-semibold">
                           Reviewed
                         </span>
                       ) : (
@@ -255,11 +331,15 @@ const Page = () => {
                                 `/student/classroom/${user?.classId}/${assignment.id}/edit`
                               )
                             }
-                            className="px-4 py-2 text-sm font-medium bg-gray-100 rounded-xl hover:bg-gray-200 transition"
+                            className="
+                              px-4 py-2 rounded-xl text-sm
+                              bg-white/10 text-slate-200
+                              hover:bg-white/20 transition
+                            "
                           >
                             ✏️ Edit
                           </button>
-                          <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 font-semibold">
+                          <span className="px-3 py-1 rounded-full bg-yellow-400/20 text-yellow-300 font-semibold">
                             ⏳ Reviewing
                           </span>
                         </div>
@@ -271,7 +351,12 @@ const Page = () => {
                             `/student/classroom/${user?.classId}/${assignment.id}`
                           )
                         }
-                        className="px-5 py-2 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition"
+                        className="
+                          px-5 py-2 rounded-xl font-medium text-black
+                          bg-cyan-400 hover:bg-cyan-300
+                          shadow-[0_0_20px_rgba(34,211,238,0.6)]
+                          transition
+                        "
                       >
                         Review
                       </button>

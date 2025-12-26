@@ -39,29 +39,29 @@ const Page = () => {
   const [teacher, setTeacher] = useState<TeacherType>();
   const [subject, setSubject] = useState<SubjectType>();
   const { user, isLoaded } = useUser();
+
+  const getClasses = async () => {
+    if (!isLoaded || !user) return;
+
+    const res = await fetch("/api/teacher/class", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        teacherId: user.id,
+      }),
+    });
+
+    if (res.ok) {
+      const jsonTeacher = await res.json();
+      setTeacher(jsonTeacher.teacher);
+      setSubject(jsonTeacher.subject);
+    } else {
+      console.log("Failed to fetch classes");
+    }
+  };
   useEffect(() => {
-    const getClasses = async () => {
-      if (!isLoaded || !user) return;
-
-      const res = await fetch("/api/teacher/class", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          teacherId: user.id,
-        }),
-      });
-
-      if (res.ok) {
-        const jsonTeacher = await res.json();
-        setTeacher(jsonTeacher.teacher);
-        setSubject(jsonTeacher.subject);
-      } else {
-        console.error("Failed to fetch classes");
-      }
-    };
-
     getClasses();
   }, [isLoaded, user]);
   return (

@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
         },
       },
     },
+    
   });
 
   const subject = await prisma.subject.findFirst({

@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { upload } from "@vercel/blob/client";
+import { toast } from "sonner";
 
 type Homework = {
   title: string;
@@ -49,6 +50,7 @@ const Page = () => {
       });
       setImages((prev) => [...prev.slice(0, -1), uploaded.url]);
       setFile(null);
+       toast.success("Photo uploaded successfully  ")
     } catch (err) {
       console.error("Upload failed:", err);
     }
@@ -81,31 +83,88 @@ const Page = () => {
     if (user) getSingleAssignment();
   }, [user]);
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex justify-center px-4 py-10">
-      <div className="w-64 bg-white shadow-lg p-5 flex flex-col gap-6">
-        <h1 className="text-2xl font-bold text-blue-600">LMS</h1>
-        <nav className="flex flex-col gap-3">
-          <button onClick={() => router.push(`/student/dashboard`)}>
-            🏠 Home
-          </button>
-          <button
-            onClick={() => router.push(`/student/classroom/${user?.classId}`)}
-          >
-            📚 Classrooms
-          </button>
-          <button onClick={() => router.push(`/student/profile`)}>
-            👤 Profile
-          </button>
-        </nav>
-      </div>
+ return (
+  <div className="flex min-h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200 overflow-hidden">
 
-      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-md p-6 space-y-6">
+    {/* SIDEBAR */}
+    <aside
+      className="
+        w-64 m-4 rounded-3xl
+        bg-white/10 backdrop-blur-xl
+        border border-white/20
+        shadow-[0_0_40px_rgba(34,211,238,0.15)]
+        flex flex-col gap-8 p-6
+      "
+    >
+      <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
+        LMS<span className="text-violet-400">.core</span>
+      </h1>
+
+      <nav className="flex flex-col gap-2">
+        <button
+          onClick={() => router.push(`/student/dashboard`)}
+          className="
+            flex items-center gap-3 px-4 py-3 rounded-xl
+            text-slate-300 hover:text-cyan-300
+            hover:bg-white/10
+            hover:shadow-[0_0_20px_rgba(34,211,238,0.35)]
+            transition
+          "
+        >
+          🏠 Home
+        </button>
+
+        <button
+          onClick={() => router.push(`/student/classroom/${user?.classId}`)}
+          className="
+            flex items-center gap-3 px-4 py-3 rounded-xl
+            text-slate-300 hover:text-cyan-300
+            hover:bg-white/10
+            hover:shadow-[0_0_20px_rgba(34,211,238,0.35)]
+            transition
+          "
+        >
+          📚 Classrooms
+        </button>
+
+        <button
+          onClick={() => router.push(`/student/profile`)}
+          className="
+            flex items-center gap-3 px-4 py-3 rounded-xl
+            text-slate-300 hover:text-cyan-300
+            hover:bg-white/10
+            hover:shadow-[0_0_20px_rgba(34,211,238,0.35)]
+            transition
+          "
+        >
+          👤 Profile
+        </button>
+      </nav>
+
+      <div className="mt-auto flex items-center gap-2 text-xs text-cyan-300">
+        <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+        System Online
+      </div>
+    </aside>
+
+    {/* MAIN */}
+    <main className="flex-1 p-12 overflow-y-auto">
+      <div
+        className="
+          max-w-4xl mx-auto
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          rounded-3xl p-8
+          shadow-[0_0_40px_rgba(167,139,250,0.15)]
+          space-y-8
+        "
+      >
+        {/* HEADER */}
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1 className="text-3xl font-bold text-slate-100">
             {homework?.title || "Homework"}
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-slate-400 mt-2 text-sm">
             Due:{" "}
             {homework?.dueDate
               ? new Date(homework.dueDate).toLocaleDateString()
@@ -113,87 +172,125 @@ const Page = () => {
           </p>
         </div>
 
-        <div className="bg-gray-100 rounded-xl p-4">
-          <p className="text-gray-700">
+        {/* DESCRIPTION */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+          <p className="text-slate-300">
             {homework?.description || "No description"}
           </p>
         </div>
 
+        {/* TEXTAREA */}
         <div className="space-y-3">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm text-cyan-300 font-medium">
             Your Answer
           </label>
           <textarea
             placeholder="Write your answer here..."
-            className="w-full min-h-[120px] rounded-xl border border-gray-300 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="
+              w-full min-h-[140px]
+              rounded-2xl
+              bg-black/40 border border-white/20
+              p-4 text-sm text-slate-200
+              focus:outline-none focus:ring-2 focus:ring-cyan-400
+            "
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
         </div>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">
+        {/* FILE UPLOAD */}
+        <div className="space-y-3">
+          <label className="text-sm text-cyan-300 font-medium">
             Upload File (optional)
           </label>
           <input
             type="file"
-            className="block w-full text-sm text-gray-600
-          file:mr-4 file:py-2 file:px-4
-          file:rounded-lg file:border-0
-          file:text-sm file:font-medium
-          file:bg-blue-50 file:text-blue-600
-          hover:file:bg-blue-100"
             onChange={fetchFile}
+            className="
+              block w-full text-sm text-slate-400
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-xl file:border-0
+              file:bg-cyan-400/20 file:text-cyan-300
+              hover:file:bg-cyan-400/30
+            "
           />
         </div>
 
-        <div className="flex flex-wrap gap-4">
+        {/* IMAGE PREVIEW */}
+        <div className="flex flex-wrap gap-6">
           {images.map((img, index) => (
-            <div key={index} className="relative">
+            <div
+              key={index}
+              className="relative group rounded-2xl overflow-hidden border border-white/20"
+            >
               <img
                 src={img}
-                className="h-[300px] w-[300px] rounded-lg object-cover border"
+                className="h-[260px] w-[260px] object-cover"
               />
               <button
                 onClick={() => deleteImage(index)}
-                className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-full text-sm hover:bg-red-700"
+                className="
+                  absolute top-3 right-3
+                  bg-red-500/80 text-white
+                  px-2 py-1 rounded-full text-xs
+                  opacity-0 group-hover:opacity-100
+                  transition
+                "
               >
-                X
+                ✕
               </button>
             </div>
           ))}
         </div>
 
-        <div className="flex justify-end gap-2 pt-4">
+        {/* ACTION BUTTONS */}
+        <div className="flex justify-end gap-4 pt-6">
           {file && (
             <button
               onClick={uploadPhoto}
-              className="px-4 py-2 rounded-xl bg-green-500 text-white hover:bg-green-600"
+              className="
+                px-5 py-2 rounded-xl
+                bg-emerald-500/80 text-white
+                hover:bg-emerald-500
+                transition
+              "
             >
               Upload Photo
             </button>
           )}
+
           <button
             onClick={() => router.push("/student/dashboard")}
-            className="px-6 py-2 rounded-xl text-white  bg-blue-600 hover:bg-blue-700"
+            className="
+              px-6 py-2 rounded-xl
+              bg-white/10 text-slate-300
+              hover:bg-white/20
+              transition
+            "
           >
             Cancel
           </button>
+
           <button
             onClick={submitMyHomework}
             disabled={images.length === 0}
-            className={`${
-              images.length === 0
-                ? " px-6 py-2 rounded-xl text-white bg-gray-400 cursor-not-allowed"
-                : "px-6 py-2 rounded-xl text-white  bg-blue-600 hover:bg-blue-700"
-            }`}
+            className={`
+              px-6 py-2 rounded-xl text-white transition
+              ${
+                images.length === 0
+                  ? "bg-gray-500/40 cursor-not-allowed"
+                  : "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.5)]"
+              }
+            `}
           >
             Submit Homework
           </button>
         </div>
       </div>
-    </div>
-  );
+    </main>
+  </div>
+);
+
 };
 
 export default Page;

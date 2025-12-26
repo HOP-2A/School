@@ -72,11 +72,12 @@ const Page = () => {
 
       if (res.ok) {
         const jsonTeacher = await res.json();
+        console.log(jsonTeacher,"gg")
         setTeacher(jsonTeacher.teacher);
         setClasses(jsonTeacher.teacher.teacherClasses);
         setSubject(jsonTeacher.subject);
       } else {
-        console.error("Failed to fetch classes");
+        console.log("Failed to fetch classes");
       }
     };
 
@@ -103,9 +104,9 @@ const Page = () => {
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
             Your Classes
           </h2>
-          {classes?.map((cls) => (
+          {classes?.map((cls,index) => (
             <ClassesCard
-              key={cls.Class.id}
+              key={index}
               AddHomework={() => {
                 push(`/teacher/assignments/${cls.classId}`);
               }}
