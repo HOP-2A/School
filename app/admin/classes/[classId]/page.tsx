@@ -16,7 +16,7 @@ type ClassType = {
     id: string;
     name: string;
   }[];
-  teacher: {
+  Teacher: {
     email: string;
     id: string;
     name: string;
@@ -26,7 +26,7 @@ type ClassType = {
 type TeachersType = {
   classId: string;
   teacherId: string;
-  teacher: {
+  Teacher: {
     email: string;
     id: string;
     name: string;
@@ -167,15 +167,15 @@ const Page = () => {
             Class: {classData?.name}
           </h2>
 
-          {classData?.teacher ? (
+          {classData?.Teacher ? (
             <div className="flex items-center bg-gray-50 rounded-lg p-4 px-10 text-sm text-gray-700 gap-10">
               <div className="mr-6">
                 <span className="font-medium">Homeroom Teacher :</span>{" "}
-                {classData?.teacher.name}
+                {classData?.Teacher.name}
               </div>
               <div className="mr-6">
                 <span className="font-medium">Email :</span>{" "}
-                {classData?.teacher.email}
+                {classData?.Teacher.email}
               </div>
               <Button
                 onClick={() => {
@@ -293,16 +293,16 @@ const Page = () => {
                   className="border-b border-gray-200 hover:bg-gray-50 transition"
                 >
                   <td className="px-6 py-2 text-sm text-gray-900">
-                    {teacher?.teacher?.name}
+                    {teacher?.Teacher?.name}
                   </td>
                   <td className="px-6 py-2 text-sm text-gray-600">
                     {teacher?.teacherId}
                   </td>
                   <td className="px-6 py-2 text-sm text-gray-600">
-                    {teacher?.teacher.email}
+                    {teacher?.Teacher.email}
                   </td>
                   <td className="px-6 py-2 text-sm text-gray-600">
-                    {teacher?.teacher?.subject?.subjectName}
+                    {teacher?.Teacher?.subject?.subjectName}
                   </td>
                   <td className="px-6 py-2 text-sm text-gray-600 flex gap-5">
                     <button

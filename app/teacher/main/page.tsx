@@ -13,7 +13,7 @@ type TeacherType = {
   teacherClasses: {
     classId: string;
     teacherId: string;
-    class: {
+    Class: {
       teacherId: string;
       id: string;
       name: string;
@@ -36,7 +36,7 @@ type SubjectType = {
 type classesType = {
   classId: string;
   teacherId: string;
-  class: {
+  Class: {
     teacherId: string;
     id: string;
     name: string;
@@ -105,16 +105,16 @@ const Page = () => {
           </h2>
           {classes?.map((cls) => (
             <ClassesCard
-              key={cls.class.id}
+              key={cls.Class.id}
               AddHomework={() => {
                 push(`/teacher/assignments/${cls.classId}`);
               }}
               RouteAssignments={() => {
                 push(`/teacher/assignments/${cls.classId}`);
               }}
-              ClassName={cls?.class?.name}
+              ClassName={cls?.Class?.name}
               Subject={subject?.subjectName}
-              ClassStudentsNum={cls?.class?.students?.length}
+              ClassStudentsNum={cls?.Class?.students?.length}
             />
           ))}
         </section>

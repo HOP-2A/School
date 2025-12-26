@@ -6,7 +6,6 @@ export async function GET(
   context: { params: { clerkId: string } }
 ) {
   const { clerkId } = await context.params;
-  console.log(clerkId, "ggg");
   const students = await prisma.student.findUnique({
     where: { clerkId },
   });
