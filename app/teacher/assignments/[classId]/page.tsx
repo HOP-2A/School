@@ -117,7 +117,7 @@ const Page = () => {
     if (res.ok) {
       toast.success("successfully added assignment");
       setInputs({ title: "", des: "", date: "", points: "" });
-      await GetAssignments();
+       GetAssignments();
     }
   };
 
@@ -135,6 +135,7 @@ const Page = () => {
       setAssignments(JsonData);
     }
   };
+  console.log(assignments,'assignments')
 
   const RealSelectedDate = selectedDate
     ? format(selectedDate, "yyyy-MM-dd")

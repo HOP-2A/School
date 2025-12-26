@@ -112,132 +112,205 @@ const Page = () => {
     GetAssignments();
     GetSubmissions();
   }, [user]);
-
   return (
-    <div className="min-h-screen bg-gray-100 flex">
-
-      <div className="w-64 bg-white shadow-lg p-5 flex flex-col gap-6">
-        <h1 className="text-2xl font-bold text-blue-600">LMS</h1>
-
-        <nav className="flex flex-col gap-3">
+    <div className="flex h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200 overflow-hidden">
+  
+      {/* SIDEBAR */}
+      <aside
+        className="
+          w-64 m-4 rounded-3xl
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          shadow-[0_0_40px_rgba(34,211,238,0.15)]
+          flex flex-col gap-8 p-6
+        "
+      >
+        <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
+          LMS<span className="text-violet-400">.core</span>
+        </h1>
+  
+        <nav className="flex flex-col gap-2">
           <button
-            className="text-left p-3 rounded-xl hover:bg-gray-100"
             onClick={() => router.push(`/student/dashboard`)}
+            className="
+              flex items-center gap-3 px-4 py-3 rounded-xl
+              text-slate-300 hover:text-cyan-300
+              hover:bg-white/10
+              hover:shadow-[0_0_20px_rgba(34,211,238,0.35)]
+              transition
+            "
           >
             🏠 Home
           </button>
+  
           <button
-            className="text-left p-3 rounded-xl hover:bg-gray-100"
             onClick={() => router.push(`/student/classroom/${user?.classId}`)}
+            className="
+              flex items-center gap-3 px-4 py-3 rounded-xl
+              text-slate-300 hover:text-cyan-300
+              hover:bg-white/10
+              hover:shadow-[0_0_20px_rgba(34,211,238,0.35)]
+              transition
+            "
           >
             📚 Classrooms
           </button>
+  
           <button
-            className="text-left p-3 rounded-xl hover:bg-gray-100"
             onClick={() => router.push(`/student/profile`)}
+            className="
+              flex items-center gap-3 px-4 py-3 rounded-xl
+              text-slate-300 hover:text-cyan-300
+              hover:bg-white/10
+              hover:shadow-[0_0_20px_rgba(34,211,238,0.35)]
+              transition
+            "
           >
             👤 Profile
           </button>
         </nav>
-      </div>
-
-   
-      <div className="flex-1 p-6 max-w-5xl mx-auto space-y-6">
-        <h1 className="text-3xl font-semibold mb-4">Assignments</h1>
-
+  
+        <div className="mt-auto flex items-center gap-2 text-xs text-cyan-300">
+          <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+          System Online
+        </div>
+      </aside>
+  
+      {/* MAIN */}
+      <main className="flex-1 p-12 overflow-y-auto">
+  
+        {/* HEADER */}
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold text-slate-100 tracking-tight">
+            Assignments
+          </h1>
+          <p className="text-slate-400 mt-2">
+            Track your submissions and review status
+          </p>
+        </div>
+  
+        {/* EMPTY STATE */}
         {assignments.length === 0 ? (
-          <p className="text-gray-500">No assignments yet.</p>
+          <p className="text-slate-400">No assignments yet.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {assignments.map((assignment) => {
               const submission = homeworkSub.find(
                 (hw) => hw.homeworkId === assignment.id
-                
               );
-
+  
               return (
                 <div
                   key={assignment.id}
-                  className="bg-white rounded-xl shadow p-5 flex flex-col justify-between hover:shadow-lg transition"
+                  className="
+                    group relative
+                    bg-white/10 backdrop-blur-xl
+                    border border-white/20
+                    rounded-3xl p-6
+                    hover:-translate-y-1
+                    hover:shadow-[0_0_50px_rgba(167,139,250,0.35)]
+                    transition-all duration-300
+                  "
                 >
-                  <div>
-                    <h2 className="text-xl font-semibold mb-2">
-                      {assignment.title}
-                    </h2>
-                    <p className="text-gray-600 mb-3 line-clamp-3">
-                      {assignment.description}
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between items-center mt-4">
-                    <p className="text-sm text-gray-500">
-                      Due:{" "}
-                      {new Date(assignment.dueDate).toLocaleDateString()}
-                    </p>
-
-                    {submission ? (
-                      <div className="flex items-center gap-3">
-                      
-
-                        {submission.status === "CHECKED" ?  (
-  <div className="flex items-center gap-3">
-    <button
-      onClick={() =>
-        router.push(
-          `/student/classroom/${user?.classId}/${assignment.id}/view`
-        )
-      }
-      className="px-3 py-1.5 text-sm rounded-lg
-                 bg-slate-100 text-slate-700
-                 hover:bg-slate-200 transition"
-    >
-      View
-    </button>
-
-    <span className="text-green-600 text-sm font-medium">
-      Reviewed
-    </span>
-  </div>
-)  : (
-                          <div className="flex gap-[10px]">
-                          
+                  {/* Glow */}
+                  <div
+                    className="
+                      absolute inset-0 rounded-3xl
+                      opacity-0 group-hover:opacity-100
+                      bg-gradient-to-br from-cyan-400/20 to-violet-500/20
+                      transition
+                    "
+                  />
+  
+                  <div className="relative z-10 flex flex-col justify-between h-full">
+                    <div>
+                      <h2 className="text-xl font-semibold text-slate-100 mb-2">
+                        {assignment.title}
+                      </h2>
+  
+                      <p className="text-slate-400 text-sm line-clamp-3">
+                        {assignment.description}
+                      </p>
+                    </div>
+  
+                    <div className="mt-6 flex justify-between items-center">
+                      <p className="text-xs text-slate-400">
+                        Due:{" "}
+                        {new Date(assignment.dueDate).toLocaleDateString()}
+                      </p>
+  
+                      {submission ? (
+                        submission.status === "CHECKED" ? (
+                          <div className="flex items-center gap-3">
                             <button
-                            onClick={() =>
-                              router.push(
-                                `/student/classroom/${user?.classId}/${assignment.id}/edit`
-                              )
-                            }
-                            className="px-3 py-1.5 text-sm bg-gray-200 rounded-lg hover:bg-gray-300 transition"
-                          >
-                            ✏️ Edit
-                          </button>
-                          <span className="text-yellow-600 text-sm font-medium">
-                            Reviewing
-                          </span>
+                              onClick={() =>
+                                router.push(
+                                  `/student/classroom/${user?.classId}/${assignment.id}/view`
+                                )
+                              }
+                              className="
+                                px-4 py-1.5 text-sm rounded-lg
+                                bg-white/10 text-cyan-300
+                                hover:bg-white/20 transition
+                              "
+                            >
+                              View
+                            </button>
+  
+                            <span className="text-green-400 text-xs font-medium">
+                              Reviewed
+                            </span>
                           </div>
-                        )}
-                      </div>
-                    ) : (
-                      <button
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                        onClick={() =>
-                          router.push(
-                            `/student/classroom/${user?.classId}/${assignment.id}`
-                          )
-                        }
-                      >
-                        Review
-                      </button>
-                    )}
+                        ) : (
+                          <div className="flex items-center gap-3">
+                            <button
+                              onClick={() =>
+                                router.push(
+                                  `/student/classroom/${user?.classId}/${assignment.id}/edit`
+                                )
+                              }
+                              className="
+                                px-4 py-1.5 text-sm rounded-lg
+                                bg-white/10 text-yellow-300
+                                hover:bg-white/20 transition
+                              "
+                            >
+                              ✏️ Edit
+                            </button>
+  
+                            <span className="text-yellow-400 text-xs font-medium">
+                              Reviewing
+                            </span>
+                          </div>
+                        )
+                      ) : (
+                        <button
+                          onClick={() =>
+                            router.push(
+                              `/student/classroom/${user?.classId}/${assignment.id}`
+                            )
+                          }
+                          className="
+                            px-5 py-2 text-sm font-medium rounded-xl
+                            bg-gradient-to-r from-cyan-500 to-violet-500
+                            text-black
+                            hover:opacity-90 transition
+                          "
+                        >
+                          Review
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
+  
 };
 
 export default Page;

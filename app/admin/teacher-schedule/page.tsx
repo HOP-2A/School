@@ -34,7 +34,7 @@ const Page = () => {
   useEffect(() => {
     getAllTeachers();
   }, []);
-  console.log(teachers);
+
   return (
     <div className="p-8 space-y-6">
       <h1 className="text-2xl font-bold">Choose a Teacher</h1>

@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     include: {
       teacherClasses: {
         include: {
-          class: {
+          Class: {
             include: {
               students: true,
             },
@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
         },
       },
     },
+    
   });
 
   const subject = await prisma.subject.findFirst({

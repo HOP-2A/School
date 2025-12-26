@@ -13,7 +13,7 @@ type TeacherType = {
   teacherClasses: {
     classId: string;
     teacherId: string;
-    class: {
+    Class: {
       teacherId: string;
       id: string;
       name: string;
@@ -36,7 +36,7 @@ type SubjectType = {
 type classesType = {
   classId: string;
   teacherId: string;
-  class: {
+  Class: {
     teacherId: string;
     id: string;
     name: string;
@@ -72,11 +72,12 @@ const Page = () => {
 
       if (res.ok) {
         const jsonTeacher = await res.json();
+        console.log(jsonTeacher,"gg")
         setTeacher(jsonTeacher.teacher);
         setClasses(jsonTeacher.teacher.teacherClasses);
         setSubject(jsonTeacher.subject);
       } else {
-        console.error("Failed to fetch classes");
+        console.log("Failed to fetch classes");
       }
     };
 
@@ -103,18 +104,18 @@ const Page = () => {
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
             Your Classes
           </h2>
-          {classes?.map((cls) => (
+          {classes?.map((cls,index) => (
             <ClassesCard
-              key={cls.class.id}
+              key={index}
               AddHomework={() => {
                 push(`/teacher/assignments/${cls.classId}`);
               }}
               RouteAssignments={() => {
                 push(`/teacher/assignments/${cls.classId}`);
               }}
-              ClassName={cls?.class?.name}
+              ClassName={cls?.Class?.name}
               Subject={subject?.subjectName}
-              ClassStudentsNum={cls?.class?.students?.length}
+              ClassStudentsNum={cls?.Class?.students?.length}
             />
           ))}
         </section>
