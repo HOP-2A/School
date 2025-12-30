@@ -35,48 +35,9 @@ const Page = () => {
 
 
 
+
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200 overflow-hidden">
-  
-      {/* ================= MOBILE TOP BAR ================= */}
-      <header
-        className="
-          md:hidden
-          fixed top-0 inset-x-0 z-50
-          bg-white/10 backdrop-blur-xl
-          border-b border-white/20
-          shadow-[0_0_30px_rgba(34,211,238,0.15)]
-        "
-      >
-        <div className="flex items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-bold text-cyan-300">
-            LMS<span className="text-violet-400">.core</span>
-          </h1>
-  
-          <nav className="flex gap-1">
-            <button
-              onClick={() => router.push(`/student/dashboard`)}
-              className="px-3 py-2 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 transition"
-            >
-              🏠
-            </button>
-  
-            <button
-              onClick={() => router.push(`/student/classroom/${user?.classId}`)}
-              className="px-3 py-2 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 transition"
-            >
-              📚
-            </button>
-  
-            <button
-              onClick={() => router.push(`/student/profile`)}
-              className="px-3 py-2 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 transition"
-            >
-              👤
-            </button>
-          </nav>
-        </div>
-      </header>
+    <div className="flex min-h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200">
   
       {/* ================= DESKTOP SIDEBAR ================= */}
       <aside
@@ -96,21 +57,21 @@ const Page = () => {
         <nav className="flex flex-col gap-2">
           <button
             onClick={() => router.push(`/student/dashboard`)}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(34,211,238,0.35)] transition"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 transition"
           >
             🏠 Home
           </button>
   
           <button
             onClick={() => router.push(`/student/classroom/${user?.classId}`)}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(34,211,238,0.35)] transition"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 transition"
           >
             📚 Classrooms
           </button>
   
           <button
             onClick={() => router.push(`/student/profile`)}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(34,211,238,0.35)] transition"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 transition"
           >
             👤 Profile
           </button>
@@ -122,10 +83,15 @@ const Page = () => {
         </div>
       </aside>
   
-      {/* ================= MAIN CONTENT ================= */}
-      <main className="flex-1 pt-20 md:pt-0 px-4 sm:px-6 md:p-10 lg:p-12 overflow-y-auto">
-  
-        {/* Header */}
+      {/* ================= MAIN ================= */}
+      <main
+        className="
+          flex-1
+          px-4 sm:px-6 md:p-10
+          pb-32 md:pb-0
+          overflow-y-auto
+        "
+      >
         <div className="mb-8 md:mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 tracking-tight">
             Your Subjects
@@ -135,7 +101,6 @@ const Page = () => {
           </p>
         </div>
   
-        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {subjects.map((subject) => (
             <div
@@ -171,10 +136,50 @@ const Page = () => {
           ))}
         </div>
       </main>
+  
+      {/* ================= MOBILE BOTTOM NAV ================= */}
+      <nav
+        className="
+          md:hidden
+          fixed bottom-4 left-1/2 -translate-x-1/2 z-40
+          w-[92%] max-w-md
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          rounded-2xl
+          shadow-[0_0_30px_rgba(99,102,241,0.25)]
+          px-4 py-3
+        "
+      >
+        <div className="flex justify-between items-center">
+          <button
+            onClick={() => router.push(`/student/dashboard`)}
+            className="flex flex-col items-center gap-1 text-slate-300 hover:text-cyan-300 transition"
+          >
+            <span className="text-lg">🏠</span>
+            <span className="text-[11px]">Home</span>
+          </button>
+  
+          <button
+            onClick={() => router.push(`/student/classroom/${user?.classId}`)}
+            className="flex flex-col items-center gap-1 text-slate-300 hover:text-cyan-300 transition"
+          >
+            <span className="text-lg">📚</span>
+            <span className="text-[11px]">Classes</span>
+          </button>
+  
+          <button
+            onClick={() => router.push(`/student/profile`)}
+            className="flex flex-col items-center gap-1 text-slate-300 hover:text-cyan-300 transition"
+          >
+            <span className="text-lg">👤</span>
+            <span className="text-[11px]">Profile</span>
+          </button>
+        </div>
+      </nav>
     </div>
   );
   
-  
+
 };
 
 export default Page;

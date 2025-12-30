@@ -95,9 +95,9 @@ const Page = () => {
           Click to see assignments →
         </h1>
         <div className="flex gap-6">
-          {classes?.map((cls) => (
+          {classes?.map((cls,index) => (
             <div
-              key={cls?.classId}
+              key={index}
               className="p-4 rounded-xl border border-gray-200 hover:shadow-lg transition cursor-pointer text-center aspect-[6/1]"
               onClick={() => {
                 push(`/teacher/assignments/${cls?.classId}`);

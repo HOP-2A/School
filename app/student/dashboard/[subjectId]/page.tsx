@@ -150,16 +150,17 @@ const Page = () => {
   });
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200 overflow-hidden">
+    <div className="flex min-h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200">
   
-      {/* SIDEBAR */}
+      {/* ================= DESKTOP SIDEBAR ================= */}
       <aside
         className="
+          hidden md:flex
           w-64 m-4 rounded-3xl
           bg-white/10 backdrop-blur-xl
           border border-white/20
           shadow-[0_0_40px_rgba(34,211,238,0.15)]
-          p-6 flex flex-col gap-8
+          p-6 flex-col gap-8
         "
       >
         <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
@@ -199,20 +200,27 @@ const Page = () => {
         </div>
       </aside>
   
-      {/* MAIN */}
-      <main className="flex-1 p-12 space-y-12 overflow-y-auto">
-  
+      {/* ================= MAIN ================= */}
+      <main
+        className="
+          flex-1
+          p-4 sm:p-6 md:p-12
+          pb-32 md:pb-12
+          space-y-12
+          overflow-y-auto
+        "
+      >
         {/* HEADER */}
         <header>
-          <h1 className="text-4xl font-bold tracking-tight text-slate-100">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-100">
             {subjectName}
           </h1>
-          <p className="text-slate-400 mt-2 text-lg">
+          <p className="text-slate-400 mt-2 text-base sm:text-lg">
             Welcome to your course dashboard
           </p>
         </header>
   
-        {/* TEACHER CARD */}
+        {/* INSTRUCTOR */}
         <section
           className="
             max-w-lg rounded-3xl p-6
@@ -252,14 +260,14 @@ const Page = () => {
         {/* HOMEWORK */}
         <section
           className="
-            rounded-3xl p-8
+            rounded-3xl p-6 sm:p-8
             bg-white/10 backdrop-blur-xl
             border border-white/20
             shadow-[0_0_40px_rgba(34,211,238,0.15)]
           "
         >
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-semibold text-slate-100">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-slate-100">
               Homework
             </h2>
             <span className="text-sm text-slate-400">
@@ -278,14 +286,13 @@ const Page = () => {
                 <div
                   key={assignment.id}
                   className="
-                    relative p-6 rounded-2xl
+                    relative p-5 sm:p-6 rounded-2xl
                     bg-black/30
                     border border-white/20
                     hover:shadow-[0_0_30px_rgba(167,139,250,0.3)]
                     transition
                   "
                 >
-                  {/* STATUS BAR */}
                   <div
                     className={`absolute left-0 top-0 h-full w-1 rounded-l-2xl ${
                       isOverdue ? "bg-red-500" : "bg-cyan-400"
@@ -293,7 +300,7 @@ const Page = () => {
                   />
   
                   <div className="flex justify-between items-start">
-                    <h3 className="text-xl font-semibold text-slate-100">
+                    <h3 className="text-lg sm:text-xl font-semibold text-slate-100">
                       {assignment.title}
                     </h3>
   
@@ -331,16 +338,12 @@ const Page = () => {
                                 `/student/classroom/${user?.classId}/${assignment.id}/edit`
                               )
                             }
-                            className="
-                              px-4 py-2 rounded-xl text-sm
-                              bg-white/10 text-slate-200
-                              hover:bg-white/20 transition
-                            "
+                            className="px-4 py-2 rounded-xl text-sm bg-white/10 text-slate-200 hover:bg-white/20 transition"
                           >
-                            ✏️ Edit
+                             Edit
                           </button>
                           <span className="px-3 py-1 rounded-full bg-yellow-400/20 text-yellow-300 font-semibold">
-                            ⏳ Reviewing
+                             Reviewing
                           </span>
                         </div>
                       )
@@ -368,8 +371,49 @@ const Page = () => {
           </div>
         </section>
       </main>
+  
+      {/* ================= MOBILE BOTTOM NAV ================= */}
+      <nav
+        className="
+          md:hidden
+          fixed bottom-4 left-1/2 -translate-x-1/2 z-40
+          w-[92%] max-w-md
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          rounded-2xl
+          shadow-[0_0_30px_rgba(99,102,241,0.25)]
+          px-4 py-3
+        "
+      >
+        <div className="flex justify-between items-center">
+          <button
+            onClick={() => router.push(`/student/dashboard`)}
+            className="flex flex-col items-center gap-1 text-slate-300 hover:text-cyan-300 transition"
+          >
+            <span className="text-lg">🏠</span>
+            <span className="text-[11px]">Home</span>
+          </button>
+  
+          <button
+            onClick={() => router.push(`/student/classroom/${user?.classId}`)}
+            className="flex flex-col items-center gap-1 text-cyan-300"
+          >
+            <span className="text-lg">📚</span>
+            <span className="text-[11px]">Homework</span>
+          </button>
+  
+          <button
+            onClick={() => router.push(`/student/profile`)}
+            className="flex flex-col items-center gap-1 text-slate-300 hover:text-cyan-300 transition"
+          >
+            <span className="text-lg">👤</span>
+            <span className="text-[11px]">Profile</span>
+          </button>
+        </div>
+      </nav>
     </div>
   );
+  
   
 };
 export default Page;

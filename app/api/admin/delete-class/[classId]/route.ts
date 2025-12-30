@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { classId: string } }
+  { params }: { params: Promise<{ classId: string }> }
+
 ) {
-  const { classId } = await context.params;
+  const { classId } = await params;
 
   if (!classId) return NextResponse.json("ClassId obso", { status: 500 });
 
@@ -35,9 +36,9 @@ export async function DELETE(
 
 export async function PUT(
   req: NextRequest,
-  context: { params: { classId: string } }
+  { params }: { params: Promise<{ classId: string }> }
 ) {
-  const { classId } = await context.params;
+  const { classId } = await params;
 
   if (!classId) return NextResponse.json("ClassId obso", { status: 500 });
 
