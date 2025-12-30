@@ -141,98 +141,185 @@ const Page = () => {
     ? format(selectedDate, "yyyy-MM-dd")
     : "";
 
-  return (
-    <div>
-      <div className="flex gap-5 ml-70">
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0A0A0F] via-[#111827] to-black text-slate-200">
+    
+        {/* ================= SIDEBAR ================= */}
         <Sidebar
-          home={() => {
-            push("/teacher/main");
-          }}
-          assignments={() => {
-            push("/teacher/assignments-public");
-          }}
-          account={() => {
-            push("/teacher/account/");
-          }}
+          home={() => push("/teacher/main")}
+          assignments={() => push("/teacher/assignments-public")}
+          account={() => push("/teacher/account/")}
         />
-        <div className="flex flex-col gap-5">
-          <div className="text-[17px] font-bold bg-sky-300 p-3 rounded-2xl w-72">
-            Class: {classId}
-          </div>
-          <div className="flex flex-col gap-5 bg-gray-100 p-5 rounded-2xl">
-            <Input
-              placeholder="Title..."
-              name="title"
-              value={inputs.title ?? ""}
-              onChange={(e) => handleInputs(e)}
-            />
-            <Input
-              placeholder="Description..."
-              name="des"
-              value={inputs.des ?? ""}
-              onChange={(e) => handleInputs(e)}
-            />
-            <Input
-              placeholder="Points..."
-              name="points"
-              value={inputs.points ?? ""}
-              onChange={(e) => handleInputs(e)}
-            />
-            <h2>Pick a due date:</h2>
-            <Calendar
-              className="bg-white rounded-xl border border-gray-400"
-              mode="single"
-              selected={selectedDate}
-              onSelect={setSelectedDate}
-            />
-
-            {selectedDate && (
-              <p>
-                Picked date:{" "}
-                {selectedDate ? format(selectedDate, "yyyy-MM-dd") : ""}
-              </p>
-            )}
-
-            <Button
-              className="bg-black rounded-2xl text-white font-semibold"
-              onClick={() => {
-                AddAssignment();
-              }}
+    
+        {/* ================= MAIN ================= */}
+        <main
+          className="
+            md:ml-[18rem]
+            px-3 sm:px-6 md:px-10
+            py-5 sm:py-8
+            pb-32 md:pb-8
+            space-y-8 sm:space-y-10
+          "
+        >
+          {/* ================= HEADER ================= */}
+          <header className="flex flex-col gap-2">
+            <h2 className="text-xl sm:text-3xl font-bold tracking-tight text-white">
+              Class · {classId}
+            </h2>
+          </header>
+    
+          {/* ================= CONTENT GRID ================= */}
+          <section className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-8 xl:gap-10">
+    
+            {/* ================= ADD ASSIGNMENT ================= */}
+            <div
+              className="
+                rounded-2xl sm:rounded-3xl
+                p-5 sm:p-8
+                bg-white/10 backdrop-blur-2xl
+                border border-white/20
+                shadow-[0_0_40px_rgba(99,102,241,0.18)]
+                space-y-5 sm:space-y-6
+              "
             >
-              Add Assignment
-            </Button>
-          </div>
-        </div>
-        <div className="ml-10 flex flex-col gap-5">
-          <div className="text-[17px] font-bold bg-sky-300 p-3 rounded-2xl w-140">
-            Assignments
-          </div>
-          <div className="bg-gray-100 p-5 w-140 h-fit rounded-2xl flex flex-col gap-3">
-            {assignments?.map((hw) => (
-              <div
-                key={hw.id}
-                className="bg-white border border-gray-400 rounded p-2 flex justify-between items-center"
-              >
-                <div>
-                  <div className="font-bold">{hw.title}</div>
-                  <div className="text-sm">{hw.description}</div>
-                </div>
-                <Button
-                  onClick={() => {
-                    push(`/teacher/homework/${hw.id}`);
-                  }}
-                  className="bg-black text-white h-7  rounded-2xl"
-                >
-                  View
-                </Button>
+              <h3 className="text-lg sm:text-xl font-semibold text-white">
+                Add Assignment
+              </h3>
+    
+              <Input
+                placeholder="Title..."
+                name="title"
+                value={inputs.title ?? ""}
+                onChange={handleInputs}
+                className="
+                  bg-white/10 border-white/20
+                  text-white placeholder:text-slate-400
+                  h-11 sm:h-10
+                "
+              />
+    
+              <Input
+                placeholder="Description..."
+                name="des"
+                value={inputs.des ?? ""}
+                onChange={handleInputs}
+                className="
+                  bg-white/10 border-white/20
+                  text-white placeholder:text-slate-400
+                  h-11 sm:h-10
+                "
+              />
+    
+              <Input
+                placeholder="Points..."
+                name="points"
+                value={inputs.points ?? ""}
+                onChange={handleInputs}
+                className="
+                  bg-white/10 border-white/20
+                  text-white placeholder:text-slate-400
+                  h-11 sm:h-10
+                "
+              />
+    
+              <div>
+                <p className="text-sm text-slate-300 mb-2">
+                  Pick a due date
+                </p>
+    
+                <Calendar
+                  className="
+                    w-full
+                    bg-white/10 text-white
+                    rounded-xl
+                    border border-white/20
+                    p-2 sm:p-0
+                  "
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                />
+    
+                {selectedDate && (
+                  <p className="text-xs sm:text-sm text-slate-400 mt-2">
+                    Due: {format(selectedDate, "yyyy-MM-dd")}
+                  </p>
+                )}
               </div>
-            ))}
-          </div>
-        </div>
-        <div className="w-140"></div>
+    
+              <Button
+                onClick={AddAssignment}
+                className="
+                  w-full h-11 sm:h-10
+                  rounded-xl sm:rounded-2xl
+                  bg-indigo-500 hover:bg-indigo-600
+                  text-white font-semibold
+                  transition
+                "
+              >
+                Add Assignment
+              </Button>
+            </div>
+    
+            {/* ================= ASSIGNMENTS LIST ================= */}
+            <div
+              className="
+                rounded-2xl sm:rounded-3xl
+                p-5 sm:p-8
+                bg-white/10 backdrop-blur-2xl
+                border border-white/20
+                shadow-[0_0_40px_rgba(99,102,241,0.18)]
+              "
+            >
+              <h3 className="text-lg sm:text-xl font-semibold text-white mb-5 sm:mb-6">
+                Assignments
+              </h3>
+    
+              <div className="space-y-3 sm:space-y-4">
+                {assignments?.map((hw) => (
+                  <div
+                    key={hw.id}
+                    className="
+                      rounded-xl
+                      p-4
+                      bg-white/10
+                      border border-white/20
+                      hover:bg-white/15
+                      transition
+                    "
+                  >
+                    <p className="font-semibold text-white">
+                      {hw.title}
+                    </p>
+    
+                    <p className="text-sm text-slate-400 mt-1">
+                      {hw.description}
+                    </p>
+    
+                    <Button
+                      onClick={() => push(`/teacher/homework/${hw.id}`)}
+                      className="
+                        mt-3
+                        w-full sm:w-auto
+                        px-4 py-2
+                        rounded-xl
+                        bg-white/10 hover:bg-white/20
+                        text-indigo-300 hover:text-white
+                        transition
+                      "
+                    >
+                      View
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+    
+          </section>
+        </main>
       </div>
-    </div>
-  );
+    );
+    
 };
 
 export default Page;

@@ -83,48 +83,119 @@ const Page = () => {
 
     getClasses();
   }, [isLoaded, user]);
-
   return (
-    <div className="flex gap-1 w-screen">
-      <div>
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0A0F] via-[#111827] to-black text-slate-200">
+  
+      {/* ================= DESKTOP SIDEBAR ================= */}
+      <aside className="hidden md:block fixed left-4 top-4 bottom-4 w-64 z-50">
         <Sidebar
-          home={() => {
-            push("/teacher/main");
-          }}
-          assignments={() => {
-            push("/teacher/assignments-public");
-          }}
-          account={() => {
-            push("/teacher/account/");
-          }}
+          home={() => push("/teacher/main")}
+          assignments={() => push("/teacher/assignments-public")}
+          account={() => push("/teacher/account/")}
         />
-      </div>
-      <div>
-        <section className="p-6 bg-gray-50 ml-70 mt-5 w-102 flex gap-3 flex-wrap ">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">
-            Your Classes
-          </h2>
-          {classes?.map((cls, index) => (
-            <ClassesCard
-              key={index}
-              AddHomework={() => {
-                push(`/teacher/assignments/${cls.classId}`);
-              }}
-              RouteAssignments={() => {
-                push(`/teacher/assignments/${cls.classId}`);
-              }}
-              ClassName={cls?.Class?.name}
-              Subject={subject?.subjectName}
-              ClassStudentsNum={cls?.Class?.students?.length}
-            />
-          ))}
+      </aside>
+  
+      {/* ================= MOBILE BOTTOM BAR ================= */}
+      <aside
+        className="
+          md:hidden
+          fixed bottom-4 left-4 right-4 z-50
+          rounded-3xl
+          bg-white/10 backdrop-blur-2xl
+          border border-white/20
+          shadow-[0_0_40px_rgba(99,102,241,0.25)]
+        "
+      >
+        <Sidebar
+    
+          home={() => push("/teacher/main")}
+          assignments={() => push("/teacher/assignments-public")}
+          account={() => push("/teacher/account/")}
+        />
+      </aside>
+  
+      {/* ================= MAIN ================= */}
+      <main
+        className="
+          md:ml-[18rem]
+          px-4 sm:px-6 md:px-10
+          py-6 sm:py-8
+          pb-28 md:pb-8
+          space-y-10
+        "
+      >
+        {/* HEADER */}
+        <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Your Classes
+            </h2>
+            <p className="text-slate-400 mt-3 max-w-xl">
+              Monitor performance, students, and assignments
+            </p>
+          </div>
+  
+          <div
+            className="
+              self-start sm:self-auto
+              px-5 py-3 rounded-2xl
+              bg-white/10 backdrop-blur-xl
+              border border-white/20
+              text-sm text-slate-300
+            "
+          >
+            Academic Year · 2025
+          </div>
+        </header>
+  
+        {/* CLASSES */}
+        <section
+          className="
+            rounded-3xl p-6 sm:p-8
+            bg-white/10 backdrop-blur-2xl
+            border border-white/20
+            shadow-[0_0_60px_rgba(99,102,241,0.2)]
+          "
+        >
+          <h3 className="text-2xl font-semibold text-white mb-6">
+            Active Classes
+          </h3>
+  
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {classes?.map((cls, index) => (
+              <div
+                key={index}
+                className="
+                  relative rounded-2xl
+                  bg-white/10 backdrop-blur-xl
+                  border border-white/20
+                  shadow-[0_0_30px_rgba(99,102,241,0.15)]
+                  hover:shadow-[0_0_50px_rgba(99,102,241,0.35)]
+                  hover:-translate-y-1
+                  transition-all duration-300
+                "
+              >
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl bg-gradient-to-r from-indigo-400 to-violet-500" />
+  
+                <ClassesCard
+                  AddHomework={() =>
+                    push(`/teacher/assignments/${cls.classId}`)
+                  }
+                  RouteAssignments={() =>
+                    push(`/teacher/assignments/${cls.classId}`)
+                  }
+                  ClassName={cls?.Class?.name}
+                  Subject={subject?.subjectName}
+                  ClassStudentsNum={cls?.Class?.students?.length}
+                />
+              </div>
+            ))}
+          </div>
         </section>
-      </div>
-      <div>
-        <div></div>
-      </div>
+      </main>
     </div>
   );
-};
-
-export default Page;
+  
+  
+}  
+export default Page

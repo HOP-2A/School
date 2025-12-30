@@ -124,195 +124,233 @@ const Page = () => {
   const progressPercent =
     totalStudents > 0 ? (submittedCount / totalStudents) * 100 : 0;
 
-  return (
-    <div className="flex gap-10">
-      <div>
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0A0A0F] via-[#111827] to-black text-slate-200">
+    
+        {/* ================= SIDEBAR ================= */}
         <Sidebar
-          home={() => {
-            push("/teacher/main");
-          }}
-          assignments={() => {
-            push("/teacher/assignments-public");
-          }}
-          account={() => {
-            push("/teacher/account/");
-          }}
+          home={() => push("/teacher/main")}
+          assignments={() => push("/teacher/assignments-public")}
+          account={() => push("/teacher/account/")}
         />
-      </div>
-      <div>
-        {submission?.length !== 0 ? (
-          <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 px-6 py-10 text-slate-800 ml-70 shadow-lg">
-            <div className="max-w-4xl mx-auto bg-white rounded-2xl p-6 shadow-md border border-slate-200">
-              <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-                {homework?.title}
-              </h1>
-              <p className="text-sm text-slate-600 mt-2">
-                {homework?.description}
-              </p>
-
-              <div className="flex items-center gap-3 mt-4 text-sm">
-                <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
-                  {homework?.dueDate?.split("T")[0]}
-                </span>
-                <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
-                  Grade: {submission?.[0]?.homework?.points} pts
-                </span>
-              </div>
-            </div>
-
-            <div className="max-w-4xl mx-auto mt-8">
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-medium text-slate-900">
-                  Student Submissions
-                </h2>
-                <span className="text-sm text-slate-600">
-                  {submission?.length} /{" "}
-                  {submission?.[0]?.student?.class?.students.length} submitted
-                </span>
-              </div>
-
-              <div className="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+    
+        {/* ================= MAIN ================= */}
+        <main
+          className="
+            md:ml-[18rem]
+            px-3 sm:px-6 md:px-10
+            py-6 sm:py-8
+            pb-32 md:pb-8
+            grid grid-cols-1 xl:grid-cols-[1fr_420px]
+            gap-6 sm:gap-8 xl:gap-10
+          "
+        >
+          {/* ================= LEFT ================= */}
+          <div className="space-y-6 sm:space-y-8">
+    
+            {submission?.length !== 0 ? (
+              <>
+                {/* Homework Info */}
                 <div
-                  className="h-full w-[40%] bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-            </div>
-
-            <div className="max-w-4xl mx-auto mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {submission?.map((submitted) => (
-                <div
-                  onClick={() => {
-                    setSelectedStudent(submitted);
-                  }}
-                  key={submitted.id}
-                  className="group cursor-pointer bg-white rounded-xl p-4 border border-slate-200 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1"
+                  className="
+                    rounded-2xl sm:rounded-3xl
+                    p-5 sm:p-6
+                    bg-white/10 backdrop-blur-2xl
+                    border border-white/20
+                    shadow-[0_0_40px_rgba(99,102,241,0.2)]
+                  "
                 >
-                  <div className="flex flex-col items-center text-center">
-                    <div className="relative">
-                      <Avatar className="w-33 h-33">
-                        <AvatarImage
-                          className="w-33 h-33"
-                          src="https://github.com/shadcn.png"
-                        />
+                  <h1 className="text-xl sm:text-2xl font-semibold text-white">
+                    {homework?.title}
+                  </h1>
+    
+                  <p className="text-sm sm:text-base text-slate-400 mt-2">
+                    {homework?.description}
+                  </p>
+    
+                  <div className="flex flex-wrap gap-2 mt-4 text-xs sm:text-sm">
+                    <span className="px-3 py-1 rounded-full bg-white/10 border border-white/20">
+                      Due · {homework?.dueDate?.split("T")[0]}
+                    </span>
+                    <span className="px-3 py-1 rounded-full bg-white/10 border border-white/20">
+                      {submission?.[0]?.homework?.points} pts
+                    </span>
+                  </div>
+                </div>
+    
+                {/* Progress */}
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <h2 className="text-base sm:text-lg font-semibold text-white">
+                      Student Submissions
+                    </h2>
+                    <span className="text-xs sm:text-sm text-slate-400">
+                      {submission?.length} /{" "}
+                      {submission?.[0]?.student?.class?.students.length}
+                    </span>
+                  </div>
+    
+                  <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-indigo-400 to-violet-500"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                </div>
+    
+                {/* Students */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-5">
+                  {submission?.map((submitted) => (
+                    <div
+                      key={submitted.id}
+                      onClick={() => setSelectedStudent(submitted)}
+                      className="
+                        cursor-pointer
+                        rounded-xl sm:rounded-2xl
+                        p-3 sm:p-4
+                        bg-white/10 backdrop-blur-xl
+                        border border-white/20
+                        hover:bg-white/15
+                        transition
+                        text-center
+                      "
+                    >
+                      <Avatar className="w-14 h-14 sm:w-20 sm:h-20 mx-auto">
+                        <AvatarImage src="https://github.com/shadcn.png" />
                         <AvatarFallback>
                           {submitted?.student?.name}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
+    
+                      <p className="mt-2 sm:mt-3 font-medium text-white text-xs sm:text-sm">
+                        {submitted.student.name}
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-emerald-400 mt-1">
+                        Submitted
+                      </p>
                     </div>
-
-                    <p className="mt-3 text-sm font-medium text-slate-900">
-                      {submitted.student.name}
-                    </p>
-                    <p className="text-xs text-slate-500">Submitted</p>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            ) : (
+              <div className="text-slate-400">
+                No one has submitted yet.
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="ml-70">No One Submitted</div>
-        )}
-      </div>
-      <div className="grid gap-6 h-full">
-        <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 p-6 shadow-lg sticky top-6 h-fit w-200 overflow-y-auto">
-          {selectedStudent === null ? (
-            <div className="h-full flex flex-col items-center justify-center text-center text-gray-400">
-              <h3 className="text-lg font-semibold text-gray-600">
-                Select a student
-              </h3>
-              <p className="mt-2 max-w-xs text-sm">
-                Choose a student from the list to view and grade their
-                submission.
-              </p>
-            </div>
-          ) : (
-            <div className="flex flex-col h-full gap-6">
-              <div className="border-b pb-3">
-                <h3 className="text-lg font-semibold">Student Submission</h3>
-                <p className="text-sm text-gray-500">
-                  {selectedStudent?.student?.name}
+    
+          {/* ================= RIGHT · GRADING ================= */}
+          <aside
+            className="
+              relative xl:sticky xl:top-8
+              h-fit
+              rounded-2xl sm:rounded-3xl
+              p-5 sm:p-6
+              bg-white/10 backdrop-blur-2xl
+              border border-white/20
+              shadow-[0_0_40px_rgba(99,102,241,0.25)]
+            "
+          >
+            {selectedStudent === null ? (
+              <div className="h-[240px] flex flex-col items-center justify-center text-center">
+                <h3 className="text-base sm:text-lg font-semibold text-white">
+                  Select a student
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-400 mt-2">
+                  Click a student to review and grade.
                 </p>
               </div>
-
-              <div
-                className="bg-gray-50 border border-gray-400 rounded-xl p-4 min-h-[160px]"
-                onClick={() => {
-                  setOpen(!open);
-                }}
-              >
-                <label className="text-xs font-semibold text-gray-600 uppercase">
-                  📄 Submitted assignment content
-                </label>
-                <img
-                  src={selectedStudent?.content}
-                  alt="alt"
-                  onClick={() => setOpen(!open)}
-                  className={`cursor-pointer rounded-lg border transition-all duration-200 ${
-                    open
-                      ? "w-full max-h-[600px] object-contain z-[999999] bg-black/70"
-                      : "w-48 h-32 object-cover"
-                  }`}
-                />
-                {!open && (
-                  <p className="text-xs text-gray-500 mt-2">
-                    Click image to expand
+            ) : (
+              <div className="flex flex-col gap-5 sm:gap-6">
+    
+                <div className="border-b border-white/10 pb-3">
+                  <h3 className="text-base sm:text-lg font-semibold text-white">
+                    Student Submission
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-400">
+                    {selectedStudent?.student?.name}
                   </p>
-                )}
-              </div>
-              <div className="rounded-md border border-gray-400 py-2 px-2">
-                {selectedStudent?.description}
-              </div>
-
-              <div className="space-y-3">
+                </div>
+    
+                {/* Image */}
+                <div
+                  className="
+                    rounded-xl p-3 sm:p-4
+                    bg-black/30 border border-white/20
+                    cursor-pointer
+                  "
+                  onClick={() => setOpen(!open)}
+                >
+                  <label className="text-[10px] sm:text-xs uppercase text-slate-400">
+                    Submitted File
+                  </label>
+    
+                  <img
+                    src={selectedStudent?.content}
+                    className={`rounded-lg mt-2 transition-all ${
+                      open
+                        ? "w-full max-h-[480px] object-contain"
+                        : "w-full h-40 object-cover"
+                    }`}
+                  />
+    
+                  {!open && (
+                    <p className="text-[10px] sm:text-xs text-slate-400 mt-2">
+                      Tap to expand
+                    </p>
+                  )}
+                </div>
+    
+                <div className="rounded-xl p-3 bg-white/10 border border-white/20 text-sm">
+                  {selectedStudent?.description}
+                </div>
+    
+                {/* Grade */}
                 <div>
-                  <label className="text-xs font-semibold text-gray-600 uppercase">
+                  <label className="text-xs uppercase text-slate-400">
                     Grade
                   </label>
                   <Input
-                    onChange={(e) => {
-                      handleInputs(e);
-                    }}
-                    value={inputs.grade}
                     name="grade"
-                    placeholder="Enter grade..."
-                    className="border border-gray-400 z-0"
+                    value={inputs.grade}
+                    onChange={handleInputs}
+                    className="mt-1 bg-white/10 border-white/20 text-white h-11"
                   />
                 </div>
-
+    
+                {/* Feedback */}
                 <div>
-                  <label className="text-xs font-semibold text-gray-600 uppercase">
+                  <label className="text-xs uppercase text-slate-400">
                     Feedback
                   </label>
                   <Input
-                    onChange={(e) => {
-                      handleInputs(e);
-                    }}
-                    value={inputs.feedback}
                     name="feedback"
-                    className="border border-gray-400 py-8"
-                    placeholder="Enter feedback..."
+                    value={inputs.feedback}
+                    onChange={handleInputs}
+                    className="mt-1 bg-white/10 border-white/20 text-white py-5"
                   />
                 </div>
-              </div>
-
-              <div className="mt-auto flex justify-end gap-3">
+    
                 <button
-                  onClick={() => {
-                    Update(selectedStudent?.id);
-                  }}
-                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-violet-500 to-blue-500 text-white text-sm font-medium hover:opacity-90"
+                  onClick={() => Update(selectedStudent?.id)}
+                  className="
+                    mt-2 w-full py-3 rounded-xl
+                    bg-gradient-to-r from-indigo-500 to-violet-600
+                    text-white font-semibold
+                    hover:opacity-90
+                    transition
+                  "
                 >
                   Submit Grade
                 </button>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </aside>
+        </main>
       </div>
-    </div>
-  );
+    );
+    
+    
 };
 
 export default Page;
