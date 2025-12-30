@@ -56,7 +56,6 @@ const Page = () => {
   const [teacher, setTeacher] = useState<TeacherType>();
   const [subject, setSubject] = useState<SubjectType>();
   const { isLoaded } = useUser();
-  const [selectedDay, setSelectedDay] = useState("All Days");
 
   const { user: clerkUser } = useUser();
   const { user, loading } = useAuth(clerkUser?.id);
@@ -130,11 +129,10 @@ const Page = () => {
             </h1>
 
             <select
-              value={selectedDay}
               onChange={handleSelect}
               className="mt-4 sm:mt-0 border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
-              <option value="All Days">All Days</option>
+              <option value="">All Days</option>
               <option value="Monday">Monday</option>
               <option value="Tuesday">Tuesday</option>
               <option value="Wednesday">Wednesday</option>
@@ -165,13 +163,7 @@ const Page = () => {
               schedule{filteredSchedules.length > 1 ? "s" : ""}.
             </p>
           )}
-          <div>
-            {filteredSchedules.length === 0 && (
-              <p className="text-center text-gray-500">
-                No schedule available for the selected day.
-              </p>
-            )}
-          </div>
+
           {/* Schedule Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filteredSchedules.map((schedule) => (
