@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import HeaderPart from "../_component/Header";
 import { Button } from "@/components/ui/button";
 import { ChangeEvent, useState } from "react";
+import { toast } from "sonner";
 
 const Home = () => {
   const [inputs, setInputs] = useState({
@@ -40,11 +41,10 @@ const Home = () => {
     });
 
     if (res.ok) {
-      console.log("ok");
+      toast.success("Successfully created user");
     }
   };
 
-  console.log(inputs);
   return (
     <div className="flex flex-col">
       <div>

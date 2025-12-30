@@ -8,7 +8,7 @@ export async function GET(
   const { getSingleAssignment } = await context.params;
 
   const assignment = await prisma.homework.findFirst({
-    where: { id: getSingleAssignment},
+    where: { id: getSingleAssignment },
   });
   return NextResponse.json(assignment);
 }

@@ -19,10 +19,9 @@ export async function POST(
   return NextResponse.json({ status: 200, submission });
 }
 
-
 export async function GET(
   req: Request,
-  context: { params: Promise<{ homeworkId: string }> } 
+  context: { params: Promise<{ homeworkId: string }> }
 ) {
   const { homeworkId } = await context.params;
 
