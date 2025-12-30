@@ -5,6 +5,7 @@ import { FaEnvelope, FaChalkboardTeacher } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { toast } from "sonner";
 
 type TeacherType = {
   id: string;
@@ -58,7 +59,7 @@ const Page = () => {
       setTeacher(jsonTeacher.teacher);
       setSubject(jsonTeacher.subject);
     } else {
-      console.log("Failed to fetch classes");
+      toast.error("Failed to fetch classes");
     }
   };
   useEffect(() => {

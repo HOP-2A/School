@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
   }
 
   const clerk = await clerkClient();
-  console.log(email, password, firstname, role);
   const createdClerkUser = await clerk.users.createUser({
     skipPasswordChecks: true,
     skipPasswordRequirement: true,
@@ -58,6 +57,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(createdUser); 
+    return NextResponse.json(createdUser);
   }
 }

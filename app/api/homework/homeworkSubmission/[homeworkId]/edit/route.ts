@@ -8,19 +8,18 @@ export async function POST(
   const { homeworkId } = await context.params;
   const body = await req.json();
 
-const editSubmission = await prisma.homeworkSubmission.update({
-  where: {
-    studentId_homeworkId: {
-      studentId: body.studentId,
-      homeworkId: homeworkId, 
+  const editSubmission = await prisma.homeworkSubmission.update({
+    where: {
+      studentId_homeworkId: {
+        studentId: body.studentId,
+        homeworkId: homeworkId,
+      },
     },
-  },
-  data: {
-    description: body.description,
-    content: body.content[0] || null,
-  },
-});
-
+    data: {
+      description: body.description,
+      content: body.content[0] || null,
+    },
+  });
 
   return NextResponse.json({ status: 200, editSubmission });
 }

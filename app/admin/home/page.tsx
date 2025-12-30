@@ -82,6 +82,30 @@ const Page = () => {
           <h3 className="text-lg font-semibold text-gray-900">Create Class</h3>
           <p className="mt-1 text-sm text-gray-500">Click to add new class →</p>
         </button>
+        <button
+          onClick={() => {
+            push("/admin/addSubject");
+          }}
+          className="
+        w-full max-w-xs
+        aspect-[4/1.5]
+        bg-white
+        border border-gray-200
+        rounded-2xl
+        shadow
+        p-6
+        text-left
+        cursor-pointer
+        hover:shadow-xl transition
+      "
+        >
+          <h3 className="text-lg font-semibold text-gray-900">
+            Create Subject
+          </h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Click to add new subject →
+          </p>
+        </button>
       </div>
 
       <h2 className="text-3xl font-bold mb-6 mt-8">Classes</h2>

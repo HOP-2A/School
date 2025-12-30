@@ -5,6 +5,7 @@ import Sidebar from "@/app/_component/SideBar";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type classesType = {
   classId: string;
@@ -68,7 +69,7 @@ const Page = () => {
         setTeacher(jsonTeacher.teacher);
         setClasses(jsonTeacher.teacher.teacherClasses);
       } else {
-        console.log("Failed to fetch classes");
+        toast.error("Failed to fetch classes");
       }
     };
 
