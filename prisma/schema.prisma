@@ -101,6 +101,13 @@ model TeacherSchedule {
   class     Class    @relation(fields: [classId], references: [id])
   teacher   Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
+enum Day {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday  
+}
 
 model TeacherClass {
   id        String  @id @default(nanoid())
