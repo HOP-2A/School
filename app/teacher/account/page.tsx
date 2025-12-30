@@ -13,7 +13,7 @@ type TeacherType = {
   teacherClasses: {
     classId: string;
     teacherId: string;
-    class: {
+    Class: {
       teacherId: string;
       id: string;
       name: string;
@@ -112,7 +112,7 @@ const Page = () => {
                   className="p-4 rounded-xl border border-gray-200 hover:shadow-lg transition cursor-pointer text-center"
                 >
                   <h3 className="text-lg font-medium text-pink-500">
-                    {subj.class?.name}
+                    {subj.Class?.name}
                   </h3>
                 </div>
               ))}

@@ -9,11 +9,14 @@ export async function DELETE(
 
   if (!classId) return NextResponse.json("ClassId obso", { status: 500 });
 
-  await prisma.teacherClass.deleteMany({
-    where: {
-      classId: classId,
-    },
-  });
+  await prisma.teacherSchedule.deleteMany({
+    where: { classId },
+  }),
+    await prisma.teacherClass.deleteMany({
+      where: {
+        classId: classId,
+      },
+    });
 
   await prisma.homework.deleteMany({
     where: {

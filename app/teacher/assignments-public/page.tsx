@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 type classesType = {
   classId: string;
   teacherId: string;
-  class: {
+  Class: {
     teacherId: string;
     id: string;
     name: string;
@@ -29,7 +29,7 @@ type TeacherType = {
   teacherClasses: {
     classId: string;
     teacherId: string;
-    class: {
+    Class: {
       teacherId: string;
       id: string;
       name: string;
@@ -104,7 +104,7 @@ const Page = () => {
               }}
             >
               <h3 className="text-lg font-medium text-pink-500">
-                {cls?.class.name}
+                {cls?.Class.name}
               </h3>
             </div>
           ))}

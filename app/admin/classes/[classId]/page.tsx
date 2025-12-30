@@ -16,7 +16,7 @@ type ClassType = {
     id: string;
     name: string;
   }[];
-  Teacher: {
+  teacher: {
     email: string;
     id: string;
     name: string;
@@ -167,15 +167,15 @@ const Page = () => {
             Class: {classData?.name}
           </h2>
 
-          {classData?.Teacher ? (
+          {classData?.teacher ? (
             <div className="flex items-center bg-gray-50 rounded-lg p-4 px-10 text-sm text-gray-700 gap-10">
               <div className="mr-6">
                 <span className="font-medium">Homeroom Teacher :</span>{" "}
-                {classData?.Teacher.name}
+                {classData?.teacher.name}
               </div>
               <div className="mr-6">
                 <span className="font-medium">Email :</span>{" "}
-                {classData?.Teacher.email}
+                {classData?.teacher.email}
               </div>
               <Button
                 onClick={() => {

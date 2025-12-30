@@ -17,7 +17,7 @@ type TeacherType = {
   teacherClasses: {
     classId: string;
     teacherId: string;
-    class: {
+    Class: {
       teacherId: string;
       id: string;
       name: string;
@@ -117,7 +117,7 @@ const Page = () => {
     if (res.ok) {
       toast.success("successfully added assignment");
       setInputs({ title: "", des: "", date: "", points: "" });
-       GetAssignments();
+      GetAssignments();
     }
   };
 
@@ -135,7 +135,7 @@ const Page = () => {
       setAssignments(JsonData);
     }
   };
-  console.log(assignments,'assignments')
+  console.log(assignments, "assignments");
 
   const RealSelectedDate = selectedDate
     ? format(selectedDate, "yyyy-MM-dd")

@@ -72,7 +72,7 @@ const Page = () => {
 
       if (res.ok) {
         const jsonTeacher = await res.json();
-        console.log(jsonTeacher,"gg")
+        console.log(jsonTeacher, "gg");
         setTeacher(jsonTeacher.teacher);
         setClasses(jsonTeacher.teacher.teacherClasses);
         setSubject(jsonTeacher.subject);
@@ -104,7 +104,7 @@ const Page = () => {
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
             Your Classes
           </h2>
-          {classes?.map((cls,index) => (
+          {classes?.map((cls, index) => (
             <ClassesCard
               key={index}
               AddHomework={() => {
