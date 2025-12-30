@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
   req: NextRequest,
-  context: { params: { studentId: string } }
+  context: { params: Promise<{ studentId: string }> }
+
 ) {
   const { studentId } = await context.params;
 
