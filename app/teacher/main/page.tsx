@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
+import { useAuth } from "@/app/provider/AuthProvider";
 
 type TeacherType = {
   id: string;
