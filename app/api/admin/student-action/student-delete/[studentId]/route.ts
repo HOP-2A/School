@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
   req: NextRequest,
-  context: { params: Promise<{ studentId: string }> }
+  { params }: { params: Promise<{ studentId: string }> }
 
 ) {
-  const { studentId } = await context.params;
+  const { studentId } = await params;
 
   if (!studentId) return NextResponse.json("StudentId obso", { status: 500 });
 

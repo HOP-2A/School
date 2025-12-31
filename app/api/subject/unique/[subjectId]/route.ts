@@ -3,9 +3,9 @@ import { prisma } from "@/lib/db";
 
 export async function GET(
   req: NextRequest,
-  context: any 
+  { params }: { params: Promise<{ subjectId: string }> }
 ) {
-  const { subjectId } = await context.params;
+  const { subjectId } = await params;
 
   const theSubject = await prisma.subject.findFirst({
     where: { id: subjectId },

@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  context: { params: { homeworkId: string } }
+  { params }: { params: Promise<{ homeworkId: string }> }
+
 ) {
-  const { homeworkId } = await context.params;
+  const { homeworkId } = await params;
   const body = await req.json();
 
 const editSubmission = await prisma.homeworkSubmission.update({
