@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  context: { params: { classId: string } }
+  { params }: { params: Promise<{ classId: string }> }
 ) {
-  const { classId } = await context.params;
+  const { classId } = await params;
   const body = await req.json();
   const { title, description, dueDate, teacherId } = body;
   const dueDateObj = new Date(dueDate);
