@@ -92,7 +92,7 @@ const Page = () => {
         const jsonTeacher = await res.json();
         setTeacher(jsonTeacher.teacher);
       } else {
-        console.log("Failed to fetch classes");
+        toast.error("Failed to fetch classes");
       }
     };
 
@@ -135,7 +135,6 @@ const Page = () => {
       setAssignments(JsonData);
     }
   };
-  console.log(assignments, "assignments");
 
   const RealSelectedDate = selectedDate
     ? format(selectedDate, "yyyy-MM-dd")

@@ -107,7 +107,7 @@ const Page = () => {
       setHomeworkSub(JsonData);
     }
   };
-  console.log(homeworkSubmission);
+
   useEffect(() => {
     if (user) {
       GetSubmissions();
@@ -142,7 +142,7 @@ const Page = () => {
         </div>
       </div>
     );
-  
+
   const { subjectName, teacher } = subjectInfo;
 
   const filterred = assignments?.filter((assignment) => {
@@ -150,9 +150,8 @@ const Page = () => {
   });
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200">
-  
-      {/* ================= DESKTOP SIDEBAR ================= */}
+    <div className="min-h-screen flex bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200 overflow-hidden">
+      {/* SIDEBAR */}
       <aside
         className="
           hidden md:flex
@@ -166,7 +165,7 @@ const Page = () => {
         <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
           LMS<span className="text-violet-400">.core</span>
         </h1>
-  
+
         <nav className="flex flex-col gap-2">
           {[
             { label: "Home", icon: "🏠", path: "/student/dashboard" },
@@ -193,13 +192,13 @@ const Page = () => {
             </button>
           ))}
         </nav>
-  
+
         <div className="mt-auto flex items-center gap-2 text-xs text-cyan-300">
           <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
           System Online
         </div>
       </aside>
-  
+
       {/* ================= MAIN ================= */}
       <main
         className="
@@ -219,8 +218,8 @@ const Page = () => {
             Welcome to your course dashboard
           </p>
         </header>
-  
-        {/* INSTRUCTOR */}
+
+        {/* TEACHER CARD */}
         <section
           className="
             max-w-lg rounded-3xl p-6
@@ -232,7 +231,7 @@ const Page = () => {
           <h2 className="text-xl font-semibold mb-4 text-slate-100">
             Instructor
           </h2>
-  
+
           <div className="flex items-center gap-4">
             <div
               className="
@@ -245,18 +244,16 @@ const Page = () => {
             >
               {teacher.name.charAt(0)}
             </div>
-  
+
             <div>
               <p className="text-lg font-medium text-slate-100">
                 {teacher.name}
               </p>
-              <p className="text-slate-400 text-sm">
-                {teacher.email}
-              </p>
+              <p className="text-slate-400 text-sm">{teacher.email}</p>
             </div>
           </div>
         </section>
-  
+
         {/* HOMEWORK */}
         <section
           className="
@@ -274,14 +271,14 @@ const Page = () => {
               {filterred?.length || 0} assignments
             </span>
           </div>
-  
+
           <div className="grid gap-6">
             {filterred?.map((assignment) => {
               const isOverdue = new Date(assignment.dueDate) < new Date();
               const submission = homeworkSub.find(
                 (hw) => hw.homeworkId === assignment.id
               );
-  
+
               return (
                 <div
                   key={assignment.id}
@@ -298,12 +295,12 @@ const Page = () => {
                       isOverdue ? "bg-red-500" : "bg-cyan-400"
                     }`}
                   />
-  
+
                   <div className="flex justify-between items-start">
                     <h3 className="text-lg sm:text-xl font-semibold text-slate-100">
                       {assignment.title}
                     </h3>
-  
+
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
                         isOverdue
@@ -314,17 +311,17 @@ const Page = () => {
                       {isOverdue ? "Overdue" : "Active"}
                     </span>
                   </div>
-  
+
                   <p className="text-slate-400 mt-3 leading-relaxed">
                     {assignment.description}
                   </p>
-  
+
                   <div className="flex items-center justify-between mt-6 text-sm">
                     <span className="text-slate-400">
                       📅 Due:{" "}
                       {new Date(assignment.dueDate).toLocaleDateString()}
                     </span>
-  
+
                     {submission ? (
                       submission.status === "CHECKED" ? (
                         <span className="px-3 py-1 rounded-full bg-emerald-400/20 text-emerald-300 font-semibold">
@@ -340,10 +337,10 @@ const Page = () => {
                             }
                             className="px-4 py-2 rounded-xl text-sm bg-white/10 text-slate-200 hover:bg-white/20 transition"
                           >
-                             Edit
+                            Edit
                           </button>
                           <span className="px-3 py-1 rounded-full bg-yellow-400/20 text-yellow-300 font-semibold">
-                             Reviewing
+                            Reviewing
                           </span>
                         </div>
                       )
@@ -371,7 +368,7 @@ const Page = () => {
           </div>
         </section>
       </main>
-  
+
       {/* ================= MOBILE BOTTOM NAV ================= */}
       <nav
         className="
@@ -393,7 +390,7 @@ const Page = () => {
             <span className="text-lg">🏠</span>
             <span className="text-[11px]">Home</span>
           </button>
-  
+
           <button
             onClick={() => router.push(`/student/classroom/${user?.classId}`)}
             className="flex flex-col items-center gap-1 text-cyan-300"
@@ -401,7 +398,7 @@ const Page = () => {
             <span className="text-lg">📚</span>
             <span className="text-[11px]">Homework</span>
           </button>
-  
+
           <button
             onClick={() => router.push(`/student/profile`)}
             className="flex flex-col items-center gap-1 text-slate-300 hover:text-cyan-300 transition"
@@ -413,7 +410,5 @@ const Page = () => {
       </nav>
     </div>
   );
-  
-  
 };
 export default Page;

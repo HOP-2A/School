@@ -3,8 +3,9 @@
 import Sidebar from "@/app/_component/SideBar";
 import ClassesCard from "@/app/_component/TeacherClassesCards";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 type TeacherType = {
   id: string;
@@ -54,11 +55,15 @@ const Page = () => {
   const [classes, setClasses] = useState<classesType>();
   const [teacher, setTeacher] = useState<TeacherType>();
   const [subject, setSubject] = useState<SubjectType>();
-  const { user, isLoaded } = useUser();
+  const { isLoaded } = useUser();
+  const [selectedDay, setSelectedDay] = useState("All Days");
+
+  const { user: clerkUser } = useUser();
+  const { user, loading } = useAuth(clerkUser?.id);
 
   useEffect(() => {
     const getClasses = async () => {
-      if (!isLoaded || !user) return;
+      if (!isLoaded || !user || loading) return;
 
       const res = await fetch("/api/teacher/class", {
         method: "POST",
@@ -72,12 +77,11 @@ const Page = () => {
 
       if (res.ok) {
         const jsonTeacher = await res.json();
-        console.log(jsonTeacher, "gg");
         setTeacher(jsonTeacher.teacher);
         setClasses(jsonTeacher.teacher.teacherClasses);
         setSubject(jsonTeacher.subject);
       } else {
-        console.log("Failed to fetch classes");
+        toast.error("Failed to fetch classes");
       }
     };
 

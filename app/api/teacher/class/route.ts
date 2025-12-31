@@ -1,19 +1,5 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-type DecodedTokenType = {
-  data: {
-    id: string;
-    name: string;
-    teacherId: string;
-    password: string;
-    email: string;
-    classes: string[];
-    subject: {
-      id: string;
-      subjectNmae: string;
-    };
-  };
-};
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -39,7 +25,6 @@ export async function POST(req: NextRequest) {
         },
       },
     },
-    
   });
 
   const subject = await prisma.subject.findFirst({
