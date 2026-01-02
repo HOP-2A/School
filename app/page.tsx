@@ -20,7 +20,7 @@ export default function HomePage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
 
-  // Redirect logged-in users
+
   useEffect(() => {
     if (isLoaded && user) {
       router.push("/student/dashboard");
