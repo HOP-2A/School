@@ -2,10 +2,12 @@
 import { Input } from "@/components/ui/input";
 import HeaderPart from "../_component/Header";
 import { Button } from "@/components/ui/button";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+  const router = useRouter()
   const [inputs, setInputs] = useState({
     firstname: "",
     password: "",
@@ -42,6 +44,7 @@ const Home = () => {
 
     if (res.ok) {
       toast.success("Successfully created user");
+      router.push("/student/dashboard");
     }
   };
 
