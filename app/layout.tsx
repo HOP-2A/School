@@ -39,10 +39,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+    signInForceRedirectUrl="/student/dashboard"
+    signUpForceRedirectUrl="/student/dashboard">
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`
+            ${geistSans.variable} ${geistMono.variable}
+            antialiased
+            min-h-screen
+            bg-gradient-to-br
+            from-[#0B1020]
+            via-[#0F172A]
+            to-black
+            text-slate-200
+          `}
         >
           <header className="flex justify-end items-center p-4 gap-4 h-16">
             <SignedOut>
