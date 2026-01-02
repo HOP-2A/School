@@ -40,105 +40,149 @@ const Page = () => {
     Classes();
   }, []);
   return (
-    <div className="flex-1 p-10">
-      <h2 className="text-3xl font-bold mb-6">Control</h2>
-
+    <div className="flex-1 px-6 sm:px-10 py-8 space-y-10">
+  
+      {/* ================= CONTROL ================= */}
+      <h2 className="text-3xl font-bold tracking-tight text-white">
+        Control
+      </h2>
+  
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  
+        {/* Manage Classes */}
         <div
           onClick={() => router.push("/admin/management")}
-          className="bg-white p-6 rounded-2xl shadow cursor-pointer hover:shadow-xl transition border border-gray-200"
+          className="
+            cursor-pointer
+            rounded-2xl p-6
+            bg-white/10 backdrop-blur-xl
+            border border-white/20
+            shadow-[0_0_30px_rgba(99,102,241,0.2)]
+            hover:shadow-[0_0_50px_rgba(99,102,241,0.35)]
+            transition
+          "
         >
-          <h3 className="text-xl font-semibold">Manage Classes</h3>
-          <p className="text-gray-500 mt-2">
+          <h3 className="text-xl font-semibold text-white">
+            Manage Classes
+          </h3>
+          <p className="text-slate-400 mt-2">
             Click to add students to classes →
           </p>
         </div>
+  
+        {/* Teacher Schedule */}
         <div
           onClick={() => router.push("/admin/teacher-schedule")}
-          className="bg-white p-6 rounded-2xl shadow cursor-pointer hover:shadow-xl transition border border-gray-200 "
+          className="
+            cursor-pointer
+            rounded-2xl p-6
+            bg-white/10 backdrop-blur-xl
+            border border-white/20
+            shadow-[0_0_30px_rgba(99,102,241,0.2)]
+            hover:shadow-[0_0_50px_rgba(99,102,241,0.35)]
+            transition
+          "
         >
-          <h3 className="text-xl font-semibold">Teacher Schedule</h3>
-          <p className="text-gray-500 mt-2">
+          <h3 className="text-xl font-semibold text-white">
+            Teacher Schedule
+          </h3>
+          <p className="text-slate-400 mt-2">
             Click to manage teacher schedules →
           </p>
         </div>
+  
+        {/* Create Class */}
         <button
-          onClick={() => {
-            push("/admin/addClass");
-          }}
+          onClick={() => push("/admin/addClass")}
           className="
-        w-full max-w-xs
-        aspect-[4/1.5]
-        bg-white
-        border border-gray-200
-        rounded-2xl
-        shadow
-        p-6
-        text-left
-        cursor-pointer
-        hover:shadow-xl transition
-      "
+            text-left
+            rounded-2xl p-6
+            bg-white/10 backdrop-blur-xl
+            border border-white/20
+            shadow-[0_0_30px_rgba(99,102,241,0.2)]
+            hover:shadow-[0_0_50px_rgba(99,102,241,0.35)]
+            transition
+          "
         >
-          <h3 className="text-lg font-semibold text-gray-900">Create Class</h3>
-          <p className="mt-1 text-sm text-gray-500">Click to add new class →</p>
+          <h3 className="text-lg font-semibold text-white">
+            Create Class
+          </h3>
+          <p className="mt-1 text-sm text-slate-400">
+            Click to add new class →
+          </p>
         </button>
+  
+        {/* Create Subject */}
         <button
-          onClick={() => {
-            push("/admin/addSubject");
-          }}
+          onClick={() => push("/admin/addSubject")}
           className="
-        w-full max-w-xs
-        aspect-[4/1.5]
-        bg-white
-        border border-gray-200
-        rounded-2xl
-        shadow
-        p-6
-        text-left
-        cursor-pointer
-        hover:shadow-xl transition
-      "
+            text-left
+            rounded-2xl p-6
+            bg-white/10 backdrop-blur-xl
+            border border-white/20
+            shadow-[0_0_30px_rgba(99,102,241,0.2)]
+            hover:shadow-[0_0_50px_rgba(99,102,241,0.35)]
+            transition
+          "
         >
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-lg font-semibold text-white">
             Create Subject
           </h3>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-slate-400">
             Click to add new subject →
           </p>
         </button>
       </div>
-
-      <h2 className="text-3xl font-bold mb-6 mt-8">Classes</h2>
-      <div className="my-6 max-w-4xl overflow-y-auto rounded-xl border border-gray-200">
-        <table className="w-full border-collapse bg-white">
-          <thead className="sticky top-0 bg-gray-50 z-10">
+  
+      {/* ================= CLASSES ================= */}
+      <h2 className="text-3xl font-bold tracking-tight text-white">
+        Classes
+      </h2>
+  
+      <div
+        className="
+          max-w-5xl
+          overflow-hidden
+          rounded-2xl
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          shadow-[0_0_40px_rgba(99,102,241,0.2)]
+        "
+      >
+        <table className="w-full border-collapse">
+          <thead className="bg-white/5">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase">
                 Class
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase">
                 Teacher
               </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase">
                 Students
               </th>
             </tr>
           </thead>
-
+  
           <tbody>
             {classes?.map((cls) => (
               <tr
                 key={cls.id}
                 onClick={() => push(`/admin/classes/${cls.id}`)}
-                className="cursor-pointer border-b border-gray-200 hover:bg-gray-50 transition"
+                className="
+                  cursor-pointer
+                  border-t border-white/10
+                  hover:bg-white/5
+                  transition
+                "
               >
-                <td className="px-6 py-2 text-sm font-medium text-gray-900">
+                <td className="px-6 py-3 text-sm font-medium text-white">
                   {cls.name}
                 </td>
-                <td className="px-6 py-2 text-sm text-gray-600">
-                  {cls.teacher ? cls.teacher.name : "no homeroom teacher"}
+                <td className="px-6 py-3 text-sm text-slate-400">
+                  {cls.teacher ? cls.teacher.name : "No homeroom teacher"}
                 </td>
-                <td className="px-6 py-2 text-sm text-gray-600">
+                <td className="px-6 py-3 text-sm text-slate-400">
                   {cls.students.length}
                 </td>
               </tr>
@@ -148,5 +192,6 @@ const Page = () => {
       </div>
     </div>
   );
+  
 };
 export default Page;
