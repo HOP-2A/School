@@ -114,7 +114,6 @@ const Page = () => {
         "
       >
         <Sidebar
-    
           home={() => push("/teacher/main")}
           assignments={() => push("/teacher/assignments-public")}
           account={() => push("/teacher/account/")}
@@ -131,7 +130,7 @@ const Page = () => {
           space-y-10
         "
       >
-        {/* HEADER */}
+        {/* ================= HEADER ================= */}
         <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
@@ -142,20 +141,40 @@ const Page = () => {
             </p>
           </div>
   
-          <div
-            className="
-              self-start sm:self-auto
-              px-5 py-3 rounded-2xl
-              bg-white/10 backdrop-blur-xl
-              border border-white/20
-              text-sm text-slate-300
-            "
-          >
-            Academic Year · 2025
+          <div className="flex items-center gap-3 self-start sm:self-auto">
+            {/* ===== Teacher Schedule Button ===== */}
+            <button
+              onClick={() => push("/teacher/teacher-schedule")}
+              className="
+                px-5 py-3 rounded-2xl
+                bg-indigo-500/20
+                text-indigo-300
+                border border-indigo-400/30
+                backdrop-blur-xl
+                hover:bg-indigo-500/30
+                hover:text-white
+                transition
+                shadow-[0_0_30px_rgba(99,102,241,0.35)]
+              "
+            >
+              📅 Teacher Schedule
+            </button>
+  
+            {/* ===== Academic Year Badge ===== */}
+            <div
+              className="
+                px-5 py-3 rounded-2xl
+                bg-white/10 backdrop-blur-xl
+                border border-white/20
+                text-sm text-slate-300
+              "
+            >
+              Academic Year · 2025
+            </div>
           </div>
         </header>
   
-        {/* CLASSES */}
+        {/* ================= CLASSES ================= */}
         <section
           className="
             rounded-3xl p-6 sm:p-8
@@ -202,6 +221,7 @@ const Page = () => {
       </main>
     </div>
   );
+  
   
   
 }  

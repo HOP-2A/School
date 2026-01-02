@@ -160,191 +160,261 @@ const Page = () => {
   };
 
   return (
-    <div>
-      <div className="p-6 max-w-5xl">
-        <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wide ml-1 mb-8">
-            Class: {classData?.name}
-          </h2>
-
-          {classData?.teacher ? (
-            <div className="flex items-center bg-gray-50 rounded-lg p-4 px-10 text-sm text-gray-700 gap-10">
-              <div className="mr-6">
-                <span className="font-medium">Homeroom Teacher :</span>{" "}
-                {classData?.teacher.name}
-              </div>
-              <div className="mr-6">
-                <span className="font-medium">Email :</span>{" "}
-                {classData?.teacher.email}
-              </div>
-              <Button
-                onClick={() => {
-                  DeleteClass();
-                }}
-                className="bg-gray-800 py-1 px-6 text-sm border text-white hover:text-red-500 hover:bg-white hover:border-red-500 font-bold"
-              >
-                Delete Class
-              </Button>
+    <div className="px-6 sm:px-10 py-8 max-w-6xl mx-auto space-y-10">
+  
+      {/* ================= CLASS HEADER ================= */}
+      <div className="space-y-4">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          Class: {classData?.name}
+        </h2>
+  
+        {classData?.teacher ? (
+          <div
+            className="
+              flex flex-wrap items-center gap-6
+              rounded-2xl
+              bg-white/10 backdrop-blur-xl
+              border border-white/20
+              p-6
+            "
+          >
+            <div className="text-slate-300">
+              <span className="font-medium text-white">Homeroom Teacher:</span>{" "}
+              {classData?.teacher.name}
             </div>
-          ) : (
-            <div>
-              <div className="flex items-center bg-gray-50 rounded-lg p-4 px-10 text-sm text-gray-700 gap-10">
-                {" "}
-                No homeroom teacher
-              </div>
-              <Button
-                onClick={() => {
-                  DeleteClass();
-                }}
-                className="bg-gray-800 text-sm border text-white hover:text-red-500 hover:bg-white hover:border-red-500 font-bold"
-              >
-                Delete Class
-              </Button>
+            <div className="text-slate-300">
+              <span className="font-medium text-white">Email:</span>{" "}
+              {classData?.teacher.email}
             </div>
-          )}
-        </div>
-        <div className="mb-8 overflow-x-auto rounded-xl border border-gray-200">
-          <div className="flex justify-between items-center bg-gray-50 px-6 py-3 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Students</h3>
-          </div>
-          <table className="w-full border-collapse bg-white">
-            <thead className="sticky top-0 bg-gray-50 z-10">
-              <tr>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Name
-                </th>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  ID
-                </th>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Email
-                </th>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Grade
-                </th>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {classData?.students.map((student) => (
-                <tr
-                  key={student.id}
-                  className="border-b border-gray-200 hover:bg-gray-50 transition"
-                >
-                  <td className="px-6 py-2 text-sm text-gray-900">
-                    {student.name}
-                  </td>
-                  <td className="px-6 py-2 text-sm text-gray-600">
-                    {student.id}
-                  </td>
-                  <td className="px-6 py-2 text-sm text-gray-600">
-                    {student.email}
-                  </td>
-                  <td className="px-6 py-2 text-sm text-gray-600">
-                    {classData?.name && classData?.name.match(/\d+/)
-                      ? classData?.name.match(/\d+/)![0]
-                      : "-"}
-                  </td>
-                  <td className="px-6 py-2 text-sm text-gray-600 flex gap-5">
-                    <button
-                      onClick={() => {
-                        StudentDelete(student.id);
-                      }}
-                      className="text-red-600 hover:underline"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="overflow-x-auto rounded-xl border border-gray-200">
-          <div className="flex justify-between items-center bg-gray-50 px-6 py-3 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Teachers</h3>
-          </div>
-          <table className="w-full border-collapse bg-white">
-            <thead className="sticky top-0 bg-gray-50 z-10">
-              <tr>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Name
-                </th>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  ID
-                </th>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Email
-                </th>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Subjects
-                </th>
-                <th className="px-6 py-2 text-left text-xs font-semibold text-gray-500 uppercase">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {teachersData?.map((teacher) => (
-                <tr
-                  key={teacher.teacherId}
-                  className="border-b border-gray-200 hover:bg-gray-50 transition"
-                >
-                  <td className="px-6 py-2 text-sm text-gray-900">
-                    {teacher?.Teacher?.name}
-                  </td>
-                  <td className="px-6 py-2 text-sm text-gray-600">
-                    {teacher?.teacherId}
-                  </td>
-                  <td className="px-6 py-2 text-sm text-gray-600">
-                    {teacher?.Teacher.email}
-                  </td>
-                  <td className="px-6 py-2 text-sm text-gray-600">
-                    {teacher?.Teacher?.subject?.subjectName}
-                  </td>
-                  <td className="px-6 py-2 text-sm text-gray-600 flex gap-5">
-                    <button
-                      onClick={() => {
-                        TeacherDelete(teacher?.teacherId, classData?.id!);
-                      }}
-                      className="text-red-600 hover:underline"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className=" p-3 w-90 flex gap-5">
-            <select
-              className="border rounded-lg px-3 py-2 text-sm bg-gray-50 w-70 h-10 items-center"
-              onChange={(e) => selected(e)}
+  
+            <Button
+              onClick={DeleteClass}
+              className="
+                ml-auto
+                px-6 py-2
+                rounded-xl
+                bg-red-500/20
+                border border-red-400/30
+                text-red-300
+                hover:bg-red-500/30
+                hover:text-white
+                transition
+              "
             >
-              <option value="">Select teacher</option>
-              {allTeachers?.map((teacher) => (
-                <option key={teacher?.id} value={teacher?.id}>
-                  {teacher?.name}
-                </option>
-              ))}
-            </select>
-            <div>
-              <Button
-                className="bg-gray-800 text-white rounded-xl"
-                onClick={() => {
-                  AddTeacher();
-                }}
-              >
-                Add
-              </Button>
-            </div>
+              Delete Class
+            </Button>
           </div>
+        ) : (
+          <div className="space-y-3">
+            <div
+              className="
+                rounded-2xl
+                bg-white/10 backdrop-blur-xl
+                border border-white/20
+                p-6
+                text-slate-400
+              "
+            >
+              No homeroom teacher
+            </div>
+  
+            <Button
+              onClick={DeleteClass}
+              className="
+                px-6 py-2
+                rounded-xl
+                bg-red-500/20
+                border border-red-400/30
+                text-red-300
+                hover:bg-red-500/30
+                hover:text-white
+                transition
+              "
+            >
+              Delete Class
+            </Button>
+          </div>
+        )}
+      </div>
+  
+      {/* ================= STUDENTS ================= */}
+      <div
+        className="
+          rounded-2xl
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          shadow-[0_0_40px_rgba(99,102,241,0.2)]
+          overflow-hidden
+        "
+      >
+        <div className="px-6 py-4 border-b border-white/10">
+          <h3 className="text-lg font-semibold text-white">Students</h3>
+        </div>
+  
+        <table className="w-full border-collapse">
+          <thead className="bg-white/5">
+            <tr>
+              {["Name", "ID", "Email", "Grade", "Actions"].map((h) => (
+                <th
+                  key={h}
+                  className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase"
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+  
+          <tbody>
+            {classData?.students.map((student) => (
+              <tr
+                key={student.id}
+                className="
+                  border-t border-white/10
+                  hover:bg-white/5
+                  transition
+                "
+              >
+                <td className="px-6 py-3 text-sm text-white">
+                  {student.name}
+                </td>
+                <td className="px-6 py-3 text-sm text-slate-400">
+                  {student.id}
+                </td>
+                <td className="px-6 py-3 text-sm text-slate-400">
+                  {student.email}
+                </td>
+                <td className="px-6 py-3 text-sm text-slate-400">
+                  {classData?.name && classData?.name.match(/\d+/)
+                    ? classData?.name.match(/\d+/)![0]
+                    : "-"}
+                </td>
+                <td className="px-6 py-3 text-sm">
+                  <button
+                    onClick={() => StudentDelete(student.id)}
+                    className="text-red-400 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+  
+      {/* ================= TEACHERS ================= */}
+      <div
+        className="
+          rounded-2xl
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          shadow-[0_0_40px_rgba(99,102,241,0.2)]
+          overflow-hidden
+        "
+      >
+        <div className="px-6 py-4 border-b border-white/10">
+          <h3 className="text-lg font-semibold text-white">Teachers</h3>
+        </div>
+  
+        <table className="w-full border-collapse">
+          <thead className="bg-white/5">
+            <tr>
+              {["Name", "ID", "Email", "Subjects", "Actions"].map((h) => (
+                <th
+                  key={h}
+                  className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase"
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+  
+          <tbody>
+            {teachersData?.map((teacher) => (
+              <tr
+                key={teacher.teacherId}
+                className="
+                  border-t border-white/10
+                  hover:bg-white/5
+                  transition
+                "
+              >
+                <td className="px-6 py-3 text-sm text-white">
+                  {teacher?.Teacher?.name}
+                </td>
+                <td className="px-6 py-3 text-sm text-slate-400">
+                  {teacher?.teacherId}
+                </td>
+                <td className="px-6 py-3 text-sm text-slate-400">
+                  {teacher?.Teacher.email}
+                </td>
+                <td className="px-6 py-3 text-sm text-slate-400">
+                  {teacher?.Teacher?.subject?.subjectName}
+                </td>
+                <td className="px-6 py-3 text-sm">
+                  <button
+                    onClick={() =>
+                      TeacherDelete(teacher?.teacherId, classData?.id!)
+                    }
+                    className="text-red-400 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+  
+        {/* ADD TEACHER */}
+        <div className="flex flex-wrap gap-4 p-6 border-t border-white/10">
+          <select
+            onChange={(e) => selected(e)}
+            className="
+              w-64
+              rounded-xl
+              px-4 py-2
+              bg-white/10
+              border border-white/20
+              text-slate-200
+              text-sm
+              backdrop-blur-xl
+              focus:outline-none
+              focus:ring-2
+              focus:ring-indigo-500/50
+            "
+          >
+            <option value="">Select teacher</option>
+            {allTeachers?.map((teacher) => (
+              <option key={teacher?.id} value={teacher?.id}>
+                {teacher?.name}
+              </option>
+            ))}
+          </select>
+  
+          <Button
+            onClick={AddTeacher}
+            className="
+              px-6 py-2
+              rounded-xl
+              bg-indigo-500/30
+              border border-indigo-400/30
+              text-indigo-200
+              hover:bg-indigo-500/50
+              hover:text-white
+              transition
+              shadow-[0_0_20px_rgba(99,102,241,0.4)]
+            "
+          >
+            Add
+          </Button>
         </div>
       </div>
     </div>
   );
+  
 };
 
 export default Page;

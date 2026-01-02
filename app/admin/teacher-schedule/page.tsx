@@ -36,28 +36,66 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="p-8 space-y-6">
-      <h1 className="text-2xl font-bold">Choose a Teacher</h1>
-
+    <div className="px-6 sm:px-10 py-8 space-y-8">
+  
+      {/* HEADER */}
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-white">
+          Choose a Teacher
+        </h1>
+        <p className="text-slate-400 mt-2">
+          Select a teacher to view or manage their schedule
+        </p>
+      </div>
+  
+      {/* TEACHER GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {teachers.map((teacher) => (
           <div
             key={teacher.id}
-            onClick={() => router.push(`/admin/teacher-schedule/${teacher.id}`)}
-            className="cursor-pointer bg-white rounded-xl border p-5 shadow-sm hover:shadow-lg transition"
+            onClick={() =>
+              router.push(`/admin/teacher-schedule/${teacher.id}`)
+            }
+            className="
+              cursor-pointer
+              rounded-2xl p-5
+              bg-white/10 backdrop-blur-xl
+              border border-white/20
+              shadow-[0_0_30px_rgba(99,102,241,0.2)]
+              hover:shadow-[0_0_50px_rgba(99,102,241,0.35)]
+              hover:-translate-y-1
+              transition
+            "
           >
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600">
+            <div className="flex items-center gap-4">
+  
+              {/* AVATAR */}
+              <div
+                className="
+                  h-12 w-12
+                  rounded-full
+                  bg-indigo-500/30
+                  flex items-center justify-center
+                  font-bold text-indigo-200
+                  shadow-[0_0_15px_rgba(99,102,241,0.5)]
+                "
+              >
                 {teacher.name?.[0]?.toUpperCase()}
               </div>
-
+  
+              {/* INFO */}
               <div>
-                <div className="font-semibold text-lg">{teacher.name}</div>
-                <div className="text-sm text-gray-500">{teacher.email}</div>
+                <div className="font-semibold text-lg text-white">
+                  {teacher.name}
+                </div>
+                <div className="text-sm text-slate-400">
+                  {teacher.email}
+                </div>
               </div>
             </div>
-
-            <div className="mt-4 text-blue-600 text-sm font-medium">
+  
+            {/* ACTION */}
+            <div className="mt-5 text-indigo-300 text-sm font-medium">
               View Schedule →
             </div>
           </div>
@@ -65,5 +103,6 @@ const Page = () => {
       </div>
     </div>
   );
+  
 };
 export default Page;

@@ -55,36 +55,86 @@ const Page = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-4">Create New Class</h2>
-
-      <div className="bg-white shadow border rounded-xl overflow-hidden">
-        <div className="max-h-[500px] overflow-y-auto">
-          <table className="w-full">
-            <thead className="bg-gray-100 sticky top-0 z-10">
+    <div className="w-full max-w-5xl mx-auto px-6 py-8 space-y-6">
+  
+      {/* HEADER */}
+      <div>
+        <h2 className="text-3xl font-bold tracking-tight text-white">
+          Create New Class
+        </h2>
+        <p className="text-slate-400 mt-2">
+          Set up a new class and assign a homeroom teacher
+        </p>
+      </div>
+  
+      {/* TABLE CONTAINER */}
+      <div
+        className="
+          rounded-2xl
+          bg-white/10 backdrop-blur-xl
+          border border-white/20
+          shadow-[0_0_40px_rgba(99,102,241,0.25)]
+          overflow-hidden
+        "
+      >
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+  
+            {/* TABLE HEADER */}
+            <thead className="bg-white/5 backdrop-blur-xl">
               <tr>
-                <th className="p-3 text-left font-medium">Class name</th>
-                <th className="p-3 text-left font-medium">Homeroom teacher</th>
-                <th className="p-3 text-left font-medium">Action</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase">
+                  Class name
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase">
+                  Homeroom teacher
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase">
+                  Action
+                </th>
               </tr>
             </thead>
-
+  
+            {/* TABLE BODY */}
             <tbody>
-              <tr className="border-b">
-                <td className="p-3">
+              <tr className="border-t border-white/10">
+  
+                {/* CLASS NAME */}
+                <td className="px-6 py-4">
                   <Input
                     value={input}
-                    onChange={(e) => {
-                      handle(e);
-                    }}
-                    className="w-90 border-1"
+                    onChange={(e) => handle(e)}
                     placeholder="Enter class name..."
+                    className="
+                      w-full
+                      rounded-xl
+                      bg-white/10
+                      border border-white/20
+                      text-slate-200
+                      placeholder:text-slate-400
+                      focus:ring-2
+                      focus:ring-indigo-500/50
+                    "
                   />
                 </td>
-                <td className="p-3 w-90">
+  
+                {/* TEACHER SELECT */}
+                <td className="px-6 py-4">
                   <select
-                    className="border rounded-lg px-3 py-2 text-sm bg-gray-50 w-full"
                     onChange={(e) => selected(e)}
+                    className="
+                      w-full
+                      rounded-xl
+                      px-4 py-2
+                      bg-white/10
+                      border border-white/20
+                      text-slate-200
+                      text-sm
+                      backdrop-blur-xl
+                      focus:outline-none
+                      focus:ring-2
+                      focus:ring-indigo-500/50
+                    "
                   >
                     <option value="">Select teacher</option>
                     {allTeachers?.map((teacher) => (
@@ -94,16 +144,27 @@ const Page = () => {
                     ))}
                   </select>
                 </td>
-                <td className="p-3">
+  
+                {/* ACTION */}
+                <td className="px-6 py-4">
                   <Button
-                    onClick={() => {
-                      CreateClass();
-                    }}
-                    className="bg-gray-800 text-white rounded-xl"
+                    onClick={CreateClass}
+                    className="
+                      w-full
+                      rounded-xl
+                      bg-indigo-500/30
+                      border border-indigo-400/30
+                      text-indigo-200
+                      hover:bg-indigo-500/50
+                      hover:text-white
+                      transition
+                      shadow-[0_0_20px_rgba(99,102,241,0.4)]
+                    "
                   >
                     Create
                   </Button>
                 </td>
+  
               </tr>
             </tbody>
           </table>
@@ -111,6 +172,7 @@ const Page = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Page;
