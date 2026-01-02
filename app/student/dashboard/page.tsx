@@ -16,6 +16,7 @@ type User = {
 
 const Page = () => {
   const { user: clerkUser } = useUser();
+  const clerkuser = useUser()
     const { user } = useAuth(clerkUser?.id);
   const router = useRouter();
  
@@ -27,10 +28,15 @@ const Page = () => {
     const response = await res.json();
     setSubjects(response);
   };
+ 
   useEffect(() => {
     if(user){
-    displaySubject();}
-  }, [user]);
+    displaySubject()
+    }
+    if(clerkUser?.publicMetadata.role === "TEACHER"){
+      router.push("/teacher/main")
+    }
+  }, [user,clerkUser]);
 
 
 

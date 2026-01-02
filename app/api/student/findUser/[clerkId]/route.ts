@@ -9,5 +9,14 @@ export async function GET(
   const students = await prisma.student.findUnique({
     where: { clerkId },
   });
+  if(!students){
+    const teacher = await prisma.teacher.findUnique({
+      where: { clerkId },
+    });
+    return NextResponse.json(teacher);
+  }
+
   return NextResponse.json(students);
+
+
 }

@@ -62,31 +62,33 @@ const Page = () => {
   const { user: clerkUser } = useUser();
   const { user, loading } = useAuth(clerkUser?.id);
 
+  const getClasses = async () => {
+   
+
+    const res = await fetch("/api/teacher/class", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        teacherId: clerkUser?.id,
+      }),
+    });
+
+    if (res.ok) {
+      const jsonTeacher = await res.json();
+      console.log(jsonTeacher)
+      setTeacher(jsonTeacher.teacher);
+      setClasses(jsonTeacher.teacher.teacherClasses);
+      setSubject(jsonTeacher.subject);
+    } else {
+      toast.error("Failed to fetch classes");
+    }
+  };
+
   useEffect(() => {
-    const getClasses = async () => {
-      if (!isLoaded || !user || loading) return;
-
-      const res = await fetch("/api/teacher/class", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          teacherId: user.id,
-        }),
-      });
-
-      if (res.ok) {
-        const jsonTeacher = await res.json();
-        setTeacher(jsonTeacher.teacher);
-        setClasses(jsonTeacher.teacher.teacherClasses);
-        setSubject(jsonTeacher.subject);
-      } else {
-        toast.error("Failed to fetch classes");
-      }
-    };
-
-    getClasses();
+  if(user){
+    getClasses()}
   }, [isLoaded, user]);
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0F] via-[#111827] to-black text-slate-200">
