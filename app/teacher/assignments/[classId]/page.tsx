@@ -9,6 +9,7 @@ import { format, set } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
+import { useAuth } from "@/app/provider/AuthProvider";
 
 type TeacherType = {
   id: string;
@@ -51,8 +52,12 @@ type AssignmentsType = {
 const Page = () => {
   const { push } = useRouter();
   const params = useParams();
+  
   const classId = params.classId as string;
-  const { user, isLoaded } = useUser();
+    const { user: clerkUser ,isLoaded} = useUser();
+ 
+      const { user } = useAuth(clerkUser?.id);
+
   const [teacher, setTeacher] = useState<TeacherType>();
   const [assignments, setAssignments] = useState<AssignmentsType[]>();
   const [homework, setHomework] = useState<HomeworkType[]>();
@@ -110,7 +115,7 @@ const Page = () => {
         title: inputs.title,
         description: inputs.des,
         dueDate: RealSelectedDate,
-        teacherId: teacher?.id,
+        teacherId: user?.id,
       }),
     });
 
@@ -126,7 +131,7 @@ const Page = () => {
       method: "POST",
       body: JSON.stringify({
         classId: classId,
-        teacherId: teacher?.id,
+        teacherId: user?.id,
       }),
     });
 
@@ -139,7 +144,7 @@ const Page = () => {
   const RealSelectedDate = selectedDate
     ? format(selectedDate, "yyyy-MM-dd")
     : "";
-
+console.log(assignments)
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0A0A0F] via-[#111827] to-black text-slate-200">
     
