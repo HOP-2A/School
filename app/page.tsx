@@ -14,7 +14,7 @@ import {
 } from "@clerk/nextjs";
 export function ClientWrapper() {
   const router = useRouter();
-  return <Button onClick={() => router.push("/signup")}>sign up</Button>;
+  return <Button onClick={() => router.push("/signup")}>Sign up</Button>;
 }
 export default function HomePage() {
   const { user, isLoaded } = useUser();

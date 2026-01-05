@@ -43,8 +43,8 @@ const Home = () => {
     });
 
     if (res.ok) {
-      toast.success("Successfully created user");
-      router.push("/student/dashboard");
+      toast.success("Successfully created user, now please sign in");
+      router.push("https://stirred-mastiff-2.accounts.dev/sign-in")
     }
   };
 
