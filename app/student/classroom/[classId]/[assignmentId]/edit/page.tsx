@@ -39,6 +39,8 @@ const Page = () => {
   const [images, setImages] = useState<string[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [homework, setHomework] = useState<HomeworkData>();
+  const [isUploading, setIsUploading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const getSingleAssignment = async () => {
     const res = await fetch(`/api/homework/${assignmentId}`);
@@ -77,15 +79,21 @@ const Page = () => {
 
   const uploadPhoto = async () => {
     if (!file) return;
+
     try {
+      setIsUploading(true);
+
       const uploaded = await upload(file.name, file, {
         access: "public",
         handleUploadUrl: "/api/upload",
       });
+
       setImages((prev) => [...prev.slice(0, -1), uploaded.url]);
       setFile(null);
     } catch (err) {
       console.error("Upload failed:", err);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -94,21 +102,30 @@ const Page = () => {
   };
 
   const submitHomework = async () => {
-    const res = await fetch(
-      `/api/homework/homeworkSubmission/${assignmentId}/edit`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          studentId: user?.id,
-          description: inputValue,
-          content: images,
-          status: "NONSUBMITTED",
-        }),
+    try {
+      setIsSubmitting(true); // 🔄 submitting
+
+      const res = await fetch(
+        `/api/homework/homeworkSubmission/${assignmentId}/edit`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            studentId: user?.id,
+            description: inputValue,
+            content: images,
+            status: "NONSUBMITTED",
+          }),
+        }
+      );
+
+      if (res.ok) {
+        router.push("/student/dashboard");
       }
-    );
-    if (res.ok) {
-      router.push("/student/dashboard");
+    } catch (err) {
+      console.error("Submission failed:", err);
+    } finally {
+      setIsSubmitting(false); // ✅ done
     }
   };
 
@@ -121,8 +138,6 @@ const Page = () => {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200">
-  
-  
       <aside
         className="
           hidden md:flex
@@ -136,11 +151,14 @@ const Page = () => {
         <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
           LMS<span className="text-violet-400">.core</span>
         </h1>
-  
+
         <nav className="flex flex-col gap-2">
           {[
             { label: "🏠 Home", path: "/student/dashboard" },
-            { label: "📚 Classrooms", path: `/student/classroom/${user?.classId}` },
+            {
+              label: "📚 Classrooms",
+              path: `/student/classroom/${user?.classId}`,
+            },
             { label: "👤 Profile", path: "/student/profile" },
           ].map((item, i) => (
             <button
@@ -158,13 +176,12 @@ const Page = () => {
             </button>
           ))}
         </nav>
-  
+
         <div className="mt-auto flex items-center gap-2 text-xs text-cyan-300">
           <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
           System Online
         </div>
       </aside>
-  
 
       <main
         className="
@@ -184,7 +201,6 @@ const Page = () => {
             space-y-8
           "
         >
-    
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">
               {homework?.title || "Homework"}
@@ -196,7 +212,6 @@ const Page = () => {
                 : "—"}
             </p>
           </div>
-  
 
           <div className="space-y-3">
             <label className="text-sm font-medium text-cyan-300">
@@ -214,8 +229,7 @@ const Page = () => {
               "
             />
           </div>
-  
-    
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-cyan-300">
               Upload File (1 file only)
@@ -232,13 +246,12 @@ const Page = () => {
               "
             />
           </div>
-  
- 
+
           <div className="flex flex-wrap gap-4">
             {images.length === 0 && (
               <p className="text-slate-500">No images uploaded yet.</p>
             )}
-  
+
             {images.map((img, index) => (
               <div key={index} className="relative group">
                 <img
@@ -265,40 +278,43 @@ const Page = () => {
               </div>
             ))}
           </div>
-  
 
           <div className="flex justify-end gap-3 pt-6">
             {file && (
               <button
                 onClick={uploadPhoto}
-                className="px-4 py-2 rounded-xl bg-green-500/80 text-white hover:bg-green-600 transition"
+                disabled={isUploading}
+                className={`px-4 py-2 rounded-xl text-white transition ${
+                  isUploading
+                    ? "bg-gray-500/60 cursor-not-allowed"
+                    : "bg-green-500/80 hover:bg-green-600"
+                }`}
               >
-                Upload Photo
+                {isUploading ? "Uploading..." : "Upload Photo"}
               </button>
             )}
-  
+
             <button
               onClick={() => router.push("/student/dashboard")}
               className="px-6 py-2 rounded-xl bg-white/10 text-slate-200 hover:bg-white/20 transition"
             >
               Cancel
             </button>
-  
+
             <button
               onClick={submitHomework}
-              disabled={images.length === 0}
+              disabled={images.length === 0 || isSubmitting}
               className={`px-6 py-2 rounded-xl text-white transition ${
-                images.length === 0
+                images.length === 0 || isSubmitting
                   ? "bg-gray-500/40 cursor-not-allowed"
                   : "bg-cyan-500 hover:bg-cyan-600"
               }`}
             >
-              Edit Homework
+              {isSubmitting ? "Editing..." : "Edit Homework"}
             </button>
           </div>
         </div>
       </main>
-  
 
       <nav
         className="
@@ -320,7 +336,7 @@ const Page = () => {
             <span className="text-lg">🏠</span>
             <span className="text-[11px]">Home</span>
           </button>
-  
+
           <button
             onClick={() => router.push(`/student/classroom/${user?.classId}`)}
             className="flex flex-col items-center gap-1 text-cyan-300"
@@ -328,7 +344,7 @@ const Page = () => {
             <span className="text-lg">📚</span>
             <span className="text-[11px]">Class</span>
           </button>
-  
+
           <button
             onClick={() => router.push("/student/profile")}
             className="flex flex-col items-center gap-1 text-slate-300 hover:text-cyan-300 transition"
@@ -340,8 +356,6 @@ const Page = () => {
       </nav>
     </div>
   );
-  
-
 };
 
 export default Page;

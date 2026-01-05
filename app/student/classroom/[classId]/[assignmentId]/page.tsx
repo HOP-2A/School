@@ -17,6 +17,8 @@ const Page = () => {
   const [homework, setHomework] = useState<Homework>();
   const [images, setImages] = useState<string[]>([]);
   const [file, setFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const params = useParams();
   const { user: clerkUser } = useUser();
@@ -43,35 +45,55 @@ const Page = () => {
 
   const uploadPhoto = async () => {
     if (!file) return;
+
     try {
+      setIsUploading(true); // 🔄 start uploading
+
       const uploaded = await upload(file.name, file, {
         access: "public",
         handleUploadUrl: "/api/upload",
       });
+
       setImages((prev) => [...prev.slice(0, -1), uploaded.url]);
-      setFile(null);
-       toast.success("Photo uploaded successfully  ")
+      setFile(null); // 👈 button will disappear
+      toast.success("Photo uploaded successfully");
     } catch (err) {
       console.error("Upload failed:", err);
+      toast.error("Upload failed");
+    } finally {
+      setIsUploading(false);
     }
   };
 
   const submitMyHomework = async () => {
-    const res = await fetch(
-      `/api/homework/homeworkSubmission/${assignmentId}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          studentId: user?.id,
-          description: inputValue,
-          content: images,
-          status: "NONSUBMITTED",
-        }),
+    try {
+      setIsSubmitting(true);
+
+      const res = await fetch(
+        `/api/homework/homeworkSubmission/${assignmentId}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            studentId: user?.id,
+            description: inputValue,
+            content: images,
+            status: "NONSUBMITTED",
+          }),
+        }
+      );
+
+      if (res.ok) {
+        toast.success("Homework submitted successfully");
+        router.push("/student/dashboard");
+      } else {
+        toast.error("Submission failed");
       }
-    );
-    if (res.ok) {
-      router.push("/student/dashboard");
+    } catch (error) {
+      console.error(error);
+      toast.error("Submission failed");
+    } finally {
+      setIsSubmitting(false); // ✅ done submitting
     }
   };
 
@@ -85,7 +107,6 @@ const Page = () => {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200">
-  
       {/* ================= DESKTOP SIDEBAR ================= */}
       <aside
         className="
@@ -100,7 +121,7 @@ const Page = () => {
         <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
           LMS<span className="text-violet-400">.core</span>
         </h1>
-  
+
         <nav className="flex flex-col gap-2">
           <button
             onClick={() => router.push(`/student/dashboard`)}
@@ -108,14 +129,14 @@ const Page = () => {
           >
             🏠 Home
           </button>
-  
+
           <button
             onClick={() => router.push(`/student/classroom/${user?.classId}`)}
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 transition"
           >
             📚 Classrooms
           </button>
-  
+
           <button
             onClick={() => router.push(`/student/profile`)}
             className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-cyan-300 hover:bg-white/10 transition"
@@ -123,13 +144,13 @@ const Page = () => {
             👤 Profile
           </button>
         </nav>
-  
+
         <div className="mt-auto flex items-center gap-2 text-xs text-cyan-300">
           <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
           System Online
         </div>
       </aside>
-  
+
       {/* ================= MAIN ================= */}
       <main
         className="
@@ -161,14 +182,14 @@ const Page = () => {
                 : "—"}
             </p>
           </div>
-  
+
           {/* DESCRIPTION */}
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
             <p className="text-slate-300">
               {homework?.description || "No description"}
             </p>
           </div>
-  
+
           {/* ANSWER */}
           <div className="space-y-3">
             <label className="text-sm text-cyan-300 font-medium">
@@ -187,7 +208,7 @@ const Page = () => {
               onChange={(e) => setInputValue(e.target.value)}
             />
           </div>
-  
+
           {/* FILE */}
           <div className="space-y-3">
             <label className="text-sm text-cyan-300 font-medium">
@@ -205,7 +226,7 @@ const Page = () => {
               "
             />
           </div>
-  
+
           {/* IMAGES */}
           <div className="flex flex-wrap gap-6">
             {images.map((img, index) => (
@@ -232,40 +253,45 @@ const Page = () => {
               </div>
             ))}
           </div>
-  
+
           {/* ACTIONS */}
           <div className="flex justify-end gap-4 pt-6">
             {file && (
               <button
                 onClick={uploadPhoto}
-                className="px-5 py-2 rounded-xl bg-emerald-500/80 text-white hover:bg-emerald-500 transition"
+                disabled={isUploading}
+                className={`px-5 py-2 rounded-xl text-white transition ${
+                  isUploading
+                    ? "bg-gray-500/60 cursor-not-allowed"
+                    : "bg-emerald-500/80 hover:bg-emerald-500"
+                }`}
               >
-                Upload Photo
+                {isUploading ? "Uploading..." : "Upload Photo"}
               </button>
             )}
-  
+
             <button
               onClick={() => router.push("/student/dashboard")}
               className="px-6 py-2 rounded-xl bg-white/10 text-slate-300 hover:bg-white/20 transition"
             >
               Cancel
             </button>
-  
+
             <button
               onClick={submitMyHomework}
-              disabled={images.length === 0}
+              disabled={images.length === 0 || isSubmitting}
               className={`px-6 py-2 rounded-xl text-white transition ${
-                images.length === 0
+                images.length === 0 || isSubmitting
                   ? "bg-gray-500/40 cursor-not-allowed"
                   : "bg-cyan-500 hover:bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.5)]"
               }`}
             >
-              Submit Homework
+              {isSubmitting ? "Submitting..." : "Submit Homework"}
             </button>
           </div>
         </div>
       </main>
-  
+
       {/* ================= MOBILE BOTTOM NAV ================= */}
       <nav
         className="
@@ -287,7 +313,7 @@ const Page = () => {
             <span className="text-lg">🏠</span>
             <span className="text-[11px]">Home</span>
           </button>
-  
+
           <button
             onClick={() => router.push(`/student/classroom/${user?.classId}`)}
             className="flex flex-col items-center gap-1 text-cyan-300"
@@ -295,7 +321,7 @@ const Page = () => {
             <span className="text-lg">📚</span>
             <span className="text-[11px]">Class</span>
           </button>
-  
+
           <button
             onClick={() => router.push(`/student/profile`)}
             className="flex flex-col items-center gap-1 text-slate-300 hover:text-cyan-300 transition"
@@ -307,7 +333,6 @@ const Page = () => {
       </nav>
     </div>
   );
-  
 };
 
 export default Page;
