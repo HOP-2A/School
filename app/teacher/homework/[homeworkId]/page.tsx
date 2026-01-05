@@ -17,6 +17,7 @@ type SubmissionType = {
   score: number | null;
   studentId: string;
   submittedAt: string;
+  status:string
   student: {
     classId: string;
     clerkId: string;
@@ -225,9 +226,11 @@ const Page = () => {
                       <p className="mt-2 sm:mt-3 font-medium text-white text-xs sm:text-sm">
                         {submitted.student.name}
                       </p>
+                      {}
                       <p className="text-[10px] sm:text-xs text-emerald-400 mt-1">
                         Submitted
                       </p>
+                      <div>{submitted.status}</div>
                     </div>
                   ))}
                 </div>
