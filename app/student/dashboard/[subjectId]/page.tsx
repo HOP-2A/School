@@ -57,7 +57,7 @@ const Page = () => {
   const subjectId = params.subjectId;
   const getSubjectInfo = async () => {
     const res = await fetch(
-      `http://localhost:3000/api/subject/unique/${subjectId}`,
+      `/api/subject/unique/${subjectId}`,
       {
         method: "GET",
       }
