@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
 
   await prisma.class.create({
     data: {
-      id: classGiven,
+   
       name: classGiven,
       teacherId: teacherId,
     },

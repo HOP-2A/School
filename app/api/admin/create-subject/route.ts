@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
 
   await prisma.subject.create({
     data: {
-      id: classGiven,
+
       subjectName: classGiven,
       teacherId: teacherId,
     },
