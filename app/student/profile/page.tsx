@@ -30,7 +30,7 @@ return (
       "
     >
       <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
-        LMS<span className="text-violet-400">.core</span>
+        NEXA<span className="text-violet-400"></span>
       </h1>
 
       <nav className="flex flex-col gap-2">

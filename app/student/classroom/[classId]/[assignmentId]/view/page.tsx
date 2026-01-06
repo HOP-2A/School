@@ -25,6 +25,7 @@ type HomeworkData = {
   title?: string;
   dueDate?: string;
   description?: string;
+  content:string
 };
 
 type HomeworkSub = {
@@ -101,8 +102,7 @@ const getSingleSubmission = async ()=>{
   console.log(homeworkSub)
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-[#0B1020] via-[#0F172A] to-black text-slate-200">
-  
-   
+      {/* ================= DESKTOP SIDEBAR ================= */}
       <aside
         className="
           hidden md:flex
@@ -114,7 +114,7 @@ const getSingleSubmission = async ()=>{
         "
       >
         <h1 className="text-3xl font-extrabold tracking-tight text-cyan-300">
-          LMS<span className="text-violet-400">.core</span>
+          NEXA<span className="text-violet-400"></span>
         </h1>
   
         <nav className="flex flex-col gap-2 text-sm font-medium">
@@ -146,15 +146,8 @@ const getSingleSubmission = async ()=>{
         </div>
       </aside>
   
-    
-      <main
-        className="
-          flex-1
-          p-4 sm:p-6 md:p-10
-          pb-32 md:pb-10
-          overflow-y-auto
-        "
-      >
+      {/* ================= MAIN ================= */}
+      <main className="flex-1 p-4 sm:p-6 md:p-10 pb-32 md:pb-10 overflow-y-auto">
         <div
           className="
             max-w-3xl mx-auto
@@ -165,7 +158,7 @@ const getSingleSubmission = async ()=>{
             space-y-8
           "
         >
-        
+          {/* TITLE */}
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">
               {homework?.title || homeworkData?.title || "Homework"}
@@ -178,7 +171,36 @@ const getSingleSubmission = async ()=>{
             </p>
           </div>
   
-
+          {/* ================= TEACHER CONTENT (NEW) ================= */}
+          {homework?.content && (
+            <div className="space-y-4">
+              <h2 className="text-sm font-semibold text-cyan-300">
+                Teacher Materials
+              </h2>
+  
+              <div className="flex flex-wrap gap-4">
+                {(Array.isArray(homework.content)
+                  ? homework.content
+                  : [homework.content]
+                ).map((img: string, index: number) => (
+                  <img
+                    key={index}
+                    src={img}
+                    onClick={() => setOpenImage(img)}
+                    className="
+                      h-[240px] w-[240px] sm:h-[280px] sm:w-[280px]
+                      rounded-2xl object-cover cursor-pointer
+                      border border-white/20
+                      hover:shadow-[0_0_30px_rgba(34,211,238,0.45)]
+                      transition
+                    "
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+  
+          {/* ================= STUDENT ANSWER ================= */}
           <div className="space-y-3">
             <label className="text-sm font-medium text-cyan-300">
               Your Answer
@@ -192,7 +214,7 @@ const getSingleSubmission = async ()=>{
             </div>
           </div>
   
-    
+          {/* ================= STUDENT IMAGES ================= */}
           <div className="flex flex-wrap gap-4">
             {images.length === 0 && (
               <p className="text-slate-500">No images uploaded.</p>
@@ -214,7 +236,7 @@ const getSingleSubmission = async ()=>{
             ))}
           </div>
   
-      
+          {/* ================= TEACHER EVALUATION ================= */}
           {homeworkSub && (
             <div className="rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 p-6 space-y-5 shadow-[0_0_30px_rgba(34,211,238,0.15)]">
               <h2 className="text-lg font-semibold text-cyan-300">
@@ -249,7 +271,7 @@ const getSingleSubmission = async ()=>{
             </div>
           )}
   
-   
+          {/* ACTION */}
           <div className="flex justify-end pt-4">
             <button
               onClick={() => router.push(`/student/classroom/${user?.classId}`)}
@@ -260,7 +282,8 @@ const getSingleSubmission = async ()=>{
           </div>
         </div>
       </main>
- 
+  
+      {/* ================= IMAGE MODAL (REUSED) ================= */}
       {openImage && (
         <div
           onClick={() => setOpenImage(null)}
@@ -280,11 +303,10 @@ const getSingleSubmission = async ()=>{
         </div>
       )}
   
-
+      {/* ================= MOBILE NAV ================= */}
       <nav
         className="
-          md:hidden
-          fixed bottom-4 left-1/2 -translate-x-1/2 z-40
+          md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40
           w-[92%] max-w-md
           bg-white/10 backdrop-blur-xl
           border border-white/20
@@ -321,6 +343,7 @@ const getSingleSubmission = async ()=>{
       </nav>
     </div>
   );
+  
   
 };
 
