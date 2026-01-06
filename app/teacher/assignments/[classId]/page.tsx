@@ -5,325 +5,269 @@ import { Input } from "@/components/ui/input";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { useAuth } from "@/app/provider/AuthProvider";
+import { upload } from "@vercel/blob/client";
 
-type TeacherType = {
-  id: string;
-  name: string;
-  email: string;
-  teacherClasses: {
-    classId: string;
-    teacherId: string;
-    Class: {
-      teacherId: string;
-      id: string;
-      name: string;
-      students: {
-        classId: string;
-        name: string;
-        id: string;
-        email: string;
-      }[];
-    };
-  }[];
-};
-type HomeworkType = {
-  id: string;
-  title: string;
-  description: string;
-  dueDate: string;
-  createdAt: string;
-  teacherId: string;
-};
 type AssignmentsType = {
-  classId: string;
-  createdAt: string;
+  id: string;
+  title: string;
   description: string;
   dueDate: string;
-  id: string;
-  teacherId: string;
-  title: string;
 };
 
 const Page = () => {
-  const { push } = useRouter();
+  const router = useRouter();
   const params = useParams();
-  
   const classId = params.classId as string;
-    const { user: clerkUser ,isLoaded} = useUser();
- 
-      const { user } = useAuth(clerkUser?.id);
 
-  const [teacher, setTeacher] = useState<TeacherType>();
-  const [assignments, setAssignments] = useState<AssignmentsType[]>();
-  const [homework, setHomework] = useState<HomeworkType[]>();
+  const { user: clerkUser, isLoaded } = useUser();
+  const { user } = useAuth(clerkUser?.id);
+
+  const [assignments, setAssignments] = useState<AssignmentsType[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+
   const [inputs, setInputs] = useState({
     title: "",
     des: "",
-    date: "",
     points: "",
   });
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date()
-  );
+
+  const [images, setImages] = useState<string[]>([]);
+  const [file, setFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  /* ---------------- INPUT HANDLERS ---------------- */
 
   const handleInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setInputs((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  useEffect(() => {
-    const getClasses = async () => {
-      if (!isLoaded || !user) return;
+  const fetchFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
 
-      const res = await fetch("/api/teacher/class", {
+    setFile(selectedFile);
+    const previewUrl = URL.createObjectURL(selectedFile);
+    setImages((prev) => [...prev, previewUrl]);
+  };
+
+  const deleteImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  /* ---------------- IMAGE UPLOAD ---------------- */
+
+  const uploadPhoto = async () => {
+    if (!file) return;
+
+    try {
+      setIsUploading(true);
+
+      const uploaded = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+      });
+
+      setImages((prev) => [...prev.slice(0, -1), uploaded.url]);
+      setFile(null);
+      toast.success("Photo uploaded");
+    } catch (error) {
+      console.error(error);
+      toast.error("Upload failed");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  /* ---------------- ASSIGNMENTS ---------------- */
+
+  const RealSelectedDate = selectedDate
+    ? format(selectedDate, "yyyy-MM-dd")
+    : "";
+
+  const AddAssignment = async () => {
+    if (!user) return;
+
+    try {
+      setIsSubmitting(true);
+
+      const res = await fetch(`/api/teacher/assignments/${classId}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          title: inputs.title,
+          description: inputs.des,
+          dueDate: RealSelectedDate,
           teacherId: user.id,
+          content: images, // 👈 IMAGES SAVED HERE
         }),
       });
 
       if (res.ok) {
-        const jsonTeacher = await res.json();
-        setTeacher(jsonTeacher.teacher);
+        toast.success("Assignment added");
+        setInputs({ title: "", des: "", points: "" });
+        setImages([]);
+        GetAssignments();
       } else {
-        toast.error("Failed to fetch classes");
+        toast.error("Failed to add assignment");
       }
-    };
-
-    getClasses();
-    GetAssignments();
-  }, [isLoaded, user]);
-
-  const AddAssignment = async () => {
-    const res = await fetch(`/api/teacher/assignments/${classId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: inputs.title,
-        description: inputs.des,
-        dueDate: RealSelectedDate,
-        teacherId: user?.id,
-      }),
-    });
-
-    if (res.ok) {
-      toast.success("successfully added assignment");
-      setInputs({ title: "", des: "", date: "", points: "" });
-      GetAssignments();
+    } catch (error) {
+      console.error(error);
+      toast.error("Error adding assignment");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const GetAssignments = async () => {
     const res = await fetch("/api/teacher/assignments/bring", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        classId: classId,
+        classId,
         teacherId: user?.id,
       }),
     });
 
     if (res.ok) {
-      const JsonData = await res.json();
-      setAssignments(JsonData);
+      const data = await res.json();
+      setAssignments(data);
     }
   };
 
-  const RealSelectedDate = selectedDate
-    ? format(selectedDate, "yyyy-MM-dd")
-    : "";
-console.log(assignments)
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0A0A0F] via-[#111827] to-black text-slate-200">
-    
-        {/* ================= SIDEBAR ================= */}
-        <Sidebar
-          home={() => push("/teacher/main")}
-          assignments={() => push("/teacher/assignments-public")}
-          account={() => push("/teacher/account/")}
-        />
-    
-        {/* ================= MAIN ================= */}
-        <main
-          className="
-            md:ml-[18rem]
-            px-3 sm:px-6 md:px-10
-            py-5 sm:py-8
-            pb-32 md:pb-8
-            space-y-8 sm:space-y-10
-          "
-        >
-          {/* ================= HEADER ================= */}
-          <header className="flex flex-col gap-2">
-            <h2 className="text-xl sm:text-3xl font-bold tracking-tight text-white">
-              Class · {classId}
-            </h2>
-          </header>
-    
-          {/* ================= CONTENT GRID ================= */}
-          <section className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-8 xl:gap-10">
-    
-            {/* ================= ADD ASSIGNMENT ================= */}
-            <div
-              className="
-                rounded-2xl sm:rounded-3xl
-                p-5 sm:p-8
-                bg-white/10 backdrop-blur-2xl
-                border border-white/20
-                shadow-[0_0_40px_rgba(99,102,241,0.18)]
-                space-y-5 sm:space-y-6
-              "
-            >
-              <h3 className="text-lg sm:text-xl font-semibold text-white">
-                Add Assignment
-              </h3>
-    
-              <Input
-                placeholder="Title..."
-                name="title"
-                value={inputs.title ?? ""}
-                onChange={handleInputs}
-                className="
-                  bg-white/10 border-white/20
-                  text-white placeholder:text-slate-400
-                  h-11 sm:h-10
-                "
-              />
-    
-              <Input
-                placeholder="Description..."
-                name="des"
-                value={inputs.des ?? ""}
-                onChange={handleInputs}
-                className="
-                  bg-white/10 border-white/20
-                  text-white placeholder:text-slate-400
-                  h-11 sm:h-10
-                "
-              />
-    
-              <Input
-                placeholder="Points..."
-                name="points"
-                value={inputs.points ?? ""}
-                onChange={handleInputs}
-                className="
-                  bg-white/10 border-white/20
-                  text-white placeholder:text-slate-400
-                  h-11 sm:h-10
-                "
-              />
-    
-              <div>
-                <p className="text-sm text-slate-300 mb-2">
-                  Pick a due date
-                </p>
-    
-                <Calendar
-                  className="
-                    w-full
-                    bg-white/10 text-white
-                    rounded-xl
-                    border border-white/20
-                    p-2 sm:p-0
-                  "
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                />
-    
-                {selectedDate && (
-                  <p className="text-xs sm:text-sm text-slate-400 mt-2">
-                    Due: {format(selectedDate, "yyyy-MM-dd")}
-                  </p>
-                )}
-              </div>
-    
-              <Button
-                onClick={AddAssignment}
-                className="
-                  w-full h-11 sm:h-10
-                  rounded-xl sm:rounded-2xl
-                  bg-indigo-500 hover:bg-indigo-600
-                  text-white font-semibold
-                  transition
-                "
-              >
-                Add Assignment
-              </Button>
-            </div>
-    
-            {/* ================= ASSIGNMENTS LIST ================= */}
-            <div
-              className="
-                rounded-2xl sm:rounded-3xl
-                p-5 sm:p-8
-                bg-white/10 backdrop-blur-2xl
-                border border-white/20
-                shadow-[0_0_40px_rgba(99,102,241,0.18)]
-              "
-            >
-              <h3 className="text-lg sm:text-xl font-semibold text-white mb-5 sm:mb-6">
-                Assignments
-              </h3>
-    
-              <div className="space-y-3 sm:space-y-4">
-                {assignments?.map((hw) => (
-                  <div
-                    key={hw.id}
-                    className="
-                      rounded-xl
-                      p-4
-                      bg-white/10
-                      border border-white/20
-                      hover:bg-white/15
-                      transition
-                    "
+  useEffect(() => {
+    if (isLoaded && user) GetAssignments();
+  }, [isLoaded, user]);
+
+  /* ---------------- UI ---------------- */
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0A0F] via-[#111827] to-black text-slate-200">
+      <Sidebar
+        home={() => router.push("/teacher/main")}
+        assignments={() => router.push("/teacher/assignments-public")}
+        account={() => router.push("/teacher/account")}
+      />
+
+      <main className="md:ml-[18rem] px-6 py-8 space-y-10">
+        <h1 className="text-3xl font-bold text-white">
+          Class · {classId}
+        </h1>
+
+        <section className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          {/* ---------------- ADD ASSIGNMENT ---------------- */}
+          <div className="rounded-3xl p-8 bg-white/10 backdrop-blur-xl border border-white/20 space-y-6">
+            <h2 className="text-xl font-semibold">Add Assignment</h2>
+
+            <Input
+              placeholder="Title"
+              name="title"
+              value={inputs.title}
+              onChange={handleInputs}
+              className="bg-white/10 border-white/20 text-white"
+            />
+
+            <Input
+              placeholder="Description"
+              name="des"
+              value={inputs.des}
+              onChange={handleInputs}
+              className="bg-white/10 border-white/20 text-white"
+            />
+
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={setSelectedDate}
+              className="bg-white/10 rounded-xl border border-white/20"
+            />
+
+            {/* FILE INPUT */}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={fetchFile}
+              className="block w-full text-sm text-slate-400
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-xl file:border-0
+                file:bg-indigo-500/20 file:text-indigo-300"
+            />
+
+            {/* IMAGE PREVIEW */}
+            <div className="flex flex-wrap gap-4">
+              {images.map((img, index) => (
+                <div
+                  key={index}
+                  className="relative group rounded-xl overflow-hidden border border-white/20"
+                >
+                  <img
+                    src={img}
+                    className="h-[160px] w-[160px] object-cover"
+                  />
+                  <button
+                    onClick={() => deleteImage(index)}
+                    className="absolute top-2 right-2 bg-red-500/80 text-white px-2 py-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition"
                   >
-                    <p className="font-semibold text-white">
-                      {hw.title}
-                    </p>
-    
-                    <p className="text-sm text-slate-400 mt-1">
-                      {hw.description}
-                    </p>
-    
-                    <Button
-                      onClick={() => push(`/teacher/homework/${hw.id}`)}
-                      className="
-                        mt-3
-                        w-full sm:w-auto
-                        px-4 py-2
-                        rounded-xl
-                        bg-white/10 hover:bg-white/20
-                        text-indigo-300 hover:text-white
-                        transition
-                      "
-                    >
-                      View
-                    </Button>
-                  </div>
-                ))}
-              </div>
+                    ✕
+                  </button>
+                </div>
+              ))}
             </div>
-    
-          </section>
-        </main>
-      </div>
-    );
-    
+
+            {file && (
+              <Button
+                onClick={uploadPhoto}
+                disabled={isUploading}
+                className="bg-emerald-500 hover:bg-emerald-600"
+              >
+                {isUploading ? "Uploading..." : "Upload Photo"}
+              </Button>
+            )}
+
+            <Button
+              onClick={AddAssignment}
+              disabled={isUploading || isSubmitting}
+              className="bg-indigo-500 hover:bg-indigo-600"
+            >
+              {isSubmitting ? "Submitting..." : "Add Assignment"}
+            </Button>
+          </div>
+
+          {/* ---------------- ASSIGNMENT LIST ---------------- */}
+          <div className="rounded-3xl p-8 bg-white/10 backdrop-blur-xl border border-white/20">
+            <h2 className="text-xl font-semibold mb-6">Assignments</h2>
+
+            <div className="space-y-4">
+              {assignments.map((hw) => (
+                <div
+                  key={hw.id}
+                  className="p-4 rounded-xl bg-white/10 border border-white/20"
+                >
+                  <p className="font-semibold">{hw.title}</p>
+                  <p className="text-sm text-slate-400">{hw.description}</p>
+
+                  <Button
+                    onClick={() =>
+                      router.push(`/teacher/homework/${hw.id}`)
+                    }
+                    className="mt-3 bg-white/10 hover:bg-white/20"
+                  >
+                    View
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
 };
 
 export default Page;

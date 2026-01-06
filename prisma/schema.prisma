@@ -61,6 +61,7 @@ model Homework {
   classId     String
   teacherId   String?
   points      Int?
+  content     String
   class       Class                @relation(fields: [classId], references: [id])
   teacher     Teacher?             @relation(fields: [teacherId], references: [id])
   submissions HomeworkSubmission[]
