@@ -106,6 +106,7 @@ const Page = () => {
           dueDate: RealSelectedDate,
           teacherId: user.id,
           content: images, // 👈 IMAGES SAVED HERE
+          points:inputs?.points
         }),
       });
 
@@ -180,7 +181,13 @@ const Page = () => {
               onChange={handleInputs}
               className="bg-white/10 border-white/20 text-white"
             />
-
+            <Input
+              placeholder="Points..."
+              name="points"
+              value={inputs.points}
+              onChange={(e) => handleInputs(e)}
+            />
+            <h2>Pick a due date:</h2>
             <Calendar
               mode="single"
               selected={selectedDate}
