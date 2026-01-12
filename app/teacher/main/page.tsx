@@ -63,8 +63,6 @@ const Page = () => {
   const { user, loading } = useAuth(clerkUser?.id);
 
   const getClasses = async () => {
-   
-
     const res = await fetch("/api/teacher/class", {
       method: "POST",
       headers: {
@@ -77,7 +75,7 @@ const Page = () => {
 
     if (res.ok) {
       const jsonTeacher = await res.json();
-      console.log(jsonTeacher)
+      console.log(jsonTeacher);
       setTeacher(jsonTeacher.teacher);
       setClasses(jsonTeacher.teacher.teacherClasses);
       setSubject(jsonTeacher.subject);
@@ -87,12 +85,12 @@ const Page = () => {
   };
 
   useEffect(() => {
-  if(user){
-    getClasses()}
+    if (user) {
+      getClasses();
+    }
   }, [isLoaded, user]);
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0F] via-[#111827] to-black text-slate-200">
-  
       {/* ================= DESKTOP SIDEBAR ================= */}
       <aside className="hidden md:block fixed left-4 top-4 bottom-4 w-64 z-50">
         <Sidebar
@@ -101,7 +99,7 @@ const Page = () => {
           account={() => push("/teacher/account/")}
         />
       </aside>
-  
+
       {/* ================= MOBILE BOTTOM BAR ================= */}
       <aside
         className="
@@ -119,7 +117,7 @@ const Page = () => {
           account={() => push("/teacher/account/")}
         />
       </aside>
-  
+
       {/* ================= MAIN ================= */}
       <main
         className="
@@ -140,7 +138,7 @@ const Page = () => {
               Monitor performance, students, and assignments
             </p>
           </div>
-  
+
           <div className="flex items-center gap-3 self-start sm:self-auto">
             {/* ===== Teacher Schedule Button ===== */}
             <button
@@ -159,7 +157,7 @@ const Page = () => {
             >
               📅 Teacher Schedule
             </button>
-  
+
             {/* ===== Academic Year Badge ===== */}
             <div
               className="
@@ -173,7 +171,7 @@ const Page = () => {
             </div>
           </div>
         </header>
-  
+
         {/* ================= CLASSES ================= */}
         <section
           className="
@@ -186,7 +184,7 @@ const Page = () => {
           <h3 className="text-2xl font-semibold text-white mb-6">
             Active Classes
           </h3>
-  
+
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {classes?.map((cls, index) => (
               <div
@@ -201,8 +199,8 @@ const Page = () => {
                   transition-all duration-300
                 "
               >
-                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl bg-gradient-to-r from-indigo-400 to-violet-500" />
-  
+                <div className="absolute top-0 left-0 right-0" />
+
                 <ClassesCard
                   AddHomework={() =>
                     push(`/teacher/assignments/${cls.classId}`)
@@ -221,8 +219,5 @@ const Page = () => {
       </main>
     </div>
   );
-  
-  
-  
-}  
-export default Page
+};
+export default Page;
