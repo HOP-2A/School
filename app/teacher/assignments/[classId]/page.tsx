@@ -28,7 +28,9 @@ const Page = () => {
   const { user } = useAuth(clerkUser?.id);
 
   const [assignments, setAssignments] = useState<AssignmentsType[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
 
   const [inputs, setInputs] = useState({
     title: "",
@@ -106,7 +108,7 @@ const Page = () => {
           dueDate: RealSelectedDate,
           teacherId: user.id,
           content: images, // 👈 IMAGES SAVED HERE
-          points:inputs?.points
+          points: inputs?.points,
         }),
       });
 
@@ -156,22 +158,22 @@ const Page = () => {
         account={() => router.push("/teacher/account")}
       />
 
-      <main className="md:ml-[18rem] px-6 py-8 space-y-10">
-        <h1 className="text-3xl font-bold text-white">
+      <main className="md:ml-[18rem] px-6 py-8 space-y-12">
+        <h1 className="text-3xl sm:text-4xl font-bold text-white">
           Class · {classId}
         </h1>
 
         <section className="grid grid-cols-1 xl:grid-cols-2 gap-8">
           {/* ---------------- ADD ASSIGNMENT ---------------- */}
-          <div className="rounded-3xl p-8 bg-white/10 backdrop-blur-xl border border-white/20 space-y-6">
-            <h2 className="text-xl font-semibold">Add Assignment</h2>
+          <div className="rounded-2xl p-8 bg-[#1E1E2E]/80 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-300 space-y-6">
+            <h2 className="text-xl font-semibold text-white">Add Assignment</h2>
 
             <Input
               placeholder="Title"
               name="title"
               value={inputs.title}
               onChange={handleInputs}
-              className="bg-white/10 border-white/20 text-white"
+              className="bg-[#2A2A35] border border-gray-700 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
             />
 
             <Input
@@ -179,20 +181,23 @@ const Page = () => {
               name="des"
               value={inputs.des}
               onChange={handleInputs}
-              className="bg-white/10 border-white/20 text-white"
+              className="bg-[#2A2A35] border border-gray-700 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
             />
+
             <Input
               placeholder="Points..."
               name="points"
               value={inputs.points}
               onChange={(e) => handleInputs(e)}
+              className="bg-[#2A2A35] border border-gray-700 text-white placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
             />
-            <h2>Pick a due date:</h2>
+
+            <h2 className="text-white font-medium">Pick a due date:</h2>
             <Calendar
               mode="single"
               selected={selectedDate}
               onSelect={setSelectedDate}
-              className="bg-white/10 rounded-xl border border-white/20"
+              className="bg-[#2A2A35] rounded-lg border border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400"
             />
 
             {/* FILE INPUT */}
@@ -201,9 +206,10 @@ const Page = () => {
               accept="image/*"
               onChange={fetchFile}
               className="block w-full text-sm text-slate-400
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-xl file:border-0
-                file:bg-indigo-500/20 file:text-indigo-300"
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-lg file:border-0
+            file:bg-purple-500/20 file:text-purple-300
+            hover:file:bg-purple-500/30 transition"
             />
 
             {/* IMAGE PREVIEW */}
@@ -211,11 +217,11 @@ const Page = () => {
               {images.map((img, index) => (
                 <div
                   key={index}
-                  className="relative group rounded-xl overflow-hidden border border-white/20"
+                  className="relative group rounded-xl overflow-hidden shadow-sm hover:shadow-md transition border border-gray-700"
                 >
                   <img
                     src={img}
-                    className="h-[160px] w-[160px] object-cover"
+                    className="h-[160px] w-[160px] object-cover rounded-lg"
                   />
                   <button
                     onClick={() => deleteImage(index)}
@@ -231,7 +237,7 @@ const Page = () => {
               <Button
                 onClick={uploadPhoto}
                 disabled={isUploading}
-                className="bg-emerald-500 hover:bg-emerald-600"
+                className="bg-purple-700 hover:bg-purple-900 rounded-lg transition"
               >
                 {isUploading ? "Uploading..." : "Upload Photo"}
               </Button>
@@ -240,30 +246,30 @@ const Page = () => {
             <Button
               onClick={AddAssignment}
               disabled={isUploading || isSubmitting}
-              className="bg-indigo-500 hover:bg-indigo-600"
+              className="bg-indigo-500 hover:bg-indigo-600 rounded-lg transition"
             >
               {isSubmitting ? "Submitting..." : "Add Assignment"}
             </Button>
           </div>
 
           {/* ---------------- ASSIGNMENT LIST ---------------- */}
-          <div className="rounded-3xl p-8 bg-white/10 backdrop-blur-xl border border-white/20">
-            <h2 className="text-xl font-semibold mb-6">Assignments</h2>
+          <div className="rounded-2xl p-8 bg-[#1E1E2E]/80 backdrop-blur-md shadow-sm hover:shadow-md transition-all duration-300">
+            <h2 className="text-xl font-semibold text-white mb-6">
+              Assignments
+            </h2>
 
             <div className="space-y-4">
               {assignments.map((hw) => (
                 <div
                   key={hw.id}
-                  className="p-4 rounded-xl bg-white/10 border border-white/20"
+                  className="p-4 rounded-xl bg-[#2A2A35] shadow-sm hover:shadow-md transition"
                 >
-                  <p className="font-semibold">{hw.title}</p>
-                  <p className="text-sm text-slate-400">{hw.description}</p>
+                  <p className="font-semibold text-white">{hw.title}</p>
+                  <p className="text-sm text-gray-400">{hw.description}</p>
 
                   <Button
-                    onClick={() =>
-                      router.push(`/teacher/homework/${hw.id}`)
-                    }
-                    className="mt-3 bg-white/10 hover:bg-white/20"
+                    onClick={() => router.push(`/teacher/homework/${hw.id}`)}
+                    className="mt-3 bg-cyan-500 hover:bg-cyan-400 text-black rounded-lg transition"
                   >
                     View
                   </Button>
